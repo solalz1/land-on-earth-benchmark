@@ -1,0 +1,236 @@
+# Land on Earth — the 20 open-weight models of the tweet reproduction.
+#
+# Every request pins one provider through OpenRouter, forbids fallbacks and refuses any
+# provider that would ignore a parameter (see loe/client.py). Providers, precisions and prices
+# come from https://openrouter.ai/api/v1/models/<id>/endpoints, read on 3 October 2026;
+# `make check` re-reads them live before anything is spent.
+#
+# price: [input, output] in USD per million tokens, used only for the cost estimate.
+# quantizations: precisions accepted for the pinned provider; omit to accept what it declares.
+# strategies: tried in order by the pilot, which keeps the first one that works (see below).
+# hf_repo: Hugging Face repo whose chat template renders the raw prompt (strategy "raw").
+# raw_prefill: text appended after the rendered template, so the answer starts right away.
+# top_logprobs: alternatives asked per token (default 20, the OpenAI maximum); lower it for a
+#   provider that refuses 20.
+
+defaults:
+  strategies: [chat_none, chat, raw, chat_low]
+  concurrency: 8 # requests in flight per model
+  provider_concurrency: 32 # requests in flight per provider, all models together
+
+# How each strategy asks the question. All use temperature 0 and the same user prompt.
+strategies:
+  chat_none: # chat API, reasoning switched off through OpenRouter
+    mode: chat
+    reasoning: { effort: none }
+    logprobs: true
+    max_tokens: 8
+  chat: # chat API, no reasoning parameter (non-reasoning models)
+    mode: chat
+    logprobs: true
+    max_tokens: 8
+  raw: # raw completion: official chat template + prefilled answer, thinking skipped
+    mode: raw
+    logprobs: true
+    max_tokens: 8
+  chat_low: # last resort for models that always reason: shortest reasoning, answer in content
+    mode: chat
+    reasoning: { effort: low }
+    logprobs: true
+    max_tokens: 1024
+  text_none: # no logprobs at the provider: keep the greedy answer, as in the tweet's map
+    mode: chat
+    reasoning: { effort: none }
+    logprobs: false
+    max_tokens: 8
+  text:
+    mode: chat
+    logprobs: false
+    max_tokens: 8
+
+models:
+  - key: deepseek-v4.1-flash
+    name: DeepSeek V4.1 Flash
+    lab: DeepSeek
+    id: deepseek/deepseek-v4.1-flash
+    provider: novita
+    quantizations: [fp8]
+    price: [0.24, 0.96]
+    hf_repo: deepseek-ai/DeepSeek-V4.1-Flash
+
+  - key: deepseek-v4-pro
+    name: DeepSeek V4 Pro
+    lab: DeepSeek
+    id: deepseek/deepseek-v4-pro
+    provider: novita
+    quantizations: [fp8]
+    price: [1.60, 3.20]
+    hf_repo: deepseek-ai/DeepSeek-V4-Pro
+
+  - key: kimi-k3
+    name: Kimi K3
+    lab: Moonshot
+    id: moonshotai/kimi-k3
+    provider: parasail
+    quantizations: [fp4]
+    price: [3.00, 15.00]
+    hf_repo: moonshotai/Kimi-K3
+    strategies: [chat_none, raw, chat, chat_low]
+
+  - key: kimi-k2.6
+    name: Kimi K2.6
+    lab: Moonshot
+    id: moonshotai/kimi-k2.6
+    provider: parasail
+    quantizations: [int4]
+    price: [0.75, 3.50]
+    hf_repo: moonshotai/Kimi-K2.6
+
+  - key: glm-5.3
+    name: GLM-5.3
+    lab: Z.ai
+    id: z-ai/glm-5.3
+    provider: parasail
+    quantizations: [fp8]
+    price: [1.40, 4.40]
+    hf_repo: zai-org/GLM-5.3
+
+  - key: glm-5.2
+    name: GLM-5.2
+    lab: Z.ai
+    id: z-ai/glm-5.2
+    provider: gmicloud
+    quantizations: [fp8]
+    price: [1.40, 4.40]
+    hf_repo: zai-org/GLM-5.2
+
+  - key: minimax-m3
+    name: MiniMax M3
+    lab: MiniMax
+    id: minimax/minimax-m3
+    provider: parasail
+    quantizations: [fp8]
+    price: [0.30, 1.20]
+    hf_repo: MiniMaxAI/MiniMax-M3
+
+  - key: qwen3.5-397b-a17b
+    name: Qwen3.5-397B-A17B
+    lab: Alibaba
+    id: qwen/qwen3.5-397b-a17b
+    provider: parasail
+    quantizations: [fp8]
+    price: [0.50, 3.60]
+    hf_repo: Qwen/Qwen3.5-397B-A17B
+
+  - key: qwen3.5-122b-a10b
+    name: Qwen3.5-122B-A10B
+    lab: Alibaba
+    id: qwen/qwen3.5-122b-a10b
+    provider: novita
+    quantizations: [bf16]
+    price: [0.40, 3.20]
+    hf_repo: Qwen/Qwen3.5-122B-A10B
+
+  - key: qwen3.5-27b
+    name: Qwen3.5-27B
+    lab: Alibaba
+    id: qwen/qwen3.5-27b
+    provider: novita
+    quantizations: [bf16]
+    price: [0.30, 2.40]
+    hf_repo: Qwen/Qwen3.5-27B
+
+  - key: qwen3.5-9b
+    name: Qwen3.5-9B
+    lab: Alibaba
+    id: qwen/qwen3.5-9b
+    provider: parasail
+    quantizations: [bf16]
+    price: [0.10, 0.25]
+    hf_repo: Qwen/Qwen3.5-9B
+
+  - key: qwen3.6-27b
+    name: Qwen3.6-27B
+    lab: Alibaba
+    id: qwen/qwen3.6-27b
+    provider: alibaba # the only provider with logprobs; precision not declared
+    price: [0.45, 2.70]
+    hf_repo: Qwen/Qwen3.6-27B
+
+  - key: qwen3.8-27b
+    name: Qwen3.8-27B
+    lab: Alibaba
+    id: qwen/qwen3.8-27b
+    provider: parasail
+    quantizations: [fp8]
+    price: [0.24, 2.20]
+    hf_repo: Qwen/Qwen3.8-27B
+    raw_prefill: "<think>\n\n</think>\n\n"
+
+  - key: gemma-4-31b
+    name: Gemma 4 31B
+    lab: Google
+    id: google/gemma-4-31b-it
+    provider: novita
+    quantizations: [bf16]
+    price: [0.14, 0.40]
+    hf_repo: google/gemma-4-31b-it
+
+  - key: gemma-4-26b-a4b
+    name: Gemma 4 26B-A4B
+    lab: Google
+    id: google/gemma-4-26b-a4b-it
+    provider: novita
+    quantizations: [bf16]
+    price: [0.13, 0.40]
+    hf_repo: google/gemma-4-26b-a4b-it
+
+  - key: gpt-oss-120b
+    name: gpt-oss-120b
+    lab: OpenAI
+    id: openai/gpt-oss-120b
+    provider: novita
+    quantizations: [fp4]
+    price: [0.05, 0.25]
+    hf_repo: openai/gpt-oss-120b
+    raw_prefill: "<|channel|>final<|message|>"
+    strategies: [chat_none, raw, chat_low]
+
+  - key: gpt-oss-20b
+    name: gpt-oss-20b
+    lab: OpenAI
+    id: openai/gpt-oss-20b
+    provider: novita
+    quantizations: [fp4]
+    price: [0.04, 0.15]
+    hf_repo: openai/gpt-oss-20b
+    raw_prefill: "<|channel|>final<|message|>"
+    strategies: [chat_none, raw, chat_low]
+
+  - key: llama-4-maverick
+    name: Llama 4 Maverick
+    lab: Meta
+    id: meta-llama/llama-4-maverick
+    provider: parasail
+    quantizations: [fp8]
+    price: [0.35, 1.00]
+    hf_repo: meta-llama/Llama-4-Maverick-17B-128E-Instruct
+    strategies: [chat, raw]
+
+  - key: nemotron-3-super
+    name: Nemotron 3 Super
+    lab: NVIDIA
+    id: nvidia/nemotron-3-super-120b-a12b
+    provider: dekallm
+    quantizations: [fp8]
+    price: [0.08, 0.45]
+    hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
+
+  - key: mistral-large-3
+    name: Mistral Large 3
+    lab: Mistral
+    id: mistralai/mistral-large-2512
+    provider: mistral # no logprobs at Mistral: greedy answer only, like the tweet's map
+    price: [0.50, 1.50]
+    logprobs: false
+    strategies: [text, text_none]

@@ -1,0 +1,17 @@
+# environnement
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.cache/
+.DS_Store
+
+# secrets : la clé reste dans ~/.zshrc, jamais dans le repo
+.env
+.env.*
+
+# réponses brutes non compressées (la version .jsonl.gz est commitée)
+results/**/raw/*.jsonl
+
+# démo contre la fausse API
+results/demo/
