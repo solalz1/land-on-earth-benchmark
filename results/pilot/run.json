@@ -1,0 +1,263 @@
+{
+  "sessions": [
+    {
+      "finished": "2026-10-04T19:40:10+00:00",
+      "kind": "pilot",
+      "points": 200,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0015840000000000032,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 200,
+          "done_before": 0,
+          "answered": 198,
+          "errors": 2,
+          "cost": 0.33266559999999995,
+          "stopped": null,
+          "last_error": "HTTP 429: Rate limit exceeded: new-account-rpm/deepseek/deepseek-v4-pro-20260423. Rate limit reached: new accounts are limited to 20 requests per minute for this model. Please retry shortly."
+        },
+        {
+          "key": "kimi-k3",
+          "total": 200,
+          "done_before": 0,
+          "answered": 187,
+          "errors": 13,
+          "cost": 0.04824600000000014,
+          "stopped": null,
+          "last_error": "HTTP 429: Rate limit exceeded: new-account-rpm/moonshotai/kimi-k3-20260715. Rate limit reached: new accounts are limited to 20 requests per minute for this model. Please retry shortly."
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 200,
+          "done_before": 0,
+          "answered": 184,
+          "errors": 16,
+          "cost": 0.005923360000000023,
+          "stopped": null,
+          "last_error": "HTTP 429: Rate limit exceeded: new-account-rpm/moonshotai/kimi-k2.6-20260420. Rate limit reached: new accounts are limited to 20 requests per minute for this model. Please retry shortly."
+        },
+        {
+          "key": "minimax-m3",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.025959599999999985,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 185,
+          "errors": 15,
+          "cost": 0.004967999999999999,
+          "stopped": null,
+          "last_error": "HTTP 429: Rate limit exceeded: new-account-rpm/qwen/qwen3.5-397b-a17b-20260216. Rate limit reached: new accounts are limited to 20 requests per minute for this model. Please retry shortly."
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.000885799999999998,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0027659199999999972,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0012881199999999985,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0015455399999999995,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0035411,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.003317999999999993,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0008726399999999996,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-large-3",
+          "total": 200,
+          "done_before": 0,
+          "answered": 158,
+          "errors": 42,
+          "cost": 0.0030469999999999976,
+          "stopped": null,
+          "last_error": "HTTP 429: Provider returned error | mistralai/mistral-large-2512 is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
+        }
+      ]
+    }
+  ],
+  "models": {
+    "deepseek-v4.1-flash": {
+      "id": "deepseek/deepseek-v4.1-flash",
+      "provider": "novita",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_none"
+    },
+    "deepseek-v4-pro": {
+      "id": "deepseek/deepseek-v4-pro",
+      "provider": "novita",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_low"
+    },
+    "kimi-k3": {
+      "id": "moonshotai/kimi-k3",
+      "provider": "parasail",
+      "quantizations": [
+        "fp4"
+      ],
+      "strategy": "chat_none"
+    },
+    "kimi-k2.6": {
+      "id": "moonshotai/kimi-k2.6",
+      "provider": "parasail",
+      "quantizations": [
+        "int4"
+      ],
+      "strategy": "chat_none"
+    },
+    "minimax-m3": {
+      "id": "minimax/minimax-m3",
+      "provider": "parasail",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_low"
+    },
+    "qwen3.5-397b-a17b": {
+      "id": "qwen/qwen3.5-397b-a17b",
+      "provider": "parasail",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_none"
+    },
+    "qwen3.5-9b": {
+      "id": "qwen/qwen3.5-9b",
+      "provider": "parasail",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "chat_none"
+    },
+    "qwen3.8-27b": {
+      "id": "qwen/qwen3.8-27b",
+      "provider": "parasail",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_none"
+    },
+    "gemma-4-31b": {
+      "id": "google/gemma-4-31b-it",
+      "provider": "novita",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "chat_none"
+    },
+    "gemma-4-26b-a4b": {
+      "id": "google/gemma-4-26b-a4b-it",
+      "provider": "novita",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "raw"
+    },
+    "gpt-oss-20b": {
+      "id": "openai/gpt-oss-20b",
+      "provider": "novita",
+      "quantizations": [
+        "fp4"
+      ],
+      "strategy": "chat_low"
+    },
+    "llama-4-maverick": {
+      "id": "meta-llama/llama-4-maverick",
+      "provider": "parasail",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat"
+    },
+    "nemotron-3-super": {
+      "id": "nvidia/nemotron-3-super-120b-a12b",
+      "provider": "dekallm",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_none"
+    },
+    "mistral-large-3": {
+      "id": "mistralai/mistral-large-2512",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "deepseek-v4.1-flash": {
+    "strategy": "chat_none",
+    "status": "à vérifier : logprobs sur 92% des réponses",
+    "projected_usd": 0.1283
+  },
+  "deepseek-v4-pro": {
+    "strategy": "chat_low",
+    "status": "à vérifier : couverture 74%, coût projeté 26.95 $ contre 1.63 $ estimé",
+    "projected_usd": 26.9459
+  },
+  "kimi-k3": {
+    "strategy": "chat_none",
+    "status": "à vérifier : couverture 94%",
+    "projected_usd": 3.9079
+  },
+  "kimi-k2.6": {
+    "strategy": "chat_none",
+    "status": "à vérifier : couverture 92%",
+    "projected_usd": 0.4798
+  },
+  "glm-5.3": {
+    "strategy": null,
+    "status": "échec",
+    "projected_usd": null
+  },
+  "glm-5.2": {
+    "strategy": null,
+    "status": "échec",
+    "projected_usd": null
+  },
+  "minimax-m3": {
+    "strategy": "chat_low",
+    "status": "à vérifier : coût projeté 2.10 $ contre 0.32 $ estimé",
+    "projected_usd": 2.1027
+  },
+  "qwen3.5-397b-a17b": {
+    "strategy": "chat_none",
+    "status": "à vérifier : couverture 92%",
+    "projected_usd": 0.4024
+  },
+  "qwen3.5-122b-a10b": {
+    "strategy": null,
+    "status": "échec",
+    "projected_usd": null
+  },
+  "qwen3.5-27b": {
+    "strategy": null,
+    "status": "échec",
+    "projected_usd": null
+  },
+  "qwen3.5-9b": {
+    "strategy": "chat_none",
+    "status": "ok",
+    "projected_usd": 0.0717
+  },
+  "qwen3.6-27b": {
+    "strategy": null,
+    "status": "échec",
+    "projected_usd": null
+  },
+  "qwen3.8-27b": {
+    "strategy": "chat_none",
+    "status": "ok",
+    "projected_usd": 0.224
+  },
+  "gemma-4-31b": {
+    "strategy": "chat_none",
+    "status": "à vérifier : logprobs sur 93% des réponses",
+    "projected_usd": 0.1043
+  },
+  "gemma-4-26b-a4b": {
+    "strategy": "raw",
+    "status": "à vérifier : logprobs sur 26% des réponses",
+    "projected_usd": 0.1252
+  },
+  "gpt-oss-120b": {
+    "strategy": null,
+    "status": "échec",
+    "projected_usd": null
+  },
+  "gpt-oss-20b": {
+    "strategy": "chat_low",
+    "status": "ok",
+    "projected_usd": 0.2868
+  },
+  "llama-4-maverick": {
+    "strategy": "chat",
+    "status": "ok",
+    "projected_usd": 0.2688
+  },
+  "nemotron-3-super": {
+    "strategy": "chat_none",
+    "status": "ok",
+    "projected_usd": 0.0707
+  },
+  "mistral-large-3": {
+    "strategy": "text",
+    "status": "à vérifier : couverture 79%",
+    "projected_usd": 0.2468
+  }
+}

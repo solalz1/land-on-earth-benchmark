@@ -290,7 +290,9 @@
       "price_in": 0.08,
       "price_out": 0.45,
       "cost_usd": 0.0863,
-      "problems": [],
+      "problems": [
+        "statut -2"
+      ],
       "raw_template": true
     },
     {

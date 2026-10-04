@@ -1,0 +1,623 @@
+{
+  "points": 200,
+  "models": [
+    {
+      "key": "deepseek-v4.1-flash",
+      "name": "DeepSeek V4.1 Flash",
+      "provider": "novita",
+      "strategy": "chat_none",
+      "tried": [
+        [
+          "chat_none",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.2527,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.76,
+      "logprobs_share": 0.92,
+      "median_mass": 1.0,
+      "providers": [
+        "Novita"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.001584,
+      "cost_per_request_usd": 7.92e-06,
+      "projected_usd": 0.1283,
+      "reasoning_tokens": 0,
+      "median_latency_s": 2.015,
+      "status": "à vérifier : logprobs sur 92% des réponses"
+    },
+    {
+      "key": "deepseek-v4-pro",
+      "name": "DeepSeek V4 Pro",
+      "provider": "novita",
+      "strategy": "chat_low",
+      "tried": [
+        [
+          "chat_none",
+          "pas de logprobs exploitables dans la réponse"
+        ],
+        [
+          "chat",
+          "réponse illisible (fin : length) : ''"
+        ],
+        [
+          "raw",
+          "template indisponible (dépôt Hugging Face introuvable ou protégé)"
+        ],
+        [
+          "chat_low",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 1.633,
+      "points": 200,
+      "answered": 148,
+      "coverage": 0.74,
+      "accuracy": 0.973,
+      "logprobs_share": 0.9865,
+      "median_mass": 1.0,
+      "providers": [
+        "Novita"
+      ],
+      "errors": 2,
+      "requests": 200,
+      "cost_usd": 0.332666,
+      "cost_per_request_usd": 0.001663328,
+      "projected_usd": 26.9459,
+      "reasoning_tokens": 92970,
+      "median_latency_s": 10.06,
+      "status": "à vérifier : couverture 74%, coût projeté 26.95 $ contre 1.63 $ estimé"
+    },
+    {
+      "key": "kimi-k3",
+      "name": "Kimi K3",
+      "provider": "parasail",
+      "strategy": "chat_none",
+      "tried": [
+        [
+          "chat_none",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 3.2076,
+      "points": 200,
+      "answered": 187,
+      "coverage": 0.935,
+      "accuracy": 0.7807,
+      "logprobs_share": 1.0,
+      "median_mass": 0.9808,
+      "providers": [
+        "Parasail"
+      ],
+      "errors": 13,
+      "requests": 200,
+      "cost_usd": 0.048246,
+      "cost_per_request_usd": 0.00024123,
+      "projected_usd": 3.9079,
+      "reasoning_tokens": 0,
+      "median_latency_s": 1.272,
+      "status": "à vérifier : couverture 94%"
+    },
+    {
+      "key": "kimi-k2.6",
+      "name": "Kimi K2.6",
+      "provider": "parasail",
+      "strategy": "chat_none",
+      "tried": [
+        [
+          "chat_none",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.7978,
+      "points": 200,
+      "answered": 184,
+      "coverage": 0.92,
+      "accuracy": 0.6848,
+      "logprobs_share": 1.0,
+      "median_mass": 0.9996,
+      "providers": [
+        "Parasail"
+      ],
+      "errors": 16,
+      "requests": 200,
+      "cost_usd": 0.005923,
+      "cost_per_request_usd": 2.96168e-05,
+      "projected_usd": 0.4798,
+      "reasoning_tokens": 0,
+      "median_latency_s": 0.647,
+      "status": "à vérifier : couverture 92%"
+    },
+    {
+      "key": "glm-5.3",
+      "name": "GLM-5.3",
+      "provider": "parasail",
+      "strategy": null,
+      "tried": [
+        [
+          "chat_none",
+          "8/8 erreurs — HTTP 400: Reasoning is mandatory for this endpoint and cannot be disabled."
+        ],
+        [
+          "chat",
+          "réponse illisible (fin : length) : ''"
+        ],
+        [
+          "raw",
+          "réponse illisible (fin : length) : ''"
+        ],
+        [
+          "chat_low",
+          "pas de logprobs exploitables dans la réponse"
+        ]
+      ],
+      "estimate_usd": 1.4548,
+      "status": "échec"
+    },
+    {
+      "key": "glm-5.2",
+      "name": "GLM-5.2",
+      "provider": "gmicloud",
+      "strategy": null,
+      "tried": [
+        [
+          "chat_none",
+          "pas de logprobs exploitables dans la réponse"
+        ],
+        [
+          "chat",
+          "le modèle raisonne malgré la consigne"
+        ],
+        [
+          "raw",
+          "réponse illisible (fin : length) : 'The coordinates 51.0° N'"
+        ],
+        [
+          "chat_low",
+          "pas de logprobs exploitables dans la réponse"
+        ]
+      ],
+      "estimate_usd": 1.4548,
+      "status": "échec"
+    },
+    {
+      "key": "minimax-m3",
+      "name": "MiniMax M3",
+      "provider": "parasail",
+      "strategy": "chat_low",
+      "tried": [
+        [
+          "chat_none",
+          "réponse illisible (fin : length) : ''"
+        ],
+        [
+          "chat",
+          "réponse illisible (fin : length) : ''"
+        ],
+        [
+          "raw",
+          "réponse illisible (fin : length) : ''"
+        ],
+        [
+          "chat_low",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.3159,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.875,
+      "logprobs_share": 1.0,
+      "median_mass": 1.0,
+      "providers": [
+        "Parasail"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.02596,
+      "cost_per_request_usd": 0.000129798,
+      "projected_usd": 2.1027,
+      "reasoning_tokens": 10390,
+      "median_latency_s": 0.989,
+      "status": "à vérifier : coût projeté 2.10 $ contre 0.32 $ estimé"
+    },
+    {
+      "key": "qwen3.5-397b-a17b",
+      "name": "Qwen3.5-397B-A17B",
+      "provider": "parasail",
+      "strategy": "chat_none",
+      "tried": [
+        [
+          "chat_none",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.5524,
+      "points": 200,
+      "answered": 185,
+      "coverage": 0.925,
+      "accuracy": 0.7081,
+      "logprobs_share": 1.0,
+      "median_mass": 0.9993,
+      "providers": [
+        "Parasail"
+      ],
+      "errors": 15,
+      "requests": 200,
+      "cost_usd": 0.004968,
+      "cost_per_request_usd": 2.484e-05,
+      "projected_usd": 0.4024,
+      "reasoning_tokens": 0,
+      "median_latency_s": 0.938,
+      "status": "à vérifier : couverture 92%"
+    },
+    {
+      "key": "qwen3.5-122b-a10b",
+      "name": "Qwen3.5-122B-A10B",
+      "provider": "novita",
+      "strategy": null,
+      "tried": [
+        [
+          "chat_none",
+          "8/8 erreurs — HTTP 400: Provider returned error | {\"message\":\"invalid request error trace_id: d323a79b54ec110a585e5a365085af4e\",\"type\":\"invalid_request_error\"}\n"
+        ],
+        [
+          "chat",
+          "8/8 erreurs — HTTP 400: Provider returned error | {\"message\":\"invalid request error trace_id: ac78c4e9c41713c9b5e3ce78dea3502f\",\"type\":\"invalid_request_error\"}\n"
+        ],
+        [
+          "raw",
+          "8/8 erreurs — HTTP 400: Provider returned error | {\"message\":\"invalid request error trace_id: 7dbaf6e8cf0128fed9b10e4b60549e92\",\"type\":\"invalid_request_error\"}\n"
+        ],
+        [
+          "chat_low",
+          "8/8 erreurs — HTTP 400: Provider returned error | {\"message\":\"invalid request error trace_id: cb6c7b412821fbcc958d0c18e8c6dc9c\",\"type\":\"invalid_request_error\"}\n"
+        ]
+      ],
+      "estimate_usd": 0.4471,
+      "status": "échec"
+    },
+    {
+      "key": "qwen3.5-27b",
+      "name": "Qwen3.5-27B",
+      "provider": "novita",
+      "strategy": null,
+      "tried": [
+        [
+          "chat_none",
+          "8/8 erreurs — HTTP 400: Provider returned error | {\"message\":\"invalid request error trace_id: 72cff542a20bad270c0d7e54dbfbc40e\",\"type\":\"invalid_request_error\"}\n"
+        ],
+        [
+          "chat",
+          "8/8 erreurs — HTTP 400: Provider returned error | {\"message\":\"invalid request error trace_id: 2c7e3dbab9cfd422c83c8c89622d8b48\",\"type\":\"invalid_request_error\"}\n"
+        ],
+        [
+          "raw",
+          "8/8 erreurs — HTTP 400: Provider returned error | {\"message\":\"invalid request error trace_id: 0dc28bd4791281c5c3c1fcfcb7df4fc7\",\"type\":\"invalid_request_error\"}\n"
+        ],
+        [
+          "chat_low",
+          "8/8 erreurs — HTTP 400: Provider returned error | {\"message\":\"invalid request error trace_id: 2ce81cb32b0ffdf678d6cc7d4314cf94\",\"type\":\"invalid_request_error\"}\n"
+        ]
+      ],
+      "estimate_usd": 0.3353,
+      "status": "échec"
+    },
+    {
+      "key": "qwen3.5-9b",
+      "name": "Qwen3.5-9B",
+      "provider": "parasail",
+      "strategy": "chat_none",
+      "tried": [
+        [
+          "chat_none",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.1029,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.495,
+      "logprobs_share": 1.0,
+      "median_mass": 0.9958,
+      "providers": [
+        "Parasail"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.000886,
+      "cost_per_request_usd": 4.429e-06,
+      "projected_usd": 0.0717,
+      "reasoning_tokens": 0,
+      "median_latency_s": 0.79,
+      "status": "ok"
+    },
+    {
+      "key": "qwen3.6-27b",
+      "name": "Qwen3.6-27B",
+      "provider": "alibaba",
+      "strategy": null,
+      "tried": [
+        [
+          "chat_none",
+          "8/8 erreurs — HTTP 400: Provider returned error | data: {\"error\":{\"code\":\"invalid_parameter_error\",\"param\":null,\"message\":\"Range of top_logprobs should be [0, 5]\",\"type\":\"invalid_request_error\"},\"id\":\"chatcmpl-54036480-037a-9e3e-b1fe-50453ba831a1\"}\n\n"
+        ],
+        [
+          "chat",
+          "8/8 erreurs — HTTP 400: Provider returned error | data: {\"error\":{\"code\":\"invalid_parameter_error\",\"param\":null,\"message\":\"Range of top_logprobs should be [0, 5]\",\"type\":\"invalid_request_error\"},\"id\":\"chatcmpl-1ff1a815-00d8-9337-b985-0d1e68224b82\"}\n\n"
+        ],
+        [
+          "raw",
+          "8/8 erreurs — HTTP 400: Provider returned error | data: {\"error\":{\"code\":\"invalid_parameter_error\",\"param\":null,\"message\":\"Range of top_logprobs should be [0, 5]\",\"type\":\"invalid_request_error\"},\"id\":\"chatcmpl-9ace477b-3477-957f-a158-fed7ed738de2\"}\n\n"
+        ],
+        [
+          "chat_low",
+          "8/8 erreurs — HTTP 400: Provider returned error | data: {\"error\":{\"code\":\"invalid_parameter_error\",\"param\":null,\"message\":\"Range of top_logprobs should be [0, 5]\",\"type\":\"invalid_request_error\"},\"id\":\"chatcmpl-b9ed3e24-d002-954c-a989-2f75eb01b6cf\"}\n\n"
+        ]
+      ],
+      "estimate_usd": 0.4884,
+      "status": "échec"
+    },
+    {
+      "key": "qwen3.8-27b",
+      "name": "Qwen3.8-27B",
+      "provider": "parasail",
+      "strategy": "chat_none",
+      "tried": [
+        [
+          "chat_none",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.2728,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.635,
+      "logprobs_share": 1.0,
+      "median_mass": 0.9973,
+      "providers": [
+        "Parasail"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.002766,
+      "cost_per_request_usd": 1.3829599999999999e-05,
+      "projected_usd": 0.224,
+      "reasoning_tokens": 0,
+      "median_latency_s": 0.69,
+      "status": "ok"
+    },
+    {
+      "key": "gemma-4-31b",
+      "name": "Gemma 4 31B",
+      "provider": "novita",
+      "strategy": "chat_none",
+      "tried": [
+        [
+          "chat_none",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.1448,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.705,
+      "logprobs_share": 0.93,
+      "median_mass": 1.0,
+      "providers": [
+        "Novita"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.001288,
+      "cost_per_request_usd": 6.4406e-06,
+      "projected_usd": 0.1043,
+      "reasoning_tokens": 0,
+      "median_latency_s": 1.583,
+      "status": "à vérifier : logprobs sur 93% des réponses"
+    },
+    {
+      "key": "gemma-4-26b-a4b",
+      "name": "Gemma 4 26B-A4B",
+      "provider": "novita",
+      "strategy": "raw",
+      "tried": [
+        [
+          "chat_none",
+          "pas de logprobs exploitables dans la réponse"
+        ],
+        [
+          "chat",
+          "pas de logprobs exploitables dans la réponse"
+        ],
+        [
+          "raw",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.1349,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.525,
+      "logprobs_share": 0.26,
+      "median_mass": 1.0,
+      "providers": [
+        "Novita"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.001546,
+      "cost_per_request_usd": 7.7277e-06,
+      "projected_usd": 0.1252,
+      "reasoning_tokens": 0,
+      "median_latency_s": 1.706,
+      "status": "à vérifier : logprobs sur 26% des réponses"
+    },
+    {
+      "key": "gpt-oss-120b",
+      "name": "gpt-oss-120b",
+      "provider": "novita",
+      "strategy": null,
+      "tried": [
+        [
+          "chat_none",
+          "8/8 erreurs — HTTP 400: Reasoning is mandatory for this endpoint and cannot be disabled."
+        ],
+        [
+          "raw",
+          "réponse illisible (fin : length) : ''"
+        ],
+        [
+          "chat_low",
+          "pas de logprobs exploitables dans la réponse"
+        ]
+      ],
+      "estimate_usd": 0.0535,
+      "status": "échec"
+    },
+    {
+      "key": "gpt-oss-20b",
+      "name": "gpt-oss-20b",
+      "provider": "novita",
+      "strategy": "chat_low",
+      "tried": [
+        [
+          "chat_none",
+          "8/8 erreurs — HTTP 400: Reasoning is mandatory for this endpoint and cannot be disabled."
+        ],
+        [
+          "raw",
+          "réponse illisible (fin : length) : ''"
+        ],
+        [
+          "chat_low",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.042,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.69,
+      "logprobs_share": 0.995,
+      "median_mass": 1.0,
+      "providers": [
+        "Novita"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.003541,
+      "cost_per_request_usd": 1.7705500000000002e-05,
+      "projected_usd": 0.2868,
+      "reasoning_tokens": 14481,
+      "median_latency_s": 1.744,
+      "status": "ok"
+    },
+    {
+      "key": "llama-4-maverick",
+      "name": "Llama 4 Maverick",
+      "provider": "parasail",
+      "strategy": "chat",
+      "tried": [
+        [
+          "chat",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.3621,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.645,
+      "logprobs_share": 1.0,
+      "median_mass": 0.8176,
+      "providers": [
+        "Parasail"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.003318,
+      "cost_per_request_usd": 1.6590000000000002e-05,
+      "projected_usd": 0.2688,
+      "reasoning_tokens": 0,
+      "median_latency_s": 0.929,
+      "status": "ok"
+    },
+    {
+      "key": "nemotron-3-super",
+      "name": "Nemotron 3 Super",
+      "provider": "dekallm",
+      "strategy": "chat_none",
+      "tried": [
+        [
+          "chat_none",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.0863,
+      "points": 200,
+      "answered": 200,
+      "coverage": 1.0,
+      "accuracy": 0.66,
+      "logprobs_share": 1.0,
+      "median_mass": 0.9808,
+      "providers": [
+        "DekaLLM"
+      ],
+      "errors": 0,
+      "requests": 200,
+      "cost_usd": 0.000873,
+      "cost_per_request_usd": 4.3632e-06,
+      "projected_usd": 0.0707,
+      "reasoning_tokens": 0,
+      "median_latency_s": 1.825,
+      "status": "ok"
+    },
+    {
+      "key": "mistral-large-3",
+      "name": "Mistral Large 3",
+      "provider": "mistral",
+      "strategy": "text",
+      "tried": [
+        [
+          "text",
+          "ok"
+        ]
+      ],
+      "estimate_usd": 0.5184,
+      "points": 200,
+      "answered": 158,
+      "coverage": 0.79,
+      "accuracy": 0.5823,
+      "logprobs_share": 0.0,
+      "median_mass": null,
+      "providers": [
+        "Mistral"
+      ],
+      "errors": 42,
+      "requests": 200,
+      "cost_usd": 0.003047,
+      "cost_per_request_usd": 1.5235e-05,
+      "projected_usd": 0.2468,
+      "reasoning_tokens": 0,
+      "median_latency_s": 0.524,
+      "status": "à vérifier : couverture 79%"
+    }
+  ],
+  "valid": 5,
+  "total": 20,
+  "projected_usd": 35.37,
+  "projected_eur": 33.21,
+  "credits_left_usd": 40,
+  "pilot_cost_usd": 0.4366
+}
