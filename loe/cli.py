@@ -1,4 +1,4 @@
-"""Command line: loe check | pilot | run | score | render | pack | status | demo.
+"""Command line: loe check | pilot | probe | run | score | pack | status | demo.
 
 Every command that can spend credits reads OPENROUTER_API_KEY from the environment; the key is
 never printed or written anywhere. `--fake` swaps OpenRouter for the in-process fake API and
@@ -30,7 +30,13 @@ def _client(cfg: Config, fake: bool):
         from loe.fake import FakeOpenRouter
 
         api = FakeOpenRouter(cfg)
-        return Client("fake-key", transport=api.transport(), backoff=0.0, base_url="https://openrouter.ai/api/v1")
+        return Client(
+            "fake-key",
+            transport=api.transport(),
+            backoff=0.0,
+            base_url="https://openrouter.ai/api/v1",
+            rate_limits=False,  # the fake API has no per-minute limit, keep the demo fast
+        )
     return Client(api_key())
 
 
@@ -94,7 +100,8 @@ def _jobs(cfg: Config, args, out: Path):
         if not name or (not args.strategy and pilot.get("status") != "ok" and not args.force):
             skipped.append(f"{m.key} ({pilot.get('status') or 'pas de pilote'})")
             continue
-        jobs.append(Job(m, cfg.strategies[name], rend.get(m.key)))
+        expected = None if args.strategy else pilot.get("projected_usd")
+        jobs.append(Job(m, cfg.strategies[name], rend.get(m.key), expected_usd=expected))
     return jobs, skipped
 
 
@@ -115,6 +122,12 @@ async def _run(args, cfg: Config) -> int:
     if args.limit:
         points = points.sample(args.limit, random_state=1).sort_values("point_id")
     print(f"Run « {args.run} » : {len(jobs)} modèles × {len(points)} points, budget {args.budget:.2f} $ de crédits.")
+    projected = sum(j.expected_usd or 0.0 for j in jobs) * len(points) / FULL
+    if projected > 0.9 * args.budget:
+        print(
+            f"⚠ Le pilote projette {projected:.2f} $ pour ce run, proche du budget de {args.budget:.2f} $ : "
+            f"le run s'arrêtera au budget. Pour le relever : uv run python -m loe run --budget {projected * 1.2:.0f}"
+        )
     async with _client(cfg, args.fake) as client:
         runner = Runner(
             client, run_dir, budget=args.budget, provider_concurrency=cfg.provider_concurrency, cap_factor=args.cap
@@ -158,8 +171,29 @@ def _score(args, cfg: Config) -> int:
     return 0
 
 
+async def _probe(args, cfg: Config) -> int:
+    from loe import probe, templates
+
+    model = cfg.model(args.model)
+    strategies = [s.strip() for s in args.strategy.split(",") if s.strip()]
+    unknown = [s for s in strategies if s not in cfg.strategies]
+    if unknown:
+        print(f"Stratégies inconnues : {', '.join(unknown)} (voir configs/models.yaml)")
+        return 1
+    providers = [p.strip() for p in args.provider.split(",") if p.strip()]
+    quants = [q.strip() for q in args.quantizations.split(",")] if args.quantizations else None
+    render = None
+    if any(cfg.strategies[s].mode == "raw" for s in strategies):
+        render = templates.generic_renderer(model.raw_prefill) if args.fake else templates.renderer(model)
+    print(f"{model.name} : {len(providers)} fournisseurs × {len(strategies)} stratégies, 8 points chacun…")
+    async with _client(cfg, args.fake) as client:
+        rows = await probe.run_probe(cfg, model, providers, strategies, client, render, _out(args) / "probe", quants)
+    print(probe.show(rows))
+    return 0 if any(r["verdict"] == "ok" for r in rows) else 1
+
+
 def _pack(args, cfg: Config) -> int:
-    for sub in ("pilot", "pilot/probe", args.run):
+    for sub in ("pilot", "pilot/probe", "probe", args.run):
         d = _out(args) / sub
         for p in store.pack(d):
             print(f"compressé : {p.relative_to(config.ROOT)}")
@@ -203,7 +237,7 @@ def _demo(args, cfg: Config) -> int:
 
 
 def parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="loe", description="Land on Earth — Land or Water? sur 20 modèles open-weight")
+    p = argparse.ArgumentParser(prog="loe", description="Land on Earth — Land or Water? sur des modèles open-weight")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     def common(s, run=True):
@@ -217,6 +251,13 @@ def parser() -> argparse.ArgumentParser:
     s = common(sub.add_parser("pilot", help="choisit la stratégie de chaque modèle, 200 points"), run=False)
     s.add_argument("--points", type=int, default=200)
     s.add_argument("--budget", type=float, default=1.0, help="crédits max du pilote, en $ (défaut 1)")
+    s = sub.add_parser("probe", help="essaie un modèle chez d'autres fournisseurs, 8 points par essai")
+    s.add_argument("--model", required=True, help="clé du modèle (configs/models.yaml)")
+    s.add_argument("--provider", required=True, help="fournisseurs séparés par des virgules")
+    s.add_argument("--strategy", default="raw", help="stratégies séparées par des virgules (défaut : raw)")
+    s.add_argument("--quantizations", help="précisions acceptées, séparées par des virgules (défaut : toutes)")
+    s.add_argument("--fake", action="store_true", help="fausse API, résultats dans results/demo/")
+    s.add_argument("--run", default="tweet", help=argparse.SUPPRESS)
     s = common(sub.add_parser("run", help="les 16 200 points sur chaque modèle, reprend après coupure"))
     s.add_argument("--budget", type=float, default=18.0, help="crédits max du run, en $ (défaut 18)")
     s.add_argument("--cap", type=float, default=2.5, help="arrête un modèle dont le coût projeté dépasse cap × estimation")
@@ -248,6 +289,8 @@ def main(argv: list[str] | None = None) -> int:
             return asyncio.run(_check(args, cfg))
         if args.cmd == "pilot":
             return asyncio.run(_pilot(args, cfg))
+        if args.cmd == "probe":
+            return asyncio.run(_probe(args, cfg))
         if args.cmd == "run":
             return asyncio.run(_run(args, cfg))
         if args.cmd == "score":

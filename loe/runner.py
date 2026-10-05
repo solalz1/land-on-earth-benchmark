@@ -3,8 +3,10 @@
 - Resume: points already answered (in raw/<model>.jsonl) are skipped; failed ones are asked again.
 - Budget: the run stops once the credits spent in this run directory reach the budget.
 - Per-model guard: after 100 answers, a model whose projected cost exceeds `cap_factor` times
-  its estimate is stopped (a model that reasons despite the switch would otherwise burn credits).
-- A model that fails 25 requests in a row is stopped; a bad key or empty credits stop everything.
+  its estimate (or 1.5 times the pilot's projection, when known) is stopped: a model that starts
+  reasoning would otherwise burn credits.
+- A model that fails 25 requests in a row is stopped, except for rate limits (HTTP 429), which
+  only slow it down; a bad key or empty credits stop everything.
 """
 
 from __future__ import annotations
@@ -35,6 +37,7 @@ class Job:
     model: Model
     strategy: Strategy
     render: Renderer | None = None
+    expected_usd: float | None = None  # the pilot's projection for the full run, if any
 
 
 @dataclass
@@ -150,7 +153,10 @@ class Runner:
             return out
         answered_before = len(done)
         spent_before = spent_in(records)
-        cap = max(self.cap_factor * estimate(m, len(points)), estimate(m, len(points)) + 0.5)
+        est = estimate(m, len(points))
+        cap = max(self.cap_factor * est, est + 0.5)
+        if job.expected_usd:
+            cap = max(cap, 1.5 * job.expected_usd * len(points) / 16_200)
         queue: asyncio.Queue = asyncio.Queue()
         for p in todo.itertuples(index=False):
             queue.put_nowait(p)
@@ -181,7 +187,8 @@ class Runner:
                 else:
                     out.errors += 1
                     out.last_error = reply.error
-                    streak += 1
+                    if reply.status != 429:  # a rate limit slows the model down, it is not a failure
+                        streak += 1
                     if streak >= MAX_CONSECUTIVE_ERRORS and not out.stopped:
                         out.stopped = f"{streak} erreurs d'affilée — {reply.error}"
                 n = answered_before + out.answered
@@ -237,6 +244,8 @@ def write_meta(run_dir: Path, jobs: list[Job], outcomes: list[Outcome], extra: d
             "provider": j.model.provider,
             "quantizations": list(j.model.quantizations or []),
             "strategy": j.strategy.name,
+            "reasoning": j.strategy.reasons,
+            "rpm": j.model.rpm,
         }
         for j in jobs
     } | {k: v for k, v in meta.get("models", {}).items() if k not in {j.model.key for j in jobs}}

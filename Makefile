@@ -1,38 +1,47 @@
 # Land on Earth — commandes. Tout passe par uv (https://docs.astral.sh/uv/).
 # La clé OpenRouter est lue dans ton terminal (OPENROUTER_API_KEY), jamais dans un fichier du repo.
+# `python -m loe` exécute directement le dossier loe/ du projet, sans passer par le lien que uv
+# installe dans .venv (qu'iCloud peut rendre illisible).
 
 UV := uv run --quiet
-.PHONY: setup check pilot run score status pack demo test truth clean-demo
+LOE := $(UV) python -m loe
+GPT_OSS_PROVIDERS := coreweave,parasail,deepinfra,dekallm,akashml,cerebras
+.PHONY: setup check pilot probe-gpt-oss run score status pack demo test truth clean-demo
 
 setup:            ## installe Python et les dépendances
 	uv sync
 
 check: setup      ## gratuit : clé, plafond, fournisseurs, précisions, prix
-	$(UV) loe check
+	$(LOE) check
 
-pilot: setup      ## ≈ 0,15 € : stratégie de chaque modèle + 200 points, puis rapport
-	-$(UV) loe check
-	-$(UV) loe pilot
-	$(UV) loe pack
+pilot: setup      ## quelques centimes : stratégie de chaque modèle + 200 points, puis rapport
+	-$(LOE) check
+	-$(LOE) pilot
+	$(LOE) pack
 	@printf "\nPousse maintenant results/ sur le repo (voir README, étape 4).\n"
 
-run: setup        ## ≈ 12 € : 16 200 points × 20 modèles ; relancer reprend là où ça s'est arrêté
-	$(UV) loe run
-	$(UV) loe score
-	$(UV) loe pack
+probe-gpt-oss: setup ## < 1 centime : cherche un fournisseur qui fait tourner gpt-oss sans réflexion
+	-$(LOE) probe --model gpt-oss-120b --provider $(GPT_OSS_PROVIDERS) --strategy raw
+	-$(LOE) probe --model gpt-oss-20b --provider $(GPT_OSS_PROVIDERS),darkbloom --strategy raw
+	$(LOE) pack
+
+run: setup        ## ≈ 14 € : 16 200 points × 25 modèles ; relancer reprend là où ça s'est arrêté
+	$(LOE) run
+	$(LOE) score
+	$(LOE) pack
 	@printf "\nPousse maintenant results/ sur le repo (voir README, étape 6).\n"
 
 score:            ## recalcule classement et cartes à partir des réponses enregistrées
-	$(UV) loe score
+	$(LOE) score
 
 status:           ## avancement et coût du run en cours (dans un autre terminal)
-	$(UV) loe status
+	$(LOE) status
 
 pack:             ## compresse les réponses brutes pour le repo
-	$(UV) loe pack
+	$(LOE) pack
 
 demo: setup       ## tout le pipeline contre une fausse API, gratuit, dans results/demo/
-	$(UV) loe demo
+	$(LOE) demo
 
 test: setup       ## tests automatiques (fausse API)
 	uv run --quiet pytest -q

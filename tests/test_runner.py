@@ -20,6 +20,7 @@ def points(n=300):
 
 def fake_client(fake=None, **kw):
     fake = fake or FakeOpenRouter(CFG, fail_rate=0.05)
+    kw.setdefault("rate_limits", False)
     return Client("k", transport=fake.transport(), sleep=nosleep, **kw), fake
 
 
@@ -76,13 +77,54 @@ async def test_model_stopped_after_consecutive_errors(tmp_path):
 
 
 async def test_cost_guard_stops_a_model_that_reasons(tmp_path):
-    m = CFG.model("kimi-k3")  # reasoning tokens: ~4x the one-token estimate
+    m = CFG.model("minimax-m3")  # reasoning tokens: ~3.5x the one-token estimate
     client, _ = fake_client(FakeOpenRouter(CFG, fail_rate=0))
     async with client:
         r = Runner(client, tmp_path, budget=5, progress=False)
         out = await r.run([Job(m, CFG.strategies["chat_low"])], points(16_200))
     assert out[0].stopped and "coût projeté" in out[0].stopped
     assert out[0].answered < 200
+
+
+async def test_cost_guard_follows_the_pilot_projection(tmp_path):
+    m = CFG.model("minimax-m3")  # same model, but the pilot already measured its reasoning cost
+    client, _ = fake_client(FakeOpenRouter(CFG, fail_rate=0))
+    async with client:
+        r = Runner(client, tmp_path, budget=5, progress=False)
+        out = await r.run([Job(m, CFG.strategies["chat_low"], expected_usd=1.1)], points(400))
+    assert out[0].stopped is None and out[0].answered == 400
+
+
+async def test_rate_limits_do_not_stop_a_model(tmp_path):
+    def handler(req):
+        return httpx.Response(429, json={"error": {"code": 429, "message": "new-account-rpm"}})
+
+    async with Client("k", transport=httpx.MockTransport(handler), sleep=nosleep, max_attempts=2) as client:
+        out = await Runner(client, tmp_path, budget=5, progress=False).run(
+            [Job(CFG.model("qwen3.5-9b"), CFG.strategies["chat"])], points(40)
+        )
+    assert out[0].errors == 40 and out[0].stopped is None  # left for the next resume, not stopped
+
+
+async def test_pacing_avoids_the_new_account_limit(tmp_path):
+    from dataclasses import replace
+
+    m = replace(CFG.model("kimi-k2.6"), rpm=1000)  # 1 request every 60 ms
+    limited = FakeOpenRouter(CFG, fail_rate=0, rate_window=0.5, rate_limit=10)  # 10 per 0.5 s
+    client, _ = fake_client(limited, rate_limits=True)
+    async with client:
+        out = await Runner(client, tmp_path / "paced", budget=5, progress=False).run(
+            [Job(m, CFG.strategies["chat_none"])], points(30)
+        )
+    assert out[0].answered == 30 and limited.rate_limited == 0
+
+    unpaced = FakeOpenRouter(CFG, fail_rate=0, rate_window=0.5, rate_limit=10)
+    client, _ = fake_client(unpaced, rate_limits=False)
+    async with client:
+        await Runner(client, tmp_path / "unpaced", budget=5, progress=False).run(
+            [Job(m, CFG.strategies["chat_none"])], points(30)
+        )
+    assert unpaced.rate_limited > 0  # without pacing, the same run hits the limit
 
 
 async def test_fatal_error_propagates(tmp_path):

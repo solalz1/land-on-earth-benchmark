@@ -1,4 +1,4 @@
-# Land on Earth — the 20 open-weight models of the tweet reproduction.
+# Land on Earth — the open-weight models of the tweet reproduction (20 + 5 Mistral).
 #
 # Every request pins one provider through OpenRouter, forbids fallbacks and refuses any
 # provider that would ignore a parameter (see loe/client.py). Providers, precisions and prices
@@ -12,9 +12,17 @@
 # raw_prefill: text appended after the rendered template, so the answer starts right away.
 # top_logprobs: alternatives asked per token (default 20, the OpenAI maximum); lower it for a
 #   provider that refuses 20.
+# rpm: requests per minute for this model. OpenRouter caps new accounts at 20 per minute on some
+#   models; 19 keeps every request just under the cap instead of having it refused and retried.
+#   Remove the line once the cap is lifted.
+#
+# Mistral models go through the Mistral key added in OpenRouter (Settings > Integrations): same
+# provider pin, Mistral's own rate limits, billed by Mistral. Mistral returns no logprobs, so
+# these models only give the binary map, like the tweet.
 
 defaults:
-  strategies: [chat_none, chat, raw, chat_low]
+  # No reasoning first (with logprobs, then without), minimal reasoning only as a last resort.
+  strategies: [chat_none, chat, raw, text_none, text, chat_low, text_low]
   concurrency: 8 # requests in flight per model
   provider_concurrency: 32 # requests in flight per provider, all models together
 
@@ -47,6 +55,11 @@ strategies:
     mode: chat
     logprobs: false
     max_tokens: 8
+  text_low: # minimal reasoning, provider without logprobs
+    mode: chat
+    reasoning: { effort: low }
+    logprobs: false
+    max_tokens: 1024
 
 models:
   - key: deepseek-v4.1-flash
@@ -66,6 +79,7 @@ models:
     quantizations: [fp8]
     price: [1.60, 3.20]
     hf_repo: deepseek-ai/DeepSeek-V4-Pro
+    rpm: 19 # OpenRouter: new accounts limited to 20 requests per minute on this model
 
   - key: kimi-k3
     name: Kimi K3
@@ -76,6 +90,7 @@ models:
     price: [3.00, 15.00]
     hf_repo: moonshotai/Kimi-K3
     strategies: [chat_none, raw, chat, chat_low]
+    rpm: 19 # OpenRouter: new accounts limited to 20 requests per minute on this model
 
   - key: kimi-k2.6
     name: Kimi K2.6
@@ -85,6 +100,7 @@ models:
     quantizations: [int4]
     price: [0.75, 3.50]
     hf_repo: moonshotai/Kimi-K2.6
+    rpm: 19 # OpenRouter: new accounts limited to 20 requests per minute on this model
 
   - key: glm-5.3
     name: GLM-5.3
@@ -121,6 +137,7 @@ models:
     quantizations: [fp8]
     price: [0.50, 3.60]
     hf_repo: Qwen/Qwen3.5-397B-A17B
+    rpm: 19 # OpenRouter: new accounts limited to 20 requests per minute on this model
 
   - key: qwen3.5-122b-a10b
     name: Qwen3.5-122B-A10B
@@ -130,6 +147,7 @@ models:
     quantizations: [bf16]
     price: [0.40, 3.20]
     hf_repo: Qwen/Qwen3.5-122B-A10B
+    top_logprobs: 5 # the provider refuses more than 5
 
   - key: qwen3.5-27b
     name: Qwen3.5-27B
@@ -139,6 +157,7 @@ models:
     quantizations: [bf16]
     price: [0.30, 2.40]
     hf_repo: Qwen/Qwen3.5-27B
+    top_logprobs: 5 # the provider refuses more than 5
 
   - key: qwen3.5-9b
     name: Qwen3.5-9B
@@ -156,6 +175,7 @@ models:
     provider: alibaba # the only provider with logprobs; precision not declared
     price: [0.45, 2.70]
     hf_repo: Qwen/Qwen3.6-27B
+    top_logprobs: 5 # the provider refuses more than 5
 
   - key: qwen3.8-27b
     name: Qwen3.8-27B
@@ -215,7 +235,7 @@ models:
     quantizations: [fp8]
     price: [0.35, 1.00]
     hf_repo: meta-llama/Llama-4-Maverick-17B-128E-Instruct
-    strategies: [chat, raw]
+    strategies: [chat, raw, text]
 
   - key: nemotron-3-super
     name: Nemotron 3 Super
@@ -233,4 +253,50 @@ models:
     provider: mistral # no logprobs at Mistral: greedy answer only, like the tweet's map
     price: [0.50, 1.50]
     logprobs: false
-    strategies: [text, text_none]
+    strategies: [text, text_none, text_low]
+
+  # Mistral's size ladder, all open weights (Hugging Face mistralai/): 3B, 8B, 14B, 119B, 128B, 675B.
+  - key: ministral-3-3b
+    name: Ministral 3 3B
+    lab: Mistral
+    id: mistralai/ministral-3b-2512
+    provider: mistral
+    price: [0.10, 0.10]
+    logprobs: false
+    strategies: [text, text_none, text_low]
+
+  - key: ministral-3-8b
+    name: Ministral 3 8B
+    lab: Mistral
+    id: mistralai/ministral-8b-2512
+    provider: mistral
+    price: [0.15, 0.15]
+    logprobs: false
+    strategies: [text, text_none, text_low]
+
+  - key: ministral-3-14b
+    name: Ministral 3 14B
+    lab: Mistral
+    id: mistralai/ministral-14b-2512
+    provider: mistral
+    price: [0.20, 0.20]
+    logprobs: false
+    strategies: [text, text_none, text_low]
+
+  - key: mistral-small-4
+    name: Mistral Small 4
+    lab: Mistral
+    id: mistralai/mistral-small-2603
+    provider: mistral
+    price: [0.15, 0.60]
+    logprobs: false
+    strategies: [text, text_none, text_low]
+
+  - key: mistral-medium-3.5
+    name: Mistral Medium 3.5
+    lab: Mistral
+    id: mistralai/mistral-medium-3-5
+    provider: mistral
+    price: [1.50, 7.50]
+    logprobs: false
+    strategies: [text, text_none, text_low]

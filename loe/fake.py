@@ -1,10 +1,16 @@
 """A fake OpenRouter, to test the whole pipeline without spending a cent.
 
 It answers from the ground truth with model-dependent mistakes (more of them near coasts), and
-reproduces the behaviours the pilot must cope with: a provider without logprobs (Mistral),
-reasoning that cannot be switched off (gpt-oss, Kimi K3), a model without the reasoning
-parameter (Llama), markdown around the answer (Gemma), the legacy logprobs format of raw
-completions (Qwen), transient 429/502 errors, and the endpoints/key listings used by `check`.
+reproduces what the real pilot of 4 October 2026 ran into:
+- a provider without logprobs (Mistral), one that drops them (DeepSeek V4 Pro), one that returns
+  them for some answers only (GLM-5.2);
+- reasoning that cannot be switched off (gpt-oss and GLM-5.3 refuse it, MiniMax M3 ignores it),
+  with raw prompts that the pinned provider does not pass through as they are;
+- a provider that refuses more than 5 top logprobs (the Qwen at Novita and Alibaba);
+- the 20 requests per minute limit of new accounts (when `rate_window` is set);
+- a model without the reasoning parameter (Llama), markdown around the answer (Gemma), the
+  legacy logprobs format of raw completions (Qwen), hybrid models that reason unless told not
+  to (Mistral Small 4 and Medium 3.5), transient 429/502 errors, and the endpoints/key listings.
 """
 
 from __future__ import annotations
@@ -13,6 +19,8 @@ import hashlib
 import json
 import math
 import random
+import time
+from collections import defaultdict, deque
 from typing import Any
 
 import httpx
@@ -31,8 +39,19 @@ def _err(status: int, message: str, headers: dict[str, str] | None = None) -> ht
     return httpx.Response(status, json={"error": {"code": status, "message": message}}, headers=headers)
 
 
+RATE_LIMITED = ("deepseek-v4-pro", "kimi-k3", "kimi-k2.6", "qwen3.5-397b")
+RAW_PASSTHROUGH = {"deepinfra"}  # fake providers that send a raw prompt to the model as it is
+
+
 class FakeOpenRouter:
-    def __init__(self, cfg: Config, seed: int = 0, fail_rate: float = 0.01):
+    def __init__(
+        self,
+        cfg: Config,
+        seed: int = 0,
+        fail_rate: float = 0.01,
+        rate_window: float | None = None,
+        rate_limit: int = 20,
+    ):
         self.cfg = cfg
         self.by_id = {m.id: m for m in cfg.models}
         df = grid.load()
@@ -40,21 +59,30 @@ class FakeOpenRouter:
         self.coast = grid.coastal(self.truth)
         self.rng = random.Random(seed)
         self.fail_rate = fail_rate
+        self.rate_window = rate_window  # seconds; None = no new-account limit
+        self.rate_limit = rate_limit
+        self._recent: dict[str, deque] = defaultdict(deque)
         self.requests: list[dict[str, Any]] = []
+        self.rate_limited = 0
 
     def transport(self) -> httpx.MockTransport:
         return httpx.MockTransport(self.handle)
 
     # ---- behaviour of each fake model -------------------------------------------------------
     @staticmethod
-    def flags(m: Model) -> dict[str, bool]:
+    def flags(m: Model) -> dict[str, Any]:
         return {
             "no_logprobs": m.id.startswith("mistralai/"),
-            "reasoning_mandatory": "gpt-oss" in m.id,
-            "always_thinks": "kimi-k3" in m.id,
+            "drops_logprobs": "deepseek-v4-pro" in m.id,
+            "some_logprobs": "glm-5.2" in m.id,
+            "reasoning_mandatory": "gpt-oss" in m.id or "glm-5.3" in m.id,
+            "always_thinks": "minimax-m3" in m.id,
+            "hybrid": m.id in ("mistralai/mistral-small-2603", "mistralai/mistral-medium-3-5"),
             "no_reasoning_param": "llama-4" in m.id,
             "markdown": "gemma" in m.id,
             "legacy_raw": m.id.startswith("qwen/"),
+            "max_top_logprobs": 5 if any(k in m.id for k in ("qwen3.5-122b", "qwen3.5-27b", "qwen3.6-27b")) else 20,
+            "rate_limited": any(k in m.id for k in RATE_LIMITED),
         }
 
     def skill(self, m: Model) -> float:
@@ -115,24 +143,38 @@ class FakeOpenRouter:
         if m is None:
             return _err(400, "unknown model")
         prov = body.get("provider") or {}
-        if prov.get("only") != [m.provider] or prov.get("allow_fallbacks") is not False:
+        only = prov.get("only") or []
+        if len(only) != 1 or prov.get("allow_fallbacks") is not False:
             return _err(400, "fake: provider must be pinned without fallbacks")
+        f = self.flags(m)
+        if f["rate_limited"] and self.rate_window:
+            now, recent = time.monotonic(), self._recent[m.id]
+            while recent and now - recent[0] > self.rate_window:
+                recent.popleft()
+            if len(recent) >= self.rate_limit:
+                self.rate_limited += 1
+                return _err(429, f"Rate limit exceeded: new-account-rpm/{m.id}. Rate limit reached: new accounts "
+                            f"are limited to {self.rate_limit} requests per minute for this model.")
+            recent.append(now)
         if self.rng.random() < self.fail_rate:
             if self.rng.random() < 0.6:
                 return _err(429, "rate limited", {"retry-after": "0"})
             return _err(502, "upstream error")
-        f = self.flags(m)
         if f["no_logprobs"] and body.get("logprobs") and prov.get("require_parameters"):
             return _err(404, "No endpoints found that can handle the requested parameters.")
         if f["no_reasoning_param"] and "reasoning" in body and prov.get("require_parameters"):
             return _err(404, "No endpoints found that can handle the requested parameters.")
+        if body.get("logprobs") and int(body.get("top_logprobs") or 0) > f["max_top_logprobs"]:
+            return _err(400, "Provider returned error | Range of top_logprobs should be [0, 5]")
         effort = (body.get("reasoning") or {}).get("effort")
         raw = path == "/completions"
         if f["reasoning_mandatory"] and effort == "none":
             return _err(400, "Reasoning is mandatory for this endpoint and cannot be disabled.")
-        thinks = not raw and (
-            (f["reasoning_mandatory"]) or (f["always_thinks"] and effort in ("none", None, "low"))
-        )
+        reasoning_model = f["reasoning_mandatory"] or f["always_thinks"]
+        if raw:  # only some providers send the raw prompt as it is; others re-apply reasoning
+            thinks = reasoning_model and only[0] not in RAW_PASSTHROUGH
+        else:  # reasoning models always think; hybrid ones unless reasoning is switched off
+            thinks = reasoning_model or (f["hybrid"] and effort in (None, "low"))
         if thinks and body.get("max_tokens", 0) < 64:
             # all the budget goes to reasoning: no answer, as with a real thinking model
             return self._reply(m, body, raw, tokens=[], p=None, reasoning="Let me think about where this is", stop="length")
@@ -149,7 +191,10 @@ class FakeOpenRouter:
         return self._reply(m, body, raw, tokens=tokens, p=p, reasoning=reasoning, stop="stop", lead=lead)
 
     def _reply(self, m: Model, body, raw: bool, tokens: list[str], p: float | None, reasoning, stop, lead=""):
-        want_lp = bool(body.get("logprobs"))
+        f = self.flags(m)
+        want_lp = bool(body.get("logprobs")) and not f["drops_logprobs"]
+        if f["some_logprobs"] and _h(m.id, json.dumps(body.get("messages") or body.get("prompt"))) % 5 < 2:
+            want_lp = False  # this provider forgets the logprobs on about 40 % of the answers
         logprobs = None
         if want_lp and tokens:
             p = min(max(p, 1e-6), 1 - 1e-6)
@@ -188,8 +233,9 @@ class FakeOpenRouter:
                     ]
                 }
         content = "".join(tokens).strip()
-        n_reason = 40 if reasoning else 0
-        in_tok = 61 if not raw else max(20, len(body.get("prompt", "")) // 4)
+        # token counts measured at the real pilot: ~40 prompt tokens, 8 to 70 reasoning tokens
+        n_reason = (10 if "glm" in m.id else 50 if "minimax" in m.id else 40) if reasoning else 0
+        in_tok = 40 if not raw else max(20, len(body.get("prompt", "")) // 4)
         out_tok = len(tokens) + n_reason
         cost = (in_tok * m.price[0] + out_tok * m.price[1]) / 1e6
         choice: dict[str, Any] = {"index": 0, "finish_reason": stop, "logprobs": logprobs}
@@ -202,7 +248,9 @@ class FakeOpenRouter:
             json={
                 "id": f"gen-{_h(body.get('model'), len(self.requests))}",
                 "model": m.id,
-                "provider": m.provider.title() if m.provider != "dekallm" else "DekaLLM",
+                "provider": {"dekallm": "DekaLLM", "gmicloud": "GMICloud"}.get(
+                    body["provider"]["only"][0], body["provider"]["only"][0].title()
+                ),
                 "choices": [choice],
                 "usage": {
                     "prompt_tokens": in_tok,

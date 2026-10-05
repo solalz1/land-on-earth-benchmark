@@ -91,6 +91,23 @@ def _error_text(body: Any, fallback: str) -> str:
     return fallback[:500]
 
 
+class RateLimiter:
+    """Spaces request starts evenly: at most `rpm` per minute, shared by all workers of a model."""
+
+    def __init__(self, rpm: float):
+        self.interval = 60.0 / rpm
+        self._next = 0.0
+        self._lock = asyncio.Lock()
+
+    async def wait(self) -> None:
+        async with self._lock:
+            now = time.monotonic()
+            start = max(now, self._next)
+            self._next = start + self.interval
+        if start > now:
+            await asyncio.sleep(start - now)
+
+
 class Client:
     def __init__(
         self,
@@ -101,6 +118,7 @@ class Client:
         max_attempts: int = 8,
         backoff: float = 1.0,
         sleep: Callable[[float], Awaitable[None]] = asyncio.sleep,
+        rate_limits: bool = True,
     ):
         self.http = httpx.AsyncClient(
             base_url=base_url,
@@ -116,6 +134,16 @@ class Client:
         self.max_attempts = max_attempts
         self.backoff = backoff
         self.sleep = sleep
+        self.rate_limits = rate_limits
+        self._limiters: dict[str, RateLimiter] = {}
+
+    def limiter(self, model: Model) -> RateLimiter | None:
+        """The model's request pacing (configs/models.yaml `rpm`), shared by every caller."""
+        if not (self.rate_limits and model.rpm):
+            return None
+        if model.id not in self._limiters:
+            self._limiters[model.id] = RateLimiter(model.rpm)
+        return self._limiters[model.id]
 
     async def close(self) -> None:
         await self.http.aclose()
@@ -134,11 +162,13 @@ class Client:
                 pass
         return min(60.0, self.backoff * 2**attempt) * (0.5 + random.random())
 
-    async def post(self, path: str, body: dict[str, Any]) -> Reply:
+    async def post(self, path: str, body: dict[str, Any], limiter: RateLimiter | None = None) -> Reply:
         t0 = time.monotonic()
         error, status = "aucune tentative", None
         for attempt in range(1, self.max_attempts + 1):
             retry_after = None
+            if limiter is not None:  # every attempt, retries included, respects the model's pace
+                await limiter.wait()
             try:
                 r = await self.http.post(path, json=body)
                 status = r.status_code
@@ -171,7 +201,7 @@ class Client:
 
     async def ask(self, model: Model, strategy: Strategy, lat: float, lon: float, render: Renderer | None = None) -> Reply:
         path, body = request(model, strategy, lat, lon, render)
-        return await self.post(path, body)
+        return await self.post(path, body, self.limiter(model))
 
     async def get(self, path: str) -> Any:
         r = await self.http.get(path)

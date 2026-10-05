@@ -11,7 +11,20 @@ from loe.score import score_run
 from loe.templates import generic_renderer
 
 CFG = config.load()
-KEYS = ["qwen3.5-9b", "gpt-oss-20b", "kimi-k3", "llama-4-maverick", "gemma-4-31b", "mistral-large-3"]
+KEYS = [
+    "qwen3.5-9b",
+    "gpt-oss-20b",
+    "kimi-k3",
+    "llama-4-maverick",
+    "gemma-4-31b",
+    "mistral-large-3",
+    "deepseek-v4-pro",
+    "qwen3.6-27b",
+    "glm-5.3",
+    "glm-5.2",
+    "minimax-m3",
+    "mistral-small-4",
+]
 
 
 async def nosleep(_):
@@ -24,13 +37,13 @@ def renderers(models):
 
 async def test_check_finds_every_pinned_provider():
     fake = FakeOpenRouter(CFG)
-    async with Client("k", transport=fake.transport(), sleep=nosleep) as c:
+    async with Client("k", transport=fake.transport(), sleep=nosleep, rate_limits=False) as c:
         report = await check.run_check(CFG, CFG.models, c, {})
     assert report["ok"], [r["problems"] for r in report["models"] if r.get("problems")]
     assert report["key"]["limit"] == 20.0
     # the decoy FP4 endpoint of the fake is never picked
     assert all(r["tag"].startswith(r["provider"]) for r in report["models"])
-    assert 12 < report["total_usd"] < 13.5  # the spec's ~12.7 $ for the tweet run
+    assert 13 < report["total_usd"] < 15  # ~12.7 $ for the tweet's 20 models + ~1.4 $ of Mistral
     text = check.show(report)
     assert "Kimi K3" in text and "Coût estimé" in text
 
@@ -48,30 +61,58 @@ def test_check_flags_wrong_precision_and_missing_logprobs():
 async def test_pilot_picks_the_right_strategy_for_each_behaviour(tmp_path):
     models = [CFG.model(k) for k in KEYS]
     fake = FakeOpenRouter(CFG, fail_rate=0.02)
-    async with Client("k", transport=fake.transport(), sleep=nosleep) as c:
+    async with Client("k", transport=fake.transport(), sleep=nosleep, rate_limits=False) as c:
         report = await pilot.run_pilot(CFG, models, c, renderers(models), tmp_path, n_points=60, progress=False)
     chosen = {r["key"]: r["strategy"] for r in report["models"]}
     assert chosen == {
         "qwen3.5-9b": "chat_none",
-        "gpt-oss-20b": "raw",  # reasoning cannot be switched off through the API
-        "kimi-k3": "raw",  # reasons despite effort none
+        "gpt-oss-20b": "chat_low",  # reasoning mandatory, and Novita does not pass raw prompts through
+        "kimi-k3": "chat_none",
         "llama-4-maverick": "chat",  # no reasoning parameter
         "gemma-4-31b": "chat_none",  # markdown around the answer is fine
         "mistral-large-3": "text",  # no logprobs at the provider
+        "deepseek-v4-pro": "chat_none",  # clean answers without logprobs are accepted
+        "qwen3.6-27b": "chat_none",  # with 5 top logprobs instead of 20
+        "glm-5.3": "chat_low",  # reasoning mandatory
+        "glm-5.2": "chat_none",  # logprobs on some answers only: fine
+        "minimax-m3": "chat_low",  # reasons whatever the switch says
+        "mistral-small-4": "text_none",  # hybrid: reasons unless told not to
     }
-    assert report["valid"] == len(KEYS)
+    by_key = {r["key"]: r for r in report["models"]}
+    assert report["valid"] == len(KEYS), [(k, r["status"]) for k, r in by_key.items() if r["status"] != "ok"]
+    assert {k for k, r in by_key.items() if r["reasoning"]} == {"gpt-oss-20b", "glm-5.3", "minimax-m3"}
+    assert by_key["deepseek-v4-pro"]["logprobs_share"] == 0
+    for r in by_key.values():  # the pilot's area-weighted estimate is near the full map's accuracy
+        assert abs(r["accuracy_area"] - accuracy_of(fake, CFG.model(r["key"]))) < 0.08, r["key"]
     saved = json.loads((tmp_path / "strategies.json").read_text())
-    assert saved["gpt-oss-20b"]["strategy"] == "raw"
+    assert saved["gpt-oss-20b"] == saved["gpt-oss-20b"] | {"strategy": "chat_low", "reasoning": True}
     md = (tmp_path / "report.md").read_text()
-    assert "Reasoning is mandatory" in md and "| Kimi K3 | raw |" in md
+    assert "Reasoning is mandatory" in md and "| Kimi K3 | chat_none | aucune |" in md
+    assert "Précision estimée" in md
     assert (tmp_path / "probe" / "raw" / "kimi-k3.jsonl").exists()
+
+
+async def test_probe_finds_a_provider_that_passes_raw_prompts(tmp_path):
+    from loe import probe
+
+    m = CFG.model("gpt-oss-20b")
+    fake = FakeOpenRouter(CFG, fail_rate=0)
+    async with Client("k", transport=fake.transport(), sleep=nosleep, rate_limits=False) as c:
+        rows = await probe.run_probe(
+            CFG, m, ["novita", "deepinfra"], ["raw"], c, generic_renderer(m.raw_prefill), tmp_path
+        )
+    verdicts = {r["provider"]: r["verdict"] for r in rows}
+    assert verdicts["deepinfra"] == "ok" and verdicts["novita"] != "ok"
+    assert all(b["provider"]["only"] in (["novita"], ["deepinfra"]) for b in fake.requests)
+    assert (tmp_path / "raw" / "gpt-oss-20b@deepinfra.jsonl").exists()
+    assert "deepinfra + raw" in probe.show(rows)
 
 
 async def test_run_score_and_maps(tmp_path):
     models = [CFG.model(k) for k in ("qwen3.5-9b", "mistral-large-3")]
     jobs = [Job(models[0], CFG.strategies["chat_none"]), Job(models[1], CFG.strategies["text"])]
     fake = FakeOpenRouter(CFG, fail_rate=0.01)
-    async with Client("k", transport=fake.transport(), sleep=nosleep) as c:
+    async with Client("k", transport=fake.transport(), sleep=nosleep, rate_limits=False) as c:
         out = await Runner(c, tmp_path, budget=5, progress=False).run(jobs, grid.load())
     assert all(o.done_before + o.answered == 16_200 for o in out)
     board = score_run(CFG, tmp_path)
@@ -82,6 +123,8 @@ async def test_run_score_and_maps(tmp_path):
         assert row.coverage == 1.0
         assert 0.70 < row.always_water < 0.72
     assert board.set_index("key").loc["mistral-large-3", "logprobs_share"] == 0
+    assert not board["reasoning"].any()
+    assert "| Réflexion |" in (tmp_path / "leaderboard.md").read_text()
     assert board.set_index("key").loc["qwen3.5-9b", "logprobs_share"] == 1
     paths = render_run(tmp_path, board)
     assert paths[0].exists() and paths[0].stat().st_size > 10_000

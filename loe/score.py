@@ -102,13 +102,15 @@ def score_run(cfg: Config, run_dir: Path, keys: list[str] | None = None) -> pd.D
         served = df["provider"].dropna().astype(str).value_counts()
         strategies = df["strategy"].dropna().astype(str).value_counts()
         model = known.get(key)
+        strategy = strategies.index[0] if len(strategies) else None
         rows.append(
             {
                 "key": key,
                 "name": model.name if model else key,
                 "lab": model.lab if model else "",
                 **m,
-                "strategy": strategies.index[0] if len(strategies) else None,
+                "strategy": strategy,
+                "reasoning": bool(strategy in cfg.strategies and cfg.strategies[strategy].reasons),
                 "provider_served": " + ".join(served.index) if len(served) else None,
                 "cost_usd": float(sum(r.get("cost") or 0.0 for r in records)),
                 "requests": len(records),
@@ -137,16 +139,20 @@ def leaderboard_md(board: pd.DataFrame) -> str:
         "# Land on Earth — reproduction du tweet",
         "",
         f"Précision pondérée par la surface contre le masque terre à 1 km (GLOBE). "
-        f"Répondre toujours « Water » donne {_pct(base)}. Skill = gain sur cette réponse constante.",
+        f"Répondre toujours « Water » donne {_pct(base)}. Skill = gain sur cette réponse constante. "
+        "Réflexion « minimale » : le modèle ne peut pas répondre sans réfléchir, il réfléchit au minimum "
+        "avant de répondre ; les autres répondent sans réflexion.",
         "",
-        "| # | Modèle | Labo | Précision | Skill | Avec lacs | Rappel terre | Couverture | Stratégie | Fournisseur | Coût |",
-        "|---|---|---|---|---|---|---|---|---|---|---|",
+        "| # | Modèle | Labo | Réflexion | Précision | Skill | Avec lacs | Rappel terre | Couverture | Logprobs "
+        "| Stratégie | Fournisseur | Coût |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in board.itertuples():
+        reasoning = "minimale" if getattr(r, "reasoning", False) else "aucune"
         lines.append(
-            f"| {r.rank} | {r.name} | {r.lab} | {_pct(r.accuracy)} | {r.skill:.3f} | {_pct(r.accuracy_lakes)} | "
-            f"{_pct(r.land_recall)} | {_pct(r.coverage)} | {r.strategy or '—'} | {r.provider_served or '—'} | "
-            f"{r.cost_usd:.2f} $ |"
+            f"| {r.rank} | {r.name} | {r.lab} | {reasoning} | {_pct(r.accuracy)} | {r.skill:.3f} | "
+            f"{_pct(r.accuracy_lakes)} | {_pct(r.land_recall)} | {_pct(r.coverage)} | {_pct(r.logprobs_share)} | "
+            f"{r.strategy or '—'} | {r.provider_served or '—'} | {r.cost_usd:.2f} $ |"
         )
     lines.append("")
     return "\n".join(lines)

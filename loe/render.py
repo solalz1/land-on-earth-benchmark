@@ -68,7 +68,8 @@ def montage(run_dir: Path, board: pd.DataFrame, path: Path | None = None, cols: 
     panels = [("Vérité terrain (masque 1 km)", grid.to_image(g["truth"].to_numpy(), g["point_id"].to_numpy()), None)]
     for r in board.itertuples():
         df = predictions(run_dir, r.key)
-        panels.append((r.name, binary_image(df), r.accuracy))
+        name = f"{r.name} (réflexion)" if getattr(r, "reasoning", False) else r.name
+        panels.append((name, binary_image(df), r.accuracy))
     rows = math.ceil(len(panels) / cols)
     fig, axes = plt.subplots(rows, cols, figsize=(cols * 4.2, rows * 2.45), facecolor="white")
     for ax in np.atleast_1d(axes).ravel():

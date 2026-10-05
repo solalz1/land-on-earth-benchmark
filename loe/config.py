@@ -29,6 +29,11 @@ class Strategy:
     max_tokens: int
     reasoning: dict[str, Any] | None = None
 
+    @property
+    def reasons(self) -> bool:
+        """True when the strategy lets the model reason (minimal effort), False when it switches it off."""
+        return (self.reasoning or {}).get("effort") not in (None, "none")
+
 
 @dataclass(frozen=True)
 class Model:
@@ -45,6 +50,7 @@ class Model:
     raw_prefill: str = ""
     concurrency: int = 8
     top_logprobs: int = TOP_LOGPROBS
+    rpm: float | None = None  # requests per minute allowed for this model (None = no limit)
 
 
 @dataclass
@@ -102,6 +108,7 @@ def load(path: Path = CONFIG) -> Config:
                 raw_prefill=m.get("raw_prefill", ""),
                 concurrency=int(m.get("concurrency", defaults.get("concurrency", 8))),
                 top_logprobs=int(m.get("top_logprobs", TOP_LOGPROBS)),
+                rpm=float(m["rpm"]) if m.get("rpm") else None,
             )
         )
     keys = [m.key for m in models]

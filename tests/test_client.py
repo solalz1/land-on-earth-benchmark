@@ -23,10 +23,31 @@ def ok_body(text="Land"):
     }
 
 
-def test_config_has_the_20_models():
-    assert len(CFG.models) == 20
+def test_config_has_the_25_models():
+    assert len(CFG.models) == 25  # the 20 of the tweet reproduction + Mistral's size ladder
     assert len({m.provider for m in CFG.models}) == 6
-    assert sum(not m.logprobs for m in CFG.models) == 1  # Mistral
+    assert sum(not m.logprobs for m in CFG.models) == 6  # the Mistral models
+    assert {m.key for m in CFG.models if m.rpm} == {"deepseek-v4-pro", "kimi-k3", "kimi-k2.6", "qwen3.5-397b-a17b"}
+    assert {m.key for m in CFG.models if m.top_logprobs == 5} == {"qwen3.5-122b-a10b", "qwen3.5-27b", "qwen3.6-27b"}
+    assert CFG.strategies["chat_low"].reasons and CFG.strategies["text_low"].reasons
+    assert not any(CFG.strategies[s].reasons for s in ("chat_none", "chat", "raw", "text_none", "text"))
+
+
+def test_top_logprobs_follow_the_model():
+    _, body = request(CFG.model("qwen3.6-27b"), CFG.strategies["chat_none"], 0.0, 0.0)
+    assert body["top_logprobs"] == 5
+
+
+async def test_rate_limiter_spaces_requests():
+    import time
+
+    from loe.client import RateLimiter
+
+    lim = RateLimiter(rpm=600)  # one request every 0.1 s
+    t0 = time.monotonic()
+    for _ in range(4):
+        await lim.wait()
+    assert 0.29 < time.monotonic() - t0 < 0.6
 
 
 def test_request_pins_the_provider():
