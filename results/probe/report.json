@@ -1,0 +1,420 @@
+[
+  {
+    "model": "gpt-oss-120b",
+    "provider": "coreweave",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "CoreWeave"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 4.976e-05
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "parasail",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "Parasail"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 0.00015856
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "deepinfra",
+    "strategy": "raw",
+    "verdict": "8/8 erreurs — HTTP 404: No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": null,
+    "served": [],
+    "texts": [],
+    "cost_usd": 0.0
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "dekallm",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "DekaLLM"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 5.808e-05
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "akashml",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 3.125,
+    "served": [
+      "AkashML"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 6.9392e-05
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "cerebras",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "Cerebras"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 0.0005912
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "coreweave",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 6,
+    "served": [
+      "CoreWeave"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 5.44e-05
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "parasail",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "Parasail"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 4.624e-05
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "deepinfra",
+    "strategy": "raw",
+    "verdict": "8/8 erreurs — HTTP 404: No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": null,
+    "served": [],
+    "texts": [],
+    "cost_usd": 0.0
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "dekallm",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 8,
+    "served": [
+      "DekaLLM"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 4.6544e-05
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "akashml",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 3,
+    "served": [
+      "AkashML"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 3.744e-05
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "cerebras",
+    "strategy": "raw",
+    "verdict": "8/8 erreurs — HTTP 404: No allowed providers are available for the selected model. Providers serving openai/gpt-oss-20b: darkbloom, akashml, dekallm, coreweave, deepinfra, parasail, novita, siliconflow, amazon-bedrock, google-vertex, groq, but your request's provider.only preference permits only: cerebras.",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": null,
+    "served": [],
+    "texts": [],
+    "cost_usd": 0.0
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "darkbloom",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "Darkbloom"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 2.9088e-05
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "coreweave",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "CoreWeave"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 4.976e-05
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "parasail",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "Parasail"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 0.00016575999999999999
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "deepinfra",
+    "strategy": "raw",
+    "verdict": "8/8 erreurs — HTTP 404: No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": null,
+    "served": [],
+    "texts": [],
+    "cost_usd": 0.0
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "dekallm",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "DekaLLM"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 5.808e-05
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "akashml",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 0.75,
+    "served": [
+      "AkashML"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 6.9392e-05
+  },
+  {
+    "model": "gpt-oss-120b",
+    "provider": "cerebras",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "Cerebras"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 0.0005912
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "coreweave",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 6,
+    "served": [
+      "CoreWeave"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 5.44e-05
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "parasail",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "Parasail"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 4.624e-05
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "deepinfra",
+    "strategy": "raw",
+    "verdict": "8/8 erreurs — HTTP 404: No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": null,
+    "served": [],
+    "texts": [],
+    "cost_usd": 0.0
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "dekallm",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 8,
+    "served": [
+      "DekaLLM"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 4.6544e-05
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "akashml",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 2.25,
+    "served": [
+      "AkashML"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 3.744e-05
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "cerebras",
+    "strategy": "raw",
+    "verdict": "8/8 erreurs — HTTP 404: No allowed providers are available for the selected model. Providers serving openai/gpt-oss-20b: darkbloom, akashml, dekallm, coreweave, deepinfra, parasail, novita, siliconflow, amazon-bedrock, google-vertex, groq, but your request's provider.only preference permits only: cerebras.",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": null,
+    "served": [],
+    "texts": [],
+    "cost_usd": 0.0
+  },
+  {
+    "model": "gpt-oss-20b",
+    "provider": "darkbloom",
+    "strategy": "raw",
+    "verdict": "réponse illisible (fin : length) : ''",
+    "answered": 0,
+    "requests": 8,
+    "logprobs": 0,
+    "reasoning_tokens": 5,
+    "served": [
+      "Darkbloom"
+    ],
+    "texts": [
+      ""
+    ],
+    "cost_usd": 2.9088e-05
+  }
+]

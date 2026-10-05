@@ -2,8 +2,8 @@
   "key": {
     "label": "sk-or-v1-1c3...605",
     "limit": 40,
-    "usage": 0,
-    "limit_remaining": 40
+    "usage": 0.603967824,
+    "limit_remaining": 39.396032176
   },
   "models": [
     {
@@ -48,7 +48,9 @@
       "price_in": 3.0,
       "price_out": 15.0,
       "cost_usd": 3.2076,
-      "problems": [],
+      "problems": [
+        "statut -2"
+      ],
       "raw_template": false
     },
     {
@@ -214,7 +216,7 @@
       "price_out": 0.4,
       "cost_usd": 0.1448,
       "problems": [
-        "statut -5"
+        "statut -2"
       ],
       "raw_template": true
     },
@@ -290,9 +292,7 @@
       "price_in": 0.08,
       "price_out": 0.45,
       "cost_usd": 0.0863,
-      "problems": [
-        "statut -2"
-      ],
+      "problems": [],
       "raw_template": true
     },
     {
@@ -308,9 +308,79 @@
       "price_out": 1.5,
       "cost_usd": 0.5184,
       "problems": []
+    },
+    {
+      "key": "ministral-3-3b",
+      "name": "Ministral 3 3B",
+      "provider": "mistral",
+      "endpoint": "Mistral | mistralai/ministral-3b-2512",
+      "tag": "mistral/zdr",
+      "quantization": "unknown",
+      "reasoning_param": false,
+      "logprobs": false,
+      "price_in": 0.1,
+      "price_out": 0.1,
+      "cost_usd": 0.1004,
+      "problems": []
+    },
+    {
+      "key": "ministral-3-8b",
+      "name": "Ministral 3 8B",
+      "provider": "mistral",
+      "endpoint": "Mistral | mistralai/ministral-8b-2512",
+      "tag": "mistral/zdr",
+      "quantization": "unknown",
+      "reasoning_param": false,
+      "logprobs": false,
+      "price_in": 0.15,
+      "price_out": 0.15,
+      "cost_usd": 0.1507,
+      "problems": []
+    },
+    {
+      "key": "ministral-3-14b",
+      "name": "Ministral 3 14B",
+      "provider": "mistral",
+      "endpoint": "Mistral | mistralai/ministral-14b-2512",
+      "tag": "mistral/zdr",
+      "quantization": "unknown",
+      "reasoning_param": false,
+      "logprobs": false,
+      "price_in": 0.2,
+      "price_out": 0.2,
+      "cost_usd": 0.2009,
+      "problems": []
+    },
+    {
+      "key": "mistral-small-4",
+      "name": "Mistral Small 4",
+      "provider": "mistral",
+      "endpoint": "Mistral | mistralai/mistral-small-2603",
+      "tag": "mistral/zdr",
+      "quantization": "unknown",
+      "reasoning_param": true,
+      "logprobs": false,
+      "price_in": 0.15,
+      "price_out": 0.6,
+      "cost_usd": 0.158,
+      "problems": []
+    },
+    {
+      "key": "mistral-medium-3.5",
+      "name": "Mistral Medium 3.5",
+      "provider": "mistral",
+      "endpoint": "Mistral | mistralai/mistral-medium-3.5-20260430",
+      "tag": "mistral/zdr",
+      "quantization": "unknown",
+      "reasoning_param": true,
+      "logprobs": false,
+      "price_in": 1.5,
+      "price_out": 7.5,
+      "cost_usd": 1.6038,
+      "problems": []
     }
   ],
-  "total_usd": 12.66,
-  "total_eur_with_fee": 11.89,
+  "total_usd": 14.87,
+  "total_eur_with_fee": 13.96,
   "ok": false
 }

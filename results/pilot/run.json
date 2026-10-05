@@ -146,6 +146,510 @@
           "last_error": "HTTP 429: Provider returned error | mistralai/mistral-large-2512 is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
         }
       ]
+    },
+    {
+      "finished": "2026-10-05T13:41:04+00:00",
+      "kind": "pilot",
+      "points": 200,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.009920000000000035,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k3",
+          "total": 200,
+          "done_before": 187,
+          "answered": 13,
+          "errors": 0,
+          "cost": 0.0033539999999999998,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 200,
+          "done_before": 184,
+          "answered": 16,
+          "errors": 0,
+          "cost": 0.0005199999999999998,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.3",
+          "total": 200,
+          "done_before": 0,
+          "answered": 180,
+          "errors": 20,
+          "cost": 0.04218320000000001,
+          "stopped": null,
+          "last_error": "HTTP 429: Rate limit exceeded: new-account-rpm/z-ai/glm-5.3-20260816. Rate limit reached: new accounts are limited to 20 requests per minute for this model. Please retry shortly."
+        },
+        {
+          "key": "glm-5.2",
+          "total": 200,
+          "done_before": 0,
+          "answered": 185,
+          "errors": 15,
+          "cost": 0.008843,
+          "stopped": null,
+          "last_error": "HTTP 429: Rate limit exceeded: new-account-rpm/z-ai/glm-5.2-20260616. Rate limit reached: new accounts are limited to 20 requests per minute for this model. Please retry shortly."
+        },
+        {
+          "key": "minimax-m3",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 200,
+          "done_before": 185,
+          "answered": 15,
+          "errors": 0,
+          "cost": 0.000401,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-122b-a10b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 186,
+          "errors": 14,
+          "cost": 0.0035195999999999956,
+          "stopped": null,
+          "last_error": "HTTP 429: Rate limit exceeded: new-account-rpm/qwen/qwen3.5-122b-a10b-20260224. Rate limit reached: new accounts are limited to 20 requests per minute for this model. Please retry shortly."
+        },
+        {
+          "key": "qwen3.5-27b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0033174000000000007,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.6-27b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.00407609999999999,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0012075400000000015,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-120b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.015234100000000006,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-3b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0006458000000000015,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-8b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0009687,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-14b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.001291600000000003,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-small-4",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.001508700000000001,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-medium-3.5",
+          "total": 200,
+          "done_before": 0,
+          "answered": 184,
+          "errors": 16,
+          "cost": 0.014428499999999985,
+          "stopped": null,
+          "last_error": "HTTP 429: Rate limit exceeded: new-account-rpm/mistralai/mistral-medium-3.5-20260430. Rate limit reached: new accounts are limited to 20 requests per minute for this model. Please retry shortly."
+        }
+      ]
+    },
+    {
+      "finished": "2026-10-05T14:35:03+00:00",
+      "kind": "pilot",
+      "points": 200,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k3",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.3",
+          "total": 200,
+          "done_before": 180,
+          "answered": 20,
+          "errors": 0,
+          "cost": 0.0039796,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.2",
+          "total": 200,
+          "done_before": 185,
+          "answered": 15,
+          "errors": 0,
+          "cost": 0.000717,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "minimax-m3",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-122b-a10b",
+          "total": 200,
+          "done_before": 186,
+          "answered": 14,
+          "errors": 0,
+          "cost": 0.0002636,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.6-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-120b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-large-3",
+          "total": 200,
+          "done_before": 158,
+          "answered": 42,
+          "errors": 0,
+          "cost": 3.7500000000000003e-05,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-3b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-8b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-14b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-small-4",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-medium-3.5",
+          "total": 200,
+          "done_before": 184,
+          "answered": 16,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        }
+      ]
     }
   ],
   "models": {
@@ -155,7 +659,9 @@
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_none"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
     },
     "deepseek-v4-pro": {
       "id": "deepseek/deepseek-v4-pro",
@@ -163,7 +669,9 @@
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_low"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": 19.0
     },
     "kimi-k3": {
       "id": "moonshotai/kimi-k3",
@@ -171,7 +679,9 @@
       "quantizations": [
         "fp4"
       ],
-      "strategy": "chat_none"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": 19.0
     },
     "kimi-k2.6": {
       "id": "moonshotai/kimi-k2.6",
@@ -179,7 +689,29 @@
       "quantizations": [
         "int4"
       ],
-      "strategy": "chat_none"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": 19.0
+    },
+    "glm-5.3": {
+      "id": "z-ai/glm-5.3",
+      "provider": "parasail",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_low",
+      "reasoning": true,
+      "rpm": null
+    },
+    "glm-5.2": {
+      "id": "z-ai/glm-5.2",
+      "provider": "gmicloud",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
     },
     "minimax-m3": {
       "id": "minimax/minimax-m3",
@@ -187,7 +719,9 @@
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_low"
+      "strategy": "chat_low",
+      "reasoning": true,
+      "rpm": null
     },
     "qwen3.5-397b-a17b": {
       "id": "qwen/qwen3.5-397b-a17b",
@@ -195,7 +729,29 @@
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_none"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": 19.0
+    },
+    "qwen3.5-122b-a10b": {
+      "id": "qwen/qwen3.5-122b-a10b",
+      "provider": "novita",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
+    },
+    "qwen3.5-27b": {
+      "id": "qwen/qwen3.5-27b",
+      "provider": "novita",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
     },
     "qwen3.5-9b": {
       "id": "qwen/qwen3.5-9b",
@@ -203,7 +759,17 @@
       "quantizations": [
         "bf16"
       ],
-      "strategy": "chat_none"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
+    },
+    "qwen3.6-27b": {
+      "id": "qwen/qwen3.6-27b",
+      "provider": "alibaba",
+      "quantizations": [],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
     },
     "qwen3.8-27b": {
       "id": "qwen/qwen3.8-27b",
@@ -211,7 +777,9 @@
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_none"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
     },
     "gemma-4-31b": {
       "id": "google/gemma-4-31b-it",
@@ -219,7 +787,9 @@
       "quantizations": [
         "bf16"
       ],
-      "strategy": "chat_none"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
     },
     "gemma-4-26b-a4b": {
       "id": "google/gemma-4-26b-a4b-it",
@@ -227,7 +797,19 @@
       "quantizations": [
         "bf16"
       ],
-      "strategy": "raw"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
+    },
+    "gpt-oss-120b": {
+      "id": "openai/gpt-oss-120b",
+      "provider": "novita",
+      "quantizations": [
+        "fp4"
+      ],
+      "strategy": "chat_low",
+      "reasoning": true,
+      "rpm": null
     },
     "gpt-oss-20b": {
       "id": "openai/gpt-oss-20b",
@@ -235,7 +817,9 @@
       "quantizations": [
         "fp4"
       ],
-      "strategy": "chat_low"
+      "strategy": "chat_low",
+      "reasoning": true,
+      "rpm": null
     },
     "llama-4-maverick": {
       "id": "meta-llama/llama-4-maverick",
@@ -243,7 +827,9 @@
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat"
+      "strategy": "chat",
+      "reasoning": false,
+      "rpm": null
     },
     "nemotron-3-super": {
       "id": "nvidia/nemotron-3-super-120b-a12b",
@@ -251,13 +837,57 @@
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_none"
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null
     },
     "mistral-large-3": {
       "id": "mistralai/mistral-large-2512",
       "provider": "mistral",
       "quantizations": [],
-      "strategy": "text"
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null
+    },
+    "ministral-3-3b": {
+      "id": "mistralai/ministral-3b-2512",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null
+    },
+    "ministral-3-8b": {
+      "id": "mistralai/ministral-8b-2512",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null
+    },
+    "ministral-3-14b": {
+      "id": "mistralai/ministral-14b-2512",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null
+    },
+    "mistral-small-4": {
+      "id": "mistralai/mistral-small-2603",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null
+    },
+    "mistral-medium-3.5": {
+      "id": "mistralai/mistral-medium-3-5",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null
     }
   }
 }
