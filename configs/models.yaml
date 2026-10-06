@@ -6,8 +6,10 @@
 # come from https://openrouter.ai/api/v1/models/<id>/endpoints, read on 6 October 2026;
 # `make check` re-reads them live before anything is spent.
 #
-# price: [input, output] in USD per million tokens, OpenRouter's list price, used only for the
-#   cost estimate (a provider key bills at the provider's own price, which the run counts).
+# price: [input, output] in USD per million tokens, what you pay: OpenRouter's list price, or the
+#   provider's own price for a model served through your key (SiliconFlow bills the two GLM at
+#   twice the discounted price OpenRouter lists). Used for the cost estimate; the run counts the
+#   real bills.
 # quantizations: precisions accepted for the pinned provider; omit to accept what it declares.
 # strategies: tried in order by the pilot, which keeps the first one that works (see below).
 # logprobs: false when the pinned provider returns none (only the greedy answer, as in the tweet).
@@ -25,8 +27,8 @@
 #   apply. The dress rehearsal checks that your key really served these models.
 #
 # Your keys in OpenRouter: SiliconFlow (DeepSeek V4 Pro, Kimi K2.6, GLM-5.2, GLM-5.3), Alibaba
-# (Kimi K3, Qwen3.5-397B, Qwen3.5-122B) and Mistral (the 5 Mistral models). The other 12 models
-# run on OpenRouter's credits, at providers that do not cap new accounts.
+# (Kimi K3, Qwen3.5-397B, Qwen3.5-122B, Qwen3.6-27B) and Mistral (the 5 Mistral models). The other
+# 11 models run on OpenRouter's credits, at providers that do not cap new accounts.
 #
 # Mistral Large 3 is left out: Mistral serves it at 0.5 request per second on a new account,
 # 9 hours for the 16 200 points, and no other provider runs it at a known precision.
@@ -35,7 +37,7 @@ defaults:
   # No reasoning first (with logprobs, then without), minimal reasoning only as a last resort.
   strategies: [chat_none, chat, raw, text_none, text, chat_low, text_low]
   concurrency: 8 # requests in flight per model
-  provider_concurrency: 128 # requests in flight per provider, all models together
+  provider_concurrency: 160 # requests in flight per provider, all models together
 
 # How each strategy asks the question. All use temperature 0 and the same user prompt.
 strategies:
@@ -130,7 +132,7 @@ models:
     id: z-ai/glm-5.3
     provider: siliconflow # your key; FP8 as at Parasail
     quantizations: [fp8]
-    price: [0.70, 2.20]
+    price: [1.40, 4.40] # SiliconFlow's own price: OpenRouter's 50 % discount does not apply to your key
     logprobs: false
     hf_repo: zai-org/GLM-5.3
     strategies: [text_low] # reasoning cannot be switched off
@@ -144,7 +146,7 @@ models:
     id: z-ai/glm-5.2
     provider: siliconflow # your key; GMICloud refused 5 % of the second pilot's requests, Alibaba does not serve it in your region
     quantizations: [fp8]
-    price: [0.70, 2.20]
+    price: [1.40, 4.40] # SiliconFlow's own price: OpenRouter's 50 % discount does not apply to your key
     logprobs: false
     hf_repo: zai-org/GLM-5.2
     strategies: [text_none, text_low]
@@ -213,10 +215,13 @@ models:
     name: Qwen3.6-27B
     lab: Alibaba
     id: qwen/qwen3.6-27b
-    provider: alibaba # the only provider with logprobs; precision not declared; OpenRouter's credits, not your key
+    provider: alibaba # your key (OpenRouter's capacity there was saturated: 61 requests/min at the third pilot); the only provider with logprobs; precision not declared
     price: [0.45, 2.70]
     hf_repo: Qwen/Qwen3.6-27B
     top_logprobs: 5 # the provider refuses more than 5
+    concurrency: 12
+    rpm: 550
+    byok: true
 
   - key: qwen3.8-27b
     name: Qwen3.8-27B
@@ -259,7 +264,7 @@ models:
     hf_repo: openai/gpt-oss-120b
     raw_prefill: "<|channel|>final<|message|>"
     strategies: [chat_none, raw, chat_low]
-    concurrency: 24
+    concurrency: 40 # always reasons (~7 s per answer): 24 in flight would take 1 h 30
 
   - key: gpt-oss-20b
     name: gpt-oss-20b

@@ -9,8 +9,10 @@ the pilot could hide:
 - no request refused by the provider (other than rate limits), and no reasoning where none is
   expected;
 - no empty answer (a reasoning budget too short cuts the answer off);
-- your keys: a model meant for your key at its provider (`byok: true`) must be served by it,
-  and a model meant for OpenRouter's credits should not be;
+- your keys: a model meant for your key at its provider (`byok: true`) must be served by it
+  (at least 95 % of the answers: when your key is busy, OpenRouter may answer with its own
+  capacity at the same provider, billed on credits), and a model meant for OpenRouter's credits
+  should not be;
 - rate limits: a model that hits OpenRouter's new-account limit is not using your key, or must
   be paced; the provider's own refusals are counted;
 - money: the projection under the run budget (with a 10 % margin), and the part billed on
@@ -39,6 +41,7 @@ from loe.runner import Job, Runner
 FULL = 16_200
 N_POINTS = 300
 MARGIN = 0.9  # the projection must stay under 90 % of the budget
+BYOK_MIN = 0.95  # share of answers your key must serve; the rest is OpenRouter's capacity at the same provider
 OPENROUTER = "OpenRouter"
 LABELS = {"siliconflow": "SiliconFlow", "alibaba": "Alibaba", "mistral": "Mistral", "novita": "Novita",
           "parasail": "Parasail", "dekallm": "DekaLLM", "deepinfra": "DeepInfra", "gmicloud": "GMICloud"}
@@ -140,10 +143,15 @@ def model_check(model: Model, strategy, pilot: dict[str, Any], records: list[dic
         problems.append(f"{len(empty)} réponses vides (fin : {finish}) : budget de tokens trop court ?")
     if reasoning and not strategy.reasons:
         problems.append(f"le modèle réfléchit sur {len(reasoning)} réponses alors que la réflexion est coupée")
-    if model.byok and ok and len(byok) < len(ok):
+    if model.byok and ok and len(byok) < BYOK_MIN * len(ok):
         problems.append(
             f"ta clé {label(model.provider)} n'a servi que {len(byok)}/{len(ok)} réponses : dans OpenRouter > "
             f"Integrations, mets-la en Prioritized et ajoute {model.id} à son filtre"
+        )
+    elif model.byok and ok and len(byok) < len(ok):
+        warnings.append(
+            f"{len(ok) - len(byok)} réponses sur {len(ok)} servies par la capacité d'OpenRouter chez "
+            f"{label(model.provider)} quand ta clé était occupée : même modèle, payées en crédits"
         )
     if not model.byok and byok:
         warnings.append(

@@ -4,7 +4,7 @@ Reproduction de l'éval « Land or Water? » relayée par Karpathy, sur 24 modè
 
 ![Vérité terrain](docs/truth.png)
 
-Coût prévu : environ 15 $ (≈ 14 €) pour 389 000 requêtes : environ 5 $ sur tes crédits OpenRouter, le reste facturé directement par SiliconFlow (≈ 3,5 $), Alibaba (≈ 5 $) et Mistral (≈ 1,5 $) via tes clés, plus quelques dizaines de centimes pour le pilote et la répétition générale. Durée du run : environ 1 h 15.
+Coût prévu : environ 17 $ (≈ 15,5 €) pour 389 000 requêtes : environ 5 $ sur tes crédits OpenRouter, le reste facturé directement par SiliconFlow (≈ 5,4 $), Alibaba (≈ 5,2 $) et Mistral (≈ 1,6 $) via tes clés, plus quelques dizaines de centimes pour le pilote et la répétition générale. Durée du run : environ 1 h 15. SiliconFlow est prépayé : garde au moins 7 $ sur ton solde.
 
 ## Ce que tu fais, dans l'ordre
 
@@ -32,10 +32,10 @@ export OPENROUTER_API_KEY=sk-or-...
 | Clé | Modèles (filtre) | Limite |
 |---|---|---|
 | SiliconFlow | `deepseek/deepseek-v4-pro`, `moonshotai/kimi-k2.6`, `z-ai/glm-5.2`, `z-ai/glm-5.3` | 500 requêtes/min par modèle |
-| Alibaba Cloud (Model Studio, région Singapour) | `moonshotai/kimi-k3`, `qwen/qwen3.5-397b-a17b`, `qwen/qwen3.5-122b-a10b` | 600 requêtes/min par Qwen |
+| Alibaba Cloud (Model Studio, région Singapour) | `moonshotai/kimi-k3`, `qwen/qwen3.5-397b-a17b`, `qwen/qwen3.5-122b-a10b`, `qwen/qwen3.6-27b` | 600 requêtes/min par Qwen |
 | Mistral | aucun filtre : les 5 modèles Mistral | par modèle, voir admin.mistral.ai > Limits |
 
-Les 12 autres modèles passent par tes crédits OpenRouter, chez des fournisseurs sans limite pour les comptes récents. La répétition générale vérifie que chaque clé sert bien ses modèles, et seulement eux. Rien à changer dans le code.
+Les 11 autres modèles passent par tes crédits OpenRouter, chez des fournisseurs sans limite pour les comptes récents (Novita, Parasail, DekaLLM) : ils n'ont pas besoin de tes clés. La répétition générale vérifie que chaque clé sert bien ses modèles, et seulement eux. Rien à changer dans le code.
 
 **3. Vérifier, gratuitement** :
 
@@ -53,7 +53,7 @@ git add results && git commit -m "Pilote" && git push
 
 Le rapport est dans `results/pilot/report.md`. Claude le relit et corrige la config si un modèle échoue.
 
-**5. Run complet (≈ 15 $, environ 1 h 15)**, Mac éveillé. Il ne part que si la répétition générale est au vert et que `configs/models.yaml` n'a pas changé depuis. Presque tous les modèles finissent en une demi-heure ; Ministral 3 14B ferme la marche, limité par Mistral à 4 requêtes par seconde.
+**5. Run complet (≈ 17 $, environ 1 h 15)**, Mac éveillé. Il ne part que si la répétition générale est au vert et que `configs/models.yaml` n'a pas changé depuis. Presque tous les modèles finissent en une demi-heure ; Ministral 3 14B ferme la marche, limité par Mistral à 4 requêtes par seconde.
 
 ```sh
 caffeinate -i make run
@@ -75,7 +75,7 @@ git add results && git commit -m "Run complet" && git push
 | `make demo` | gratuit | check, pilote, run, classement et cartes contre une fausse API |
 | `make pilot` | quelques dizaines de centimes | stratégie de chaque modèle, 200 points, rapport, puis répétition générale (300 points par modèle aux réglages du run) : feu vert ou rouge, coût, durée et qui paie |
 | `make probe-gpt-oss` | < 1 centime | cherche un fournisseur qui fait tourner gpt-oss sans réflexion |
-| `make run` | ≈ 15 $ | 16 200 points × modèles validés au pilote, puis classement, cartes, compression |
+| `make run` | ≈ 17 $ | 16 200 points × modèles validés au pilote, puis classement, cartes, compression |
 | `make status` | gratuit | avancement et coût du run |
 | `make score` | gratuit | recalcule classement et cartes depuis les réponses enregistrées |
 | `make test` | gratuit | tests automatiques, contre la fausse API |
@@ -119,7 +119,7 @@ Une stratégie passe si au moins 7 réponses sur 8 arrivent, sont lisibles, ne m
 
 **Les garde-fous du run** : répétition générale au vert avant le départ ; budget global (22 $ par défaut, compté sur les réponses déjà enregistrées, y compris ce que tes clés fournisseurs te facturent, qu'OpenRouter ne compte pas) ; arrêt d'un modèle dont le coût projeté dépasse 2,5 fois son estimation, ou 1,5 fois la projection du pilote (un modèle qui se met à raisonner plus que prévu) ; arrêt d'un modèle après 25 erreurs d'affilée, hors limites de débit (429) et budget en vol d'OpenRouter (402), qui ne font que ralentir ; un refus du fournisseur (ta clé chez lui refusée, par exemple) n'arrête que ce modèle ; arrêt immédiat si la clé OpenRouter est refusée ou les crédits épuisés ; reprise avec backoff exponentiel sur les erreurs 429 et 5xx.
 
-**Le rythme** : chaque modèle a ses requêtes simultanées (`concurrency`, de 8 à 24) et, quand son fournisseur a une limite, un rythme juste en dessous (`rpm`) : 480 par minute chez SiliconFlow (limite 500), 550 chez Alibaba (600), et les limites de ton compte Mistral (230 par minute pour Ministral 14B). Le code espace alors les requêtes au lieu de les voir refusées puis réessayées. Au démarrage, il relève aussi la limite de fichiers ouverts du Mac (256 par défaut), car près de 400 requêtes tournent en même temps.
+**Le rythme** : chaque modèle a ses requêtes simultanées (`concurrency`, de 8 à 40) et, quand son fournisseur a une limite, un rythme juste en dessous (`rpm`) : 480 par minute chez SiliconFlow (limite 500), 550 chez Alibaba (600), et les limites de ton compte Mistral (230 par minute pour Ministral 14B). Le code espace alors les requêtes au lieu de les voir refusées puis réessayées. Au démarrage, il relève aussi la limite de fichiers ouverts du Mac (256 par défaut), car près de 400 requêtes tournent en même temps.
 
 **Les scores** (`results/tweet/leaderboard.md`) :
 

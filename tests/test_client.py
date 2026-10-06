@@ -30,7 +30,7 @@ def test_config_has_the_24_models():
     assert {m.provider for m in CFG.models} == {"parasail", "novita", "alibaba", "dekallm", "mistral", "siliconflow"}
     assert {m.key for m in CFG.models if m.byok} == {
         "deepseek-v4-pro", "kimi-k2.6", "glm-5.2", "glm-5.3",  # your SiliconFlow key
-        "kimi-k3", "qwen3.5-397b-a17b", "qwen3.5-122b-a10b",  # your Alibaba key
+        "kimi-k3", "qwen3.5-397b-a17b", "qwen3.5-122b-a10b", "qwen3.6-27b",  # your Alibaba key
         "ministral-3-3b", "ministral-3-8b", "ministral-3-14b", "mistral-small-4", "mistral-medium-3.5",  # Mistral
     }
     assert all(m.provider in ("siliconflow", "alibaba", "mistral") for m in CFG.models if m.byok)
@@ -48,6 +48,8 @@ def test_config_has_the_24_models():
         "qwen3.5-122b-a10b", "qwen3.5-27b", "qwen3.6-27b", "qwen3.5-397b-a17b", "kimi-k3"
     }
     assert CFG.model("kimi-k3").temperature is None and CFG.model("qwen3.5-9b").temperature == 0
+    assert CFG.model("glm-5.3").price == CFG.model("glm-5.2").price == (1.40, 4.40)  # what SiliconFlow bills your key
+    assert CFG.model("gpt-oss-120b").concurrency == 40
     per_provider: dict[str, int] = {}
     for m in CFG.models:
         per_provider[m.provider] = per_provider.get(m.provider, 0) + m.concurrency

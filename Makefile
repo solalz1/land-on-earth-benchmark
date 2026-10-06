@@ -26,7 +26,7 @@ probe-gpt-oss: setup ## < 1 centime : cherche un fournisseur qui fait tourner gp
 	-$(LOE) probe --model gpt-oss-20b --provider $(GPT_OSS_PROVIDERS),darkbloom --strategy raw
 	$(LOE) pack
 
-run: setup        ## ≈ 15 $, ~1 h 15 : 16 200 points × 24 modèles, seulement si la répétition générale est au vert ; relancer reprend
+run: setup        ## ≈ 17 $, ~1 h 15 : 16 200 points × 24 modèles, seulement si la répétition générale est au vert ; relancer reprend
 	$(LOE) run
 	$(LOE) score
 	$(LOE) pack

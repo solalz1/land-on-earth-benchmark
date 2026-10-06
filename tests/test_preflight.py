@@ -100,9 +100,26 @@ async def test_a_key_that_does_not_serve_its_model_is_blocking(tmp_path):
     assert any("ta clé SiliconFlow n'a servi que 0/40" in p and "z-ai/glm-5.2" in p for p in row["problems"])
 
 
+def test_a_few_answers_on_openrouters_capacity_are_only_a_warning():
+    # the third pilot: Qwen3.5-397B answered 297 times through your Alibaba key, 3 times through
+    # OpenRouter's own capacity at Alibaba while your key was busy
+    m = CFG.model("qwen3.5-397b-a17b")
+
+    def records(n_byok, n):
+        return [{"point_id": i, "ok": True, "pred": 1, "latency": 1.0, "ts": f"2026-10-06T14:28:{i % 60:02d}+00:00",
+                 "byok": i < n_byok, "cost": 0.0 if i < n_byok else 1.8e-5, "upstream_cost": 1.8e-5}
+                for i in range(n)]
+
+    row = preflight.model_check(m, CFG.strategies["chat_none"], ok("chat_none"), records(297, 300), 0.8)
+    assert row["status"] == "attention" and not row["problems"]
+    assert "3 réponses sur 300 servies par la capacité d'OpenRouter chez Alibaba" in row["warnings"][0]
+    row = preflight.model_check(m, CFG.strategies["chat_none"], ok("chat_none"), records(200, 300), 0.8)
+    assert row["status"] == "bloquant" and "n'a servi que 200/300" in row["problems"][0]
+
+
 async def test_a_key_serving_an_unplanned_model_is_a_warning(tmp_path):
-    m = CFG.model("qwen3.6-27b")  # OpenRouter's credits at Alibaba, but your Alibaba key has no model filter
-    fake = FakeOpenRouter(CFG, fail_rate=0, byok={(m.id, "alibaba")})
+    m = CFG.model("qwen3.5-27b")  # OpenRouter's credits at Novita, but a key of yours there has no model filter
+    fake = FakeOpenRouter(CFG, fail_rate=0, byok={(m.id, "novita")})
     report = await rehearse(tmp_path, [m], {m.key: ok("chat_none")}, fake)
     row = by_key(report)[m.key]
     assert row["status"] == "attention" and report["ready"]
