@@ -16,13 +16,16 @@
     "land_precision": 0.7464631985258188,
     "land_share_predicted": 0.3612356485950712,
     "logprobs_share": 0.999320987654321,
+    "indirect_share": 0.0,
     "strategy": "chat_low",
     "reasoning": true,
     "provider_served": "Parasail",
     "cost_usd": 2.0526156,
     "requests": 16207,
     "brier": 0.11226823350742389,
-    "median_mass": 0.999999
+    "median_mass": 0.999999,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 2,
@@ -41,13 +44,16 @@
     "land_precision": 0.855397160506145,
     "land_share_predicted": 0.2466595447099786,
     "logprobs_share": 0.7754320987654321,
+    "indirect_share": 6.17283950617284e-05,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Novita",
     "cost_usd": 0.10425246,
     "requests": 16200,
     "brier": 0.09449801753806529,
-    "median_mass": 0.999995
+    "median_mass": 0.999995,
+    "indirect_median_mass": 0.1698,
+    "indirect_example": "The coordinates\u2026"
   },
   {
     "rank": 3,
@@ -66,13 +72,16 @@
     "land_precision": 0.7244636029412221,
     "land_share_predicted": 0.28930602607170586,
     "logprobs_share": 0.2630246913580247,
+    "indirect_share": 0.0,
     "strategy": "chat_low",
     "reasoning": true,
     "provider_served": "Novita",
     "cost_usd": 1.0174519,
     "requests": 16330,
     "brier": 0.13381119588828863,
-    "median_mass": 1.0
+    "median_mass": 1.0,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 4,
@@ -91,13 +100,16 @@
     "land_precision": 0.6525129168903689,
     "land_share_predicted": 0.41441795254761077,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text_low",
     "reasoning": true,
     "provider_served": "SiliconFlow",
     "cost_usd": 3.41645,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 5,
@@ -116,13 +128,16 @@
     "land_precision": 0.665494253889062,
     "land_share_predicted": 0.3722945733759876,
     "logprobs_share": 1.0,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Alibaba",
     "cost_usd": 4.35942,
     "requests": 16200,
     "brier": 0.12116178897600248,
-    "median_mass": 0.9806965000000001
+    "median_mass": 0.9806965000000001,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 6,
@@ -141,13 +156,16 @@
     "land_precision": 0.7980572676605662,
     "land_share_predicted": 0.20502315593430492,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text_none",
     "reasoning": false,
     "provider_served": "SiliconFlow",
     "cost_usd": 0.7562480760000001,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 7,
@@ -166,13 +184,16 @@
     "land_precision": 0.9209904237897142,
     "land_share_predicted": 0.13926686009091155,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text_none",
     "reasoning": false,
     "provider_served": "SiliconFlow",
     "cost_usd": 0.48128020000000005,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 8,
@@ -191,13 +212,16 @@
     "land_precision": 0.7967421258181554,
     "land_share_predicted": 0.18522978976599475,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text",
     "reasoning": false,
     "provider_served": "Mistral",
     "cost_usd": 1.2703499999999999,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 9,
@@ -216,13 +240,16 @@
     "land_precision": 0.6873421392666501,
     "land_share_predicted": 0.276977132157416,
     "logprobs_share": 1.0,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "DekaLLM",
     "cost_usd": 0.070668,
     "requests": 16318,
     "brier": 0.13170313717852913,
-    "median_mass": 0.981374
+    "median_mass": 0.981374,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 10,
@@ -241,13 +268,16 @@
     "land_precision": 0.6879728393650204,
     "land_share_predicted": 0.24383944190683057,
     "logprobs_share": 1.0,
+    "indirect_share": 0.3495061728395062,
     "strategy": "chat",
     "reasoning": false,
     "provider_served": "Parasail",
     "cost_usd": 0.264855,
     "requests": 16200,
     "brier": 0.17699899396346386,
-    "median_mass": 0.818176
+    "median_mass": 0.818176,
+    "indirect_median_mass": 0.156201,
+    "indirect_example": "To determine\u2026"
   },
   {
     "rank": 11,
@@ -266,13 +296,16 @@
     "land_precision": 0.6229092364809574,
     "land_share_predicted": 0.36791400658130047,
     "logprobs_share": 1.0,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Alibaba",
     "cost_usd": 0.286065,
     "requests": 16200,
     "brier": 0.13616406619450772,
-    "median_mass": 0.998978
+    "median_mass": 0.998978,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 12,
@@ -291,13 +324,16 @@
     "land_precision": 0.6486847087953315,
     "land_share_predicted": 0.2999433636862386,
     "logprobs_share": 0.32,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Novita",
     "cost_usd": 0.10431,
     "requests": 16200,
     "brier": 0.18970853403821195,
-    "median_mass": 1.0
+    "median_mass": 1.0,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 13,
@@ -316,13 +352,16 @@
     "land_precision": 0.6973557662878811,
     "land_share_predicted": 0.2117990788926269,
     "logprobs_share": 0.8095061728395062,
+    "indirect_share": 0.0,
     "strategy": "chat_low",
     "reasoning": true,
     "provider_served": "Novita",
     "cost_usd": 0.34580156,
     "requests": 16282,
     "brier": 0.2107566754164776,
-    "median_mass": 0.999997
+    "median_mass": 0.999997,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 14,
@@ -341,13 +380,16 @@
     "land_precision": 0.6095749525923986,
     "land_share_predicted": 0.33776674690672304,
     "logprobs_share": 1.0,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Alibaba",
     "cost_usd": 0.199134,
     "requests": 16200,
     "brier": 0.15161691499844263,
-    "median_mass": 0.9989885000000001
+    "median_mass": 0.9989885000000001,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 15,
@@ -366,13 +408,16 @@
     "land_precision": 0.5892048039554613,
     "land_share_predicted": 0.3748349430303472,
     "logprobs_share": 1.0,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Novita",
     "cost_usd": 0.26865,
     "requests": 16259,
     "brier": 0.16136640799115964,
-    "median_mass": 0.997512
+    "median_mass": 0.997512,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 16,
@@ -391,13 +436,16 @@
     "land_precision": 0.734062241635395,
     "land_share_predicted": 0.07995802723884915,
     "logprobs_share": 0.19080246913580248,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Novita",
     "cost_usd": 0.097785,
     "requests": 16200,
     "brier": 0.22771108450047783,
-    "median_mass": 0.999998
+    "median_mass": 0.999998,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 17,
@@ -416,13 +464,16 @@
     "land_precision": 0.4906638949674306,
     "land_share_predicted": 0.5393617113989926,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text_none",
     "reasoning": false,
     "provider_served": "SiliconFlow",
     "cost_usd": 0.7693888000000001,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 18,
@@ -441,13 +492,16 @@
     "land_precision": 0.4249290466559495,
     "land_share_predicted": 0.48902260316423585,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text",
     "reasoning": false,
     "provider_served": "Mistral",
     "cost_usd": 0.078435,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 19,
@@ -466,13 +520,16 @@
     "land_precision": 0.40390503608143397,
     "land_share_predicted": 0.5938813774313331,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text",
     "reasoning": false,
     "provider_served": "Mistral",
     "cost_usd": 0.12217068,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 20,
@@ -491,13 +548,16 @@
     "land_precision": 0.3899271043194884,
     "land_share_predicted": 0.7238413512757218,
     "logprobs_share": 1.0,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Alibaba",
     "cost_usd": 0.330075,
     "requests": 16200,
     "brier": 0.2618263277321454,
-    "median_mass": 0.999532
+    "median_mass": 0.999532,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 21,
@@ -516,13 +576,16 @@
     "land_precision": 0.3676549382485201,
     "land_share_predicted": 0.7436827327353808,
     "logprobs_share": 1.0,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Parasail",
     "cost_usd": 0.223992,
     "requests": 16200,
     "brier": 0.24843072158960502,
-    "median_mass": 0.997391
+    "median_mass": 0.997391,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 22,
@@ -541,13 +604,16 @@
     "land_precision": 0.3463255380376905,
     "land_share_predicted": 0.6546919828123309,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text",
     "reasoning": false,
     "provider_served": "Mistral",
     "cost_usd": 0.05229,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 23,
@@ -566,13 +632,16 @@
     "land_precision": 0.2924376439446124,
     "land_share_predicted": 0.9910338974444609,
     "logprobs_share": 1.0,
+    "indirect_share": 0.0,
     "strategy": "chat_none",
     "reasoning": false,
     "provider_served": "Parasail",
     "cost_usd": 0.07173,
     "requests": 16200,
     "brier": 0.36041397632587696,
-    "median_mass": 0.995554
+    "median_mass": 0.995554,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   },
   {
     "rank": 24,
@@ -591,12 +660,15 @@
     "land_precision": 0.2920994652736523,
     "land_share_predicted": 0.990517442199203,
     "logprobs_share": 0.0,
+    "indirect_share": 0.0,
     "strategy": "text",
     "reasoning": false,
     "provider_served": "Mistral",
     "cost_usd": 0.10458,
     "requests": 16200,
     "brier": NaN,
-    "median_mass": NaN
+    "median_mass": NaN,
+    "indirect_median_mass": NaN,
+    "indirect_example": NaN
   }
 ]

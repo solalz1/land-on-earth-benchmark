@@ -13,7 +13,7 @@ Précision pondérée par la surface contre le masque terre à 1 km (GLOBE). Ré
 | 7 | Kimi K2.6 | Moonshot | aucune | 82.7 % | 0.404 | 82.8 % | 44.2 % | 100.0 % | 0.0 % | text_none | SiliconFlow | 0.48 $ |
 | 8 | Mistral Medium 3.5 | Mistral | aucune | 82.0 % | 0.379 | 81.9 % | 50.8 % | 100.0 % | 0.0 % | text | Mistral | 1.27 $ |
 | 9 | Nemotron 3 Super | NVIDIA | aucune | 81.3 % | 0.357 | 81.2 % | 65.6 % | 100.0 % | 100.0 % | chat_none | DekaLLM | 0.07 $ |
-| 10 | Llama 4 Maverick | Meta | aucune | 80.1 % | 0.316 | 80.1 % | 57.8 % | 100.0 % | 100.0 % | chat | Parasail | 0.26 $ |
+| 10 | Llama 4 Maverick ¹ | Meta | aucune | 80.1 % | 0.316 | 80.1 % | 57.8 % | 100.0 % | 100.0 % | chat | Parasail | 0.26 $ |
 | 11 | Qwen3.5-397B-A17B | Alibaba | aucune | 80.0 % | 0.312 | 79.8 % | 78.9 % | 100.0 % | 100.0 % | chat_none | Alibaba | 0.29 $ |
 | 12 | Gemma 4 31B | Google | aucune | 79.9 % | 0.307 | 79.6 % | 67.0 % | 100.0 % | 32.0 % | chat_none | Novita | 0.10 $ |
 | 13 | gpt-oss-20b | OpenAI | minimale | 79.3 % | 0.288 | 79.2 % | 50.9 % | 100.0 % | 81.0 % | chat_low | Novita | 0.35 $ |
@@ -28,3 +28,5 @@ Précision pondérée par la surface contre le masque terre à 1 km (GLOBE). Ré
 | 22 | Ministral 3 3B | Mistral | aucune | 50.8 % | -0.693 | 50.6 % | 78.1 % | 100.0 % | 0.0 % | text | Mistral | 0.05 $ |
 | 23 | Qwen3.5-9B | Alibaba | aucune | 29.8 % | -1.417 | 29.5 % | 99.8 % | 100.0 % | 100.0 % | chat_none | Parasail | 0.07 $ |
 | 24 | Ministral 3 14B | Mistral | aucune | 29.8 % | -1.419 | 29.5 % | 99.7 % | 100.0 % | 0.0 % | text | Mistral | 0.10 $ |
+
+¹ Llama 4 Maverick : 35.0 % des réponses commencent par une phrase au lieu de Land ou Water (« To determine… »), coupée par la limite de tokens. La prédiction y est lue dans les logprobs du premier token, où Land et Water ne pèsent que 15.6 % en médiane : un signal plus faible, que la colonne Couverture ne montre pas.

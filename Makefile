@@ -6,7 +6,7 @@
 UV := uv run --quiet
 LOE := $(UV) python -m loe
 GPT_OSS_PROVIDERS := coreweave,parasail,deepinfra,dekallm,akashml,cerebras
-.PHONY: setup check pilot probe-gpt-oss run score status pack demo test truth clean-demo
+.PHONY: setup check pilot probe-gpt-oss run score figure status pack demo test truth clean-demo
 
 setup:            ## installe Python et les dépendances
 	uv sync
@@ -29,11 +29,15 @@ probe-gpt-oss: setup ## < 1 centime : cherche un fournisseur qui fait tourner gp
 run: setup        ## ≈ 17 $, ~1 h 15 : 16 200 points × 24 modèles, seulement si la répétition générale est au vert ; relancer reprend
 	$(LOE) run
 	$(LOE) score
+	$(LOE) figure
 	$(LOE) pack
 	@printf "\nPousse maintenant results/ sur le repo (voir README, étape 6).\n"
 
 score:            ## recalcule classement et cartes à partir des réponses enregistrées
 	$(LOE) score
+
+figure:           ## figures et chiffres de RESULTS.md (results/tweet/figures/), à partir du classement
+	$(LOE) figure
 
 status:           ## avancement et coût du run en cours (dans un autre terminal)
 	$(LOE) status

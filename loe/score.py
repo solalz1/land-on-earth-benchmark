@@ -6,6 +6,9 @@
 - accuracy_lakes: same, with large lakes and the Caspian Sea counted as water.
 - land_recall / land_precision: area-weighted, on the Land answers.
 - brier: mean squared error of P(Land), for models that return logprobs.
+- indirect_share: answers read from the logprobs of a first token that was not Land or Water
+  (the model started a sentence, cut by max_tokens): there the prediction is only its preference
+  between the two words at that token, a weaker signal. The leaderboard flags it from 1 %.
 """
 
 from __future__ import annotations
@@ -20,6 +23,9 @@ import pandas as pd
 
 from loe import grid, store
 from loe.config import Config
+from loe.parse import answers_first
+
+INDIRECT_FLAG = 0.01  # share of indirect answers from which the leaderboard adds a note
 
 
 def _stamp(run_dir: Path, key: str) -> float:
@@ -39,7 +45,7 @@ def _predictions(run_dir: str, key: str, stamp: float) -> pd.DataFrame:
     run_dir = Path(run_dir)
     g = grid.load()
     latest = store.latest(store.current(store.read(run_dir, key)))
-    cols = ["point_id", "pred", "p_land", "mass", "source", "provider", "strategy"]
+    cols = ["point_id", "pred", "p_land", "mass", "source", "provider", "strategy", "text"]
     if latest.empty:
         latest = pd.DataFrame(columns=cols)
     ok = latest[latest["ok"].astype(bool)] if "ok" in latest else latest
@@ -86,7 +92,22 @@ def metrics(df: pd.DataFrame) -> dict[str, Any]:
     if has_p.any():
         out["brier"] = float((w[has_p] * (prob[has_p] - truth[has_p]) ** 2).sum() / w[has_p].sum())
         out["median_mass"] = float(np.nanmedian(df["mass"].to_numpy()))
+    indirect = indirect_answers(df)
+    out["indirect_share"] = float(indirect.sum() / max(answered.sum(), 1))
+    if indirect.any():
+        out["indirect_median_mass"] = float(np.nanmedian(df["mass"].to_numpy()[indirect]))
+        starts = pd.Series([" ".join(str(t).split()[:2]) for t in df["text"].to_numpy()[indirect]])
+        out["indirect_example"] = f"{starts.value_counts().index[0]}…"
     return out
+
+
+def indirect_answers(df: pd.DataFrame) -> np.ndarray:
+    """Answers read from logprobs whose text does not start with Land or Water."""
+    if "text" not in df or "source" not in df:
+        return np.zeros(len(df), dtype=bool)
+    lp = (df["source"] == "logprobs").to_numpy()
+    first = np.array([answers_first(t) if isinstance(t, str) else True for t in df["text"]])
+    return lp & ~first
 
 
 def score_run(cfg: Config, run_dir: Path, keys: list[str] | None = None) -> pd.DataFrame:
@@ -147,12 +168,28 @@ def leaderboard_md(board: pd.DataFrame) -> str:
         "| Stratégie | Fournisseur | Coût |",
         "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
+    notes = []
     for r in board.itertuples():
         reasoning = "minimale" if getattr(r, "reasoning", False) else "aucune"
+        name = r.name
+        share = getattr(r, "indirect_share", 0.0)
+        if isinstance(share, float) and share >= INDIRECT_FLAG:
+            notes.append(r)
+            name += " " + "¹²³⁴⁵⁶⁷⁸⁹"[min(len(notes), 9) - 1]
         lines.append(
-            f"| {r.rank} | {r.name} | {r.lab} | {reasoning} | {_pct(r.accuracy)} | {r.skill:.3f} | "
+            f"| {r.rank} | {name} | {r.lab} | {reasoning} | {_pct(r.accuracy)} | {r.skill:.3f} | "
             f"{_pct(r.accuracy_lakes)} | {_pct(r.land_recall)} | {_pct(r.coverage)} | {_pct(r.logprobs_share)} | "
             f"{r.strategy or '—'} | {r.provider_served or '—'} | {r.cost_usd:.2f} $ |"
         )
     lines.append("")
+    for i, r in enumerate(notes[:9]):
+        mass = getattr(r, "indirect_median_mass", float("nan"))
+        lines.append(
+            f"{'¹²³⁴⁵⁶⁷⁸⁹'[i]} {r.name} : {_pct(r.indirect_share)} des réponses commencent par une phrase "
+            f"au lieu de Land ou Water (« {getattr(r, 'indirect_example', '…')} »), coupée par la limite de "
+            "tokens. La prédiction y est lue dans les logprobs du premier "
+            f"token, où Land et Water ne pèsent que {_pct(mass)} en médiane : un signal plus faible, "
+            "que la colonne Couverture ne montre pas."
+        )
+        lines.append("")
     return "\n".join(lines)

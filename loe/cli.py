@@ -1,4 +1,4 @@
-"""Command line: loe check | pilot | preflight | probe | run | score | pack | status | demo.
+"""Command line: loe check | pilot | preflight | probe | run | score | figure | pack | status | demo.
 
 Every command that can spend credits reads OPENROUTER_API_KEY from the environment; the key is
 never printed or written anywhere. `--fake` swaps OpenRouter for the in-process fake API and
@@ -201,6 +201,20 @@ def _score(args, cfg: Config) -> int:
     return 0
 
 
+def _figure(args, cfg: Config) -> int:
+    from loe import figure
+
+    run_dir = _out(args) / args.run
+    try:
+        paths = figure.make(run_dir)
+    except FileNotFoundError as e:
+        print(e)
+        return 1
+    for p in paths:
+        print(f"écrit : {p.relative_to(config.ROOT) if p.is_relative_to(config.ROOT) else p}")
+    return 0
+
+
 async def _probe(args, cfg: Config) -> int:
     from loe import probe, templates
 
@@ -267,6 +281,7 @@ def _demo(args, cfg: Config) -> int:
         ("preflight", lambda: asyncio.run(_preflight(argparse.Namespace(**{**vars(args), "points": 40}), cfg))),
         ("run", lambda: asyncio.run(_run(args, cfg))),
         ("score", lambda: _score(args, cfg)),
+        ("figure", lambda: _figure(args, cfg)),
     ]
     for name, step in steps:
         print(f"\n===== démo : {name} =====")
@@ -311,6 +326,7 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--limit", type=int, help="n'interroger qu'un échantillon de N points (tests)")
     s = common(sub.add_parser("score", help="classement et cartes"))
     s.add_argument("--no-maps", action="store_true")
+    common(sub.add_parser("figure", help="figures et chiffres de RESULTS.md, à partir du classement"))
     common(sub.add_parser("pack", help="compresse les réponses brutes pour le repo"))
     common(sub.add_parser("status", help="avancement et coût du run"))
     s = common(sub.add_parser("demo", help="tout le pipeline contre la fausse API"))
@@ -356,6 +372,8 @@ def main(argv: list[str] | None = None) -> int:
             return asyncio.run(_run(args, cfg))
         if args.cmd == "score":
             return _score(args, cfg)
+        if args.cmd == "figure":
+            return _figure(args, cfg)
         if args.cmd == "pack":
             return _pack(args, cfg)
         if args.cmd == "status":

@@ -106,6 +106,14 @@ def from_text(text: str | None) -> int | None:
     return None if m is None else int(m.group(1).lower() == "land")
 
 
+_LEADING = re.compile(r"^[\W_]*(land|water)\b", re.I)
+
+
+def answers_first(text: str | None) -> bool:
+    """Whether the visible answer starts with Land or Water (markup aside), rather than a sentence."""
+    return bool(text) and _LEADING.match(_THINK.sub(" ", text)) is not None
+
+
 def parse(choice: dict[str, Any]) -> Parsed:
     text = choice_text(choice)
     lp = from_logprobs(positions(choice))

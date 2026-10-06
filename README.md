@@ -6,6 +6,12 @@ Reproduction de l'éval « Land or Water? » relayée par Karpathy, sur 24 modè
 
 Coût prévu : environ 17 $ (≈ 15,5 €) pour 389 000 requêtes : environ 5 $ sur tes crédits OpenRouter, le reste facturé directement par SiliconFlow (≈ 5,4 $), Alibaba (≈ 5,2 $) et Mistral (≈ 1,6 $) via tes clés, plus quelques dizaines de centimes pour le pilote et la répétition générale. Durée du run : environ 1 h 15. SiliconFlow est prépayé : garde au moins 7 $ sur ton solde.
 
+## Résultats
+
+MiniMax M3 (88,8 %) et DeepSeek V4.1 Flash (88,5 %) sont à égalité en tête ; 8 modèles sur 24 ne font pas mieux que répondre toujours « Water » (71,0 %). L'analyse complète, en anglais, avec les figures et comment les lire : **[RESULTS.md](RESULTS.md)**.
+
+![Classement](results/tweet/figures/ranking.png)
+
 ## Ce que tu fais, dans l'ordre
 
 Tout se lance depuis le Terminal de ton Mac, dans le dossier du repo. Mets le projet hors d'iCloud (par exemple `~/Projets`, pas dans `Documents` ni sur le Bureau si ceux-ci sont synchronisés) : iCloud abîme l'environnement Python et ralentit le run.
@@ -75,9 +81,10 @@ git add results && git commit -m "Run complet" && git push
 | `make demo` | gratuit | check, pilote, run, classement et cartes contre une fausse API |
 | `make pilot` | quelques dizaines de centimes | stratégie de chaque modèle, 200 points, rapport, puis répétition générale (300 points par modèle aux réglages du run) : feu vert ou rouge, coût, durée et qui paie |
 | `make probe-gpt-oss` | < 1 centime | cherche un fournisseur qui fait tourner gpt-oss sans réflexion |
-| `make run` | ≈ 17 $ | 16 200 points × modèles validés au pilote, puis classement, cartes, compression |
+| `make run` | ≈ 17 $ | 16 200 points × modèles validés au pilote, puis classement, cartes, figures, compression |
 | `make status` | gratuit | avancement et coût du run |
 | `make score` | gratuit | recalcule classement et cartes depuis les réponses enregistrées |
+| `make figure` | gratuit | figures et chiffres de [RESULTS.md](RESULTS.md) (`results/tweet/figures/`), depuis le classement |
 | `make test` | gratuit | tests automatiques, contre la fausse API |
 
 Options utiles : `uv run python -m loe run --models qwen3.5-9b,gemma-4-31b` pour quelques modèles, `--budget 10` pour plafonner le coût du run, crédits et clés fournisseurs compris (22 $ par défaut). `uv run python -m loe preflight` relance la répétition générale seule. `uv run python -m loe probe --model gpt-oss-20b --provider deepinfra,parasail --strategy raw` essaie un modèle chez d'autres fournisseurs que celui de la config, 8 points par essai.
@@ -152,5 +159,6 @@ tests/                  tests contre la fausse API
 results/check.json      sortie de make check
 results/pilot/          rapport du pilote, stratégies retenues, répétition générale (preflight.md), réponses brutes compressées
 results/probe/          essais chez d'autres fournisseurs (make probe-gpt-oss)
-results/tweet/          run complet : réponses (raw/*.jsonl.gz), prédictions, classement, cartes
+results/tweet/          run complet : réponses (raw/*.jsonl.gz), prédictions, classement, cartes, figures (figures/)
+RESULTS.md              les résultats et comment les lire, en anglais
 ```
