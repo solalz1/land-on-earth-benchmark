@@ -112,7 +112,7 @@ def score_run(cfg: Config, run_dir: Path, keys: list[str] | None = None) -> pd.D
                 "strategy": strategy,
                 "reasoning": bool(strategy in cfg.strategies and cfg.strategies[strategy].reasons),
                 "provider_served": " + ".join(served.index) if len(served) else None,
-                "cost_usd": float(sum(r.get("cost") or 0.0 for r in records)),
+                "cost_usd": float(sum(store.charged(r) for r in records)),
                 "requests": len(records),
             }
         )

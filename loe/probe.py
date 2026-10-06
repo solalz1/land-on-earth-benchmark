@@ -65,7 +65,7 @@ async def run_probe(
                     reasoning_tokens=statistics.mean([r.get("reason_tok") or 0 for r in ok]) if ok else None,
                     served=sorted({str(r.get("provider")) for r in ok if r.get("provider")}),
                     texts=sorted({(r.get("text") or "")[:30] for r in ok})[:4],
-                    cost_usd=sum(r.get("cost") or 0.0 for r in recs),
+                    cost_usd=sum(store.charged(r) for r in recs),
                 )
                 rows.append(row)
         finally:

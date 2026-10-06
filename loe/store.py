@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import re
 import shutil
 from pathlib import Path
 from typing import Any, Iterator
@@ -61,17 +62,59 @@ def models_in(run_dir: Path) -> list[str]:
     return sorted(keys)
 
 
+def _norm(s: Any) -> str:
+    return re.sub(r"[^a-z0-9]", "", str(s or "").lower())
+
+
+def is_byok(r: dict[str, Any]) -> bool:
+    """Whether your own key at the provider served this answer (OpenRouter's usage.is_byok).
+
+    When OpenRouter leaves the flag out, the upstream cost tells: with your key, the provider
+    bills it and OpenRouter charges (almost) nothing.
+    """
+    if r.get("byok") is not None:
+        return bool(r["byok"])
+    upstream = float(r.get("upstream_cost") or 0.0)
+    return upstream > 0 and upstream > 2 * float(r.get("cost") or 0.0)
+
+
+def charged(r: dict[str, Any]) -> float:
+    """What this request cost you in USD: OpenRouter's charge, plus the provider's bill when your key served it."""
+    cost = float(r.get("cost") or 0.0)
+    if is_byok(r):
+        cost += float(r.get("upstream_cost") or 0.0)
+    return cost
+
+
+def served_by(r: dict[str, Any], provider: str) -> bool:
+    """Whether a record was asked through this pinned provider (older records only name the server)."""
+    if r.get("pinned"):
+        return r["pinned"] == provider
+    return bool(r.get("provider")) and _norm(provider) in _norm(r.get("provider"))
+
+
+def for_job(records: list[dict[str, Any]], strategy: str, provider: str) -> list[dict[str, Any]]:
+    """Records of one strategy at one provider: a change of either asks every point again."""
+    return [r for r in records if r.get("strategy") == strategy and (not r.get("ok") or served_by(r, provider))]
+
+
 def done_ids(records: list[dict[str, Any]], strategy: str | None = None) -> set[int]:
     """Points answered, by this strategy if given (a new strategy asks every point again)."""
     return {int(r["point_id"]) for r in records if r.get("ok") and (strategy is None or r.get("strategy") == strategy)}
 
 
 def current(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Records of the strategy used last, so that a change of strategy never mixes two maps."""
-    last = next((r.get("strategy") for r in reversed(records) if r.get("ok")), None)
+    """Records of the strategy and provider used last, so that a change never mixes two maps."""
+    last = next((r for r in reversed(records) if r.get("ok")), None)
     if last is None:
         return records
-    return [r for r in records if r.get("strategy") == last]
+    if last.get("pinned"):
+        return for_job(records, last["strategy"], last["pinned"])
+    return [
+        r
+        for r in records
+        if r.get("strategy") == last.get("strategy") and (not r.get("ok") or r.get("provider") == last.get("provider"))
+    ]
 
 
 def latest(records: list[dict[str, Any]]) -> pd.DataFrame:

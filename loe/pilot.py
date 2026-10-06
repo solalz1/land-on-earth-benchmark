@@ -10,6 +10,9 @@ results/pilot/report.md.
 The 200 pilot points are half land, half water, many of them near the poles, so their raw
 accuracy is not the tweet's score: the report re-weights them by class frequency and cell area
 to estimate the area-weighted accuracy of the full map.
+
+For a model served through your own provider key (`byok: true`), the report says whether your
+key really answered; a model it did not serve is "à vérifier" and the run leaves it out.
 """
 
 from __future__ import annotations
@@ -170,9 +173,17 @@ def model_report(
         reasoning_tokens=int(pd.to_numeric(ok.get("reason_tok", pd.Series(dtype=float)), errors="coerce").fillna(0).sum()),
         median_latency_s=round(float(ok["latency"].median()), 3) if len(ok) else None,
     )
+    # answers recorded since the run notes who billed them (older ones say nothing: not judged)
+    flagged = [r for r in records if r.get("ok") and "byok" in r]
+    row["byok_share"] = round(sum(store.is_byok(r) for r in flagged) / len(flagged), 4) if flagged else None
     problems = []
     if row["coverage"] < 0.98:
         problems.append(f"couverture {row['coverage']:.0%}")
+    if model.byok and row["byok_share"] is not None and row["byok_share"] < 0.95:
+        problems.append(
+            f"ta clé chez {model.provider} n'a servi que {row['byok_share']:.0%} des réponses "
+            "(OpenRouter > Integrations : clé en Prioritized, filtre sur ce modèle)"
+        )
     est = row["estimate_usd"]
     if row["projected_usd"] > max(3 * est, est + 2.5):  # minimal reasoning may cost a few times more, not 20x
         problems.append(f"coût projeté {row['projected_usd']:.2f} $ contre {est:.2f} $ estimé")
@@ -187,7 +198,7 @@ async def run_pilot(
     renderers: dict[str, Renderer | None],
     out_dir: Path,
     n_points: int = 200,
-    budget: float = 1.0,
+    budget: float = 2.0,
     credits_left: float | None = None,
     progress: bool = True,
 ) -> dict[str, Any]:
@@ -213,7 +224,7 @@ async def run_pilot(
             m,
             c,
             cfg.strategies.get(c.strategy) if c.strategy else None,
-            [r for r in store.read(out_dir, m.key) if r.get("strategy") == c.strategy],
+            store.for_job(store.read(out_dir, m.key), c.strategy, m.provider) if c.strategy else [],
             n_points,
         )
         for m, c in zip(models, choices)
@@ -237,6 +248,7 @@ async def run_pilot(
             "reasoning": r["reasoning"],
             "status": r["status"],
             "projected_usd": r.get("projected_usd"),
+            "provider": r["provider"],
         }
         for r in rows
     }
@@ -254,14 +266,15 @@ def markdown(report: dict[str, Any]) -> str:
         "",
         f"{report['valid']} modèles valides sur {report['total']}, {report['points']} points chacun. "
         f"Coût du pilote : {report['pilot_cost_usd']:.3f} $. "
-        f"Projection pour le run complet (16 200 points) : {report['projected_usd']:.2f} $ de crédits.",
+        f"Projection pour le run complet (16 200 points) : {report['projected_usd']:.2f} $, "
+        "crédits OpenRouter et clés fournisseurs compris.",
         "",
         "Précision estimée : la précision pondérée par la surface que le modèle aurait sur la carte complète, "
         "estimée à partir des 200 points (± = intervalle à 90 %). Ce n'est pas encore le score final.",
         "",
-        "| Modèle | Stratégie | Réflexion | Fournisseur servi | Précision estimée | Couverture | Logprobs "
+        "| Modèle | Stratégie | Réflexion | Fournisseur servi | Ta clé | Précision estimée | Couverture | Logprobs "
         "| Coût projeté | Statut |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in report["models"]:
         if r.get("accuracy_area") is not None:
@@ -273,8 +286,10 @@ def markdown(report: dict[str, Any]) -> str:
         proj = f"{r['projected_usd']:.2f} $" if r.get("projected_usd") is not None else "—"
         prov = ", ".join(r.get("providers") or []) or "—"
         reasoning = "—" if not r.get("strategy") else ("minimale" if r.get("reasoning") else "aucune")
+        share = r.get("byok_share")
+        key = "—" if share is None else ("oui" if share >= 0.95 else "non" if share == 0 else f"{share:.0%}")
         lines.append(
-            f"| {r['name']} | {r.get('strategy') or '—'} | {reasoning} | {prov} | {acc} | {cov} | {lp} "
+            f"| {r['name']} | {r.get('strategy') or '—'} | {reasoning} | {prov} | {key} | {acc} | {cov} | {lp} "
             f"| {proj} | {r['status']} |"
         )
     lines += ["", "## Stratégies essayées", ""]

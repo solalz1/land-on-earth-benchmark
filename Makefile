@@ -14,9 +14,10 @@ setup:            ## installe Python et les dépendances
 check: setup      ## gratuit : clé, plafond, fournisseurs, précisions, prix
 	$(LOE) check
 
-pilot: setup      ## quelques centimes : stratégie de chaque modèle + 200 points, puis rapport
+pilot: setup      ## quelques dizaines de centimes : stratégie de chaque modèle, 200 points, puis répétition générale aux réglages du run
 	-$(LOE) check
 	-$(LOE) pilot
+	-$(LOE) preflight
 	$(LOE) pack
 	@printf "\nPousse maintenant results/ sur le repo (voir README, étape 4).\n"
 
@@ -25,7 +26,7 @@ probe-gpt-oss: setup ## < 1 centime : cherche un fournisseur qui fait tourner gp
 	-$(LOE) probe --model gpt-oss-20b --provider $(GPT_OSS_PROVIDERS),darkbloom --strategy raw
 	$(LOE) pack
 
-run: setup        ## ≈ 14 € : 16 200 points × 25 modèles ; relancer reprend là où ça s'est arrêté
+run: setup        ## ≈ 15 $, ~1 h 15 : 16 200 points × 24 modèles, seulement si la répétition générale est au vert ; relancer reprend
 	$(LOE) run
 	$(LOE) score
 	$(LOE) pack

@@ -4,6 +4,12 @@ Every request pins its provider: `only` that provider, no fallback to another on
 `require_parameters` so a provider that would silently ignore logprobs or the reasoning switch
 is refused instead of answering differently. The provider that actually served each answer
 comes back in the response and is stored with the prediction.
+
+Errors: a refused OpenRouter key (401) or empty credits (402) stop the whole run. A 401 or 403
+that the provider returns (your own key at that provider refused, a model it does not serve)
+only fails that request, so the model stops on its own after repeated failures and the others
+go on. OpenRouter's in-flight budget (a 402 for new accounts with many requests running) and
+rate limits (429) are retried after a pause.
 """
 
 from __future__ import annotations
@@ -60,11 +66,12 @@ def request(model: Model, strategy: Strategy, lat: float, lon: float, render: Re
         provider["quantizations"] = list(model.quantizations)
     body: dict[str, Any] = {
         "model": model.id,
-        "temperature": 0,
         "max_tokens": strategy.max_tokens,
         "provider": provider,
         "usage": {"include": True},
     }
+    if model.temperature is not None:  # omitted for a provider that refuses to set it
+        body["temperature"] = model.temperature
     if strategy.logprobs:
         body["logprobs"] = True
         body["top_logprobs"] = model.top_logprobs
@@ -77,6 +84,29 @@ def request(model: Model, strategy: Strategy, lat: float, lon: float, render: Re
         return "/completions", body
     body["messages"] = [{"role": "user", "content": question(lat, lon)}]
     return "/chat/completions", body
+
+
+def _error(body: Any) -> dict[str, Any]:
+    err = body.get("error") if isinstance(body, dict) else None
+    return err if isinstance(err, dict) else {}
+
+
+def provider_error(body: Any) -> bool:
+    """An error relayed from the provider (e.g. your own key there refused), not OpenRouter's own."""
+    err = _error(body)
+    meta = err.get("metadata") if isinstance(err.get("metadata"), dict) else {}
+    return bool(meta.get("provider_name")) or "provider returned error" in str(err.get("message", "")).lower()
+
+
+def in_flight_budget(body: Any) -> bool:
+    """OpenRouter's in-flight budget: too much estimated cost running at once, retry once it settles."""
+    err = _error(body)
+    meta = err.get("metadata") if isinstance(err.get("metadata"), dict) else {}
+    return (
+        meta.get("reason") == "in_flight_budget_exhausted"
+        or meta.get("limit_source") == "openrouter_in_flight_budget"
+        or "in-flight requests" in str(err.get("message", "")).lower()
+    )
 
 
 def _error_text(body: Any, fallback: str) -> str:
@@ -177,9 +207,11 @@ class Client:
                     data = r.json()
                 except ValueError:
                     data = None
-                if status in FATAL_STATUS:
+                if status == 402 and in_flight_budget(data):
+                    error = f"HTTP 402: {_error_text(data, r.text)}"  # retried below, after Retry-After
+                elif status in FATAL_STATUS and not provider_error(data):
                     raise Fatal(f"{FATAL_STATUS[status]} ({_error_text(data, r.text)})")
-                if status == 200 and isinstance(data, dict) and not data.get("error"):
+                elif status == 200 and isinstance(data, dict) and not data.get("error"):
                     if data.get("choices"):
                         return Reply(True, data, status, None, attempt, time.monotonic() - t0)
                     error = "réponse sans choix"

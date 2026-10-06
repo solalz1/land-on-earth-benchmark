@@ -1,12 +1,14 @@
 """Ask every point to every model, concurrently, with resume and cost guards.
 
 - Resume: points already answered (in raw/<model>.jsonl) are skipped; failed ones are asked again.
-- Budget: the run stops once the credits spent in this run directory reach the budget.
+- Budget: the run stops once what this run directory cost you reaches the budget: OpenRouter
+  credits plus what your own provider keys were billed (store.charged).
 - Per-model guard: after 100 answers, a model whose projected cost exceeds `cap_factor` times
   its estimate (or 1.5 times the pilot's projection, when known) is stopped: a model that starts
   reasoning would otherwise burn credits.
-- A model that fails 25 requests in a row is stopped, except for rate limits (HTTP 429), which
-  only slow it down; a bad key or empty credits stop everything.
+- A model that fails 25 requests in a row is stopped, except for rate limits (HTTP 429) and
+  OpenRouter's in-flight budget (402), which only slow it down; a bad OpenRouter key or empty
+  credits stop everything.
 """
 
 from __future__ import annotations
@@ -77,6 +79,7 @@ def make_record(job: Job, point: Any, reply: Reply) -> dict[str, Any]:
         "lon": float(point.lon),
         "model": job.model.key,
         "strategy": job.strategy.name,
+        "pinned": job.model.provider,
         "ok": reply.ok,
         "status": reply.status,
         "attempts": reply.attempts,
@@ -106,6 +109,8 @@ def make_record(job: Job, point: Any, reply: Reply) -> dict[str, Any]:
         provider=body.get("provider"),
         served=body.get("model"),
         cost=usage.get("cost"),
+        byok=usage.get("is_byok"),
+        upstream_cost=(usage.get("cost_details") or {}).get("upstream_inference_cost"),
         in_tok=usage.get("prompt_tokens"),
         out_tok=usage.get("completion_tokens"),
         reason_tok=details.get("reasoning_tokens"),
@@ -114,7 +119,8 @@ def make_record(job: Job, point: Any, reply: Reply) -> dict[str, Any]:
 
 
 def spent_in(records: list[dict[str, Any]]) -> float:
-    return float(sum(r.get("cost") or 0.0 for r in records))
+    """What these requests cost you: OpenRouter credits plus your provider keys' bills."""
+    return float(sum(store.charged(r) for r in records))
 
 
 class Runner:
@@ -144,8 +150,7 @@ class Runner:
 
     async def _model(self, job: Job, points: pd.DataFrame) -> Outcome:
         m = job.model
-        everything = store.read(self.run_dir, m.key)
-        records = [r for r in everything if r.get("strategy") == job.strategy.name]
+        records = store.for_job(store.read(self.run_dir, m.key), job.strategy.name, m.provider)
         done = store.done_ids(records)
         todo = points[~points["point_id"].isin(done)]
         out = Outcome(m.key, total=len(points), done_before=len(points) - len(todo))
@@ -178,7 +183,7 @@ class Runner:
                     return
                 rec = make_record(job, p, reply)
                 writer.write(rec)
-                cost = float(rec.get("cost") or 0.0)
+                cost = store.charged(rec)
                 out.cost += cost
                 self.budget.add(cost)
                 if reply.ok:
@@ -187,7 +192,7 @@ class Runner:
                 else:
                     out.errors += 1
                     out.last_error = reply.error
-                    if reply.status != 429:  # a rate limit slows the model down, it is not a failure
+                    if reply.status not in (429, 402):  # rate limit or in-flight budget: slower, not failing
                         streak += 1
                     if streak >= MAX_CONSECUTIVE_ERRORS and not out.stopped:
                         out.stopped = f"{streak} erreurs d'affilée — {reply.error}"
@@ -214,7 +219,7 @@ class Runner:
             return [Outcome(j.model.key, total=len(points), stopped=self.budget.stopped) for j in jobs]
         todo, self._bar = 0, None
         for j in jobs:
-            done = store.done_ids(store.read(self.run_dir, j.model.key), j.strategy.name)
+            done = store.done_ids(store.for_job(store.read(self.run_dir, j.model.key), j.strategy.name, j.model.provider))
             todo += len(points) - len(done & set(points["point_id"]))
         if self.progress and todo:
             from tqdm import tqdm
@@ -246,6 +251,8 @@ def write_meta(run_dir: Path, jobs: list[Job], outcomes: list[Outcome], extra: d
             "strategy": j.strategy.name,
             "reasoning": j.strategy.reasons,
             "rpm": j.model.rpm,
+            "concurrency": j.model.concurrency,
+            "byok": j.model.byok,
         }
         for j in jobs
     } | {k: v for k, v in meta.get("models", {}).items() if k not in {j.model.key for j in jobs}}

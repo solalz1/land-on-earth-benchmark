@@ -62,7 +62,9 @@ async def test_budget_stops_the_run(tmp_path):
         r = Runner(client, tmp_path, budget=0.01, progress=False)
         out = await r.run([Job(m, CFG.strategies["raw"], render=_render(m))], points(2000))
     assert out[0].stopped and "budget" in out[0].stopped
-    spent = sum(x.get("cost") or 0 for x in store.read(tmp_path, m.key))
+    recs = store.read(tmp_path, m.key)
+    assert sum(x.get("cost") or 0 for x in recs) == 0  # your Alibaba key: OpenRouter charges nothing...
+    spent = sum(store.charged(x) for x in recs)  # ...and the budget counts what Alibaba bills
     assert 0.01 <= spent < 0.011  # stops within one batch of requests
 
 
@@ -109,12 +111,13 @@ async def test_rate_limits_do_not_stop_a_model(tmp_path):
 async def test_pacing_avoids_the_new_account_limit(tmp_path):
     from dataclasses import replace
 
-    m = replace(CFG.model("kimi-k2.6"), rpm=1000)  # 1 request every 60 ms
+    # Kimi K2.6 on OpenRouter's credits (no key of yours): capped for new accounts
+    m = replace(CFG.model("kimi-k2.6"), provider="parasail", byok=False, rpm=1000)  # 1 request every 60 ms
     limited = FakeOpenRouter(CFG, fail_rate=0, rate_window=0.5, rate_limit=10)  # 10 per 0.5 s
     client, _ = fake_client(limited, rate_limits=True)
     async with client:
         out = await Runner(client, tmp_path / "paced", budget=5, progress=False).run(
-            [Job(m, CFG.strategies["chat_none"])], points(30)
+            [Job(m, CFG.strategies["text_none"])], points(30)
         )
     assert out[0].answered == 30 and limited.rate_limited == 0
 
@@ -122,9 +125,29 @@ async def test_pacing_avoids_the_new_account_limit(tmp_path):
     client, _ = fake_client(unpaced, rate_limits=False)
     async with client:
         await Runner(client, tmp_path / "unpaced", budget=5, progress=False).run(
-            [Job(m, CFG.strategies["chat_none"])], points(30)
+            [Job(m, CFG.strategies["text_none"])], points(30)
         )
     assert unpaced.rate_limited > 0  # without pacing, the same run hits the limit
+
+    mine = FakeOpenRouter(CFG, fail_rate=0, rate_window=0.5, rate_limit=10)
+    client, _ = fake_client(mine, rate_limits=False)
+    async with client:  # the same model through your SiliconFlow key: no new-account cap at all
+        out = await Runner(client, tmp_path / "byok", budget=5, progress=False).run(
+            [Job(CFG.model("kimi-k2.6"), CFG.strategies["text_none"])], points(30)
+        )
+    assert out[0].answered == 30 and mine.rate_limited == 0
+
+
+async def test_in_flight_budget_only_slows_a_model(tmp_path):
+    def handler(req):
+        return httpx.Response(402, json={"error": {"code": 402, "message": "in-flight requests",
+                                                   "metadata": {"reason": "in_flight_budget_exhausted"}}})
+
+    async with Client("k", transport=httpx.MockTransport(handler), sleep=nosleep, max_attempts=2) as client:
+        out = await Runner(client, tmp_path, budget=5, progress=False).run(
+            [Job(CFG.model("qwen3.5-9b"), CFG.strategies["chat"])], points(40)
+        )
+    assert out[0].errors == 40 and out[0].stopped is None
 
 
 async def test_fatal_error_propagates(tmp_path):

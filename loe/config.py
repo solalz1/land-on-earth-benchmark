@@ -51,13 +51,15 @@ class Model:
     concurrency: int = 8
     top_logprobs: int = TOP_LOGPROBS
     rpm: float | None = None  # requests per minute allowed for this model (None = no limit)
+    temperature: float | None = 0.0  # None: the provider does not let it be set, the request omits it
+    byok: bool = False  # served through your own key at the provider (OpenRouter > Integrations)
 
 
 @dataclass
 class Config:
     models: list[Model]
     strategies: dict[str, Strategy]
-    provider_concurrency: int = 32
+    provider_concurrency: int = 128
     raw: dict[str, Any] = field(default_factory=dict)
 
     def model(self, key: str) -> Model:
@@ -109,6 +111,8 @@ def load(path: Path = CONFIG) -> Config:
                 concurrency=int(m.get("concurrency", defaults.get("concurrency", 8))),
                 top_logprobs=int(m.get("top_logprobs", TOP_LOGPROBS)),
                 rpm=float(m["rpm"]) if m.get("rpm") else None,
+                temperature=None if m.get("temperature", 0.0) is None else float(m.get("temperature", 0.0)),
+                byok=bool(m.get("byok", False)),
             )
         )
     keys = [m.key for m in models]
@@ -117,6 +121,6 @@ def load(path: Path = CONFIG) -> Config:
     return Config(
         models=models,
         strategies=strategies,
-        provider_concurrency=int(defaults.get("provider_concurrency", 32)),
+        provider_concurrency=int(defaults.get("provider_concurrency", 128)),
         raw=raw,
     )

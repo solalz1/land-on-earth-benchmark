@@ -17,13 +17,15 @@ KEYS = [
     "kimi-k3",
     "llama-4-maverick",
     "gemma-4-31b",
-    "mistral-large-3",
+    "ministral-3-14b",
     "deepseek-v4-pro",
     "qwen3.6-27b",
     "glm-5.3",
     "glm-5.2",
     "minimax-m3",
     "mistral-small-4",
+    "kimi-k2.6",
+    "qwen3.5-122b-a10b",
 ]
 
 
@@ -49,7 +51,7 @@ async def test_check_finds_every_pinned_provider():
 
 
 def test_check_flags_wrong_precision_and_missing_logprobs():
-    m = CFG.model("glm-5.3")
+    m = CFG.model("qwen3.8-27b")
     ep = {"tag": "parasail/fp4", "quantization": "fp4", "provider_name": "Parasail",
           "supported_parameters": ["max_tokens"], "pricing": {"prompt": "0.0000014", "completion": "0.0000044"}}
     assert check.match(m, [ep]) is ep
@@ -70,24 +72,31 @@ async def test_pilot_picks_the_right_strategy_for_each_behaviour(tmp_path):
         "kimi-k3": "chat_none",
         "llama-4-maverick": "chat",  # no reasoning parameter
         "gemma-4-31b": "chat_none",  # markdown around the answer is fine
-        "mistral-large-3": "text",  # no logprobs at the provider
-        "deepseek-v4-pro": "chat_none",  # clean answers without logprobs are accepted
+        "ministral-3-14b": "text",  # no logprobs at the provider
+        "deepseek-v4-pro": "text_none",  # SiliconFlow: no logprobs
         "qwen3.6-27b": "chat_none",  # with 5 top logprobs instead of 20
-        "glm-5.3": "chat_low",  # reasoning mandatory
-        "glm-5.2": "chat_none",  # logprobs on some answers only: fine
+        "glm-5.3": "text_low",  # reasoning mandatory, no logprobs at SiliconFlow
+        "glm-5.2": "text_none",  # SiliconFlow: no logprobs
         "minimax-m3": "chat_low",  # reasons whatever the switch says
         "mistral-small-4": "text_none",  # hybrid: reasons unless told not to
+        "kimi-k2.6": "text_none",  # SiliconFlow: no logprobs
+        "qwen3.5-122b-a10b": "chat_none",  # Alibaba: logprobs, 5 at most
     }
     by_key = {r["key"]: r for r in report["models"]}
     assert report["valid"] == len(KEYS), [(k, r["status"]) for k, r in by_key.items() if r["status"] != "ok"]
     assert {k for k, r in by_key.items() if r["reasoning"]} == {"gpt-oss-20b", "glm-5.3", "minimax-m3"}
     assert by_key["deepseek-v4-pro"]["logprobs_share"] == 0
+    assert by_key["kimi-k3"]["logprobs_share"] == 1  # Kimi K3 at Alibaba, without the temperature it refuses
+    # your keys served exactly the models configured for them
+    assert {k for k, r in by_key.items() if r["byok_share"] == 1} == {k for k in KEYS if CFG.model(k).byok}
+    assert {k for k, r in by_key.items() if r["byok_share"] == 0} == {k for k in KEYS if not CFG.model(k).byok}
     for r in by_key.values():  # the pilot's area-weighted estimate is near the full map's accuracy
         assert abs(r["accuracy_area"] - accuracy_of(fake, CFG.model(r["key"]))) < 0.08, r["key"]
     saved = json.loads((tmp_path / "strategies.json").read_text())
     assert saved["gpt-oss-20b"] == saved["gpt-oss-20b"] | {"strategy": "chat_low", "reasoning": True}
     md = (tmp_path / "report.md").read_text()
-    assert "Reasoning is mandatory" in md and "| Kimi K3 | chat_none | aucune |" in md
+    assert "Reasoning is mandatory" in md
+    assert "| Kimi K3 | chat_none | aucune | Alibaba | oui |" in md and "| Qwen3.5-9B | chat_none | aucune | Parasail | non |" in md
     assert "Précision estimée" in md
     assert (tmp_path / "probe" / "raw" / "kimi-k3.jsonl").exists()
 
@@ -109,7 +118,7 @@ async def test_probe_finds_a_provider_that_passes_raw_prompts(tmp_path):
 
 
 async def test_run_score_and_maps(tmp_path):
-    models = [CFG.model(k) for k in ("qwen3.5-9b", "mistral-large-3")]
+    models = [CFG.model(k) for k in ("qwen3.5-9b", "ministral-3-14b")]
     jobs = [Job(models[0], CFG.strategies["chat_none"]), Job(models[1], CFG.strategies["text"])]
     fake = FakeOpenRouter(CFG, fail_rate=0.01)
     async with Client("k", transport=fake.transport(), sleep=nosleep, rate_limits=False) as c:
@@ -122,7 +131,7 @@ async def test_run_score_and_maps(tmp_path):
         assert abs(row.accuracy - expected) < 1e-9
         assert row.coverage == 1.0
         assert 0.70 < row.always_water < 0.72
-    assert board.set_index("key").loc["mistral-large-3", "logprobs_share"] == 0
+    assert board.set_index("key").loc["ministral-3-14b", "logprobs_share"] == 0
     assert not board["reasoning"].any()
     assert "| Réflexion |" in (tmp_path / "leaderboard.md").read_text()
     assert board.set_index("key").loc["qwen3.5-9b", "logprobs_share"] == 1

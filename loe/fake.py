@@ -1,13 +1,18 @@
 """A fake OpenRouter, to test the whole pipeline without spending a cent.
 
 It answers from the ground truth with model-dependent mistakes (more of them near coasts), and
-reproduces what the real pilot of 4 October 2026 ran into:
-- a provider without logprobs (Mistral), one that drops them (DeepSeek V4 Pro), one that returns
-  them for some answers only (GLM-5.2);
+reproduces what the real pilots of 4 and 5 October 2026 and the tests of 6 October ran into:
+- providers without logprobs (Mistral, SiliconFlow: `logprobs: false` in the config), one that
+  drops them (DeepSeek V4 Pro at Novita), one that returns them for some answers only (GLM-5.2
+  at Alibaba and GMICloud);
 - reasoning that cannot be switched off (gpt-oss and GLM-5.3 refuse it, MiniMax M3 ignores it),
   with raw prompts that the pinned provider does not pass through as they are;
-- a provider that refuses more than 5 top logprobs (the Qwen at Novita and Alibaba);
-- the 20 requests per minute limit of new accounts (when `rate_window` is set);
+- a provider that refuses more than 5 top logprobs (the Qwen at Novita and Alibaba), and one
+  that does not let the temperature be set (Kimi K3 at Alibaba and Moonshot);
+- your own provider keys (`byok: true`): usage.is_byok, the provider's bill in
+  cost_details.upstream_inference_cost, no OpenRouter charge, and no new-account limit;
+- the 20 requests per minute limit of new accounts on OpenRouter's credits (when
+  `rate_window` is set);
 - a model without the reasoning parameter (Llama), markdown around the answer (Gemma), the
   legacy logprobs format of raw completions (Qwen), hybrid models that reason unless told not
   to (Mistral Small 4 and Medium 3.5), transient 429/502 errors, and the endpoints/key listings.
@@ -39,7 +44,10 @@ def _err(status: int, message: str, headers: dict[str, str] | None = None) -> ht
     return httpx.Response(status, json={"error": {"code": status, "message": message}}, headers=headers)
 
 
-RATE_LIMITED = ("deepseek-v4-pro", "kimi-k3", "kimi-k2.6", "qwen3.5-397b")
+RATE_LIMITED = (
+    "deepseek-v4-pro", "kimi-k3", "kimi-k2.6", "qwen3.5-397b",  # first pilot
+    "glm-5.2", "glm-5.3", "qwen3.5-122b", "mistral-medium-3-5",  # second pilot
+)
 RAW_PASSTHROUGH = {"deepinfra"}  # fake providers that send a raw prompt to the model as it is
 
 
@@ -51,6 +59,8 @@ class FakeOpenRouter:
         fail_rate: float = 0.01,
         rate_window: float | None = None,
         rate_limit: int = 20,
+        provider_errors: dict[str, float] | None = None,
+        byok: set[tuple[str, str]] | None = None,
     ):
         self.cfg = cfg
         self.by_id = {m.id: m for m in cfg.models}
@@ -64,17 +74,23 @@ class FakeOpenRouter:
         self._recent: dict[str, deque] = defaultdict(deque)
         self.requests: list[dict[str, Any]] = []
         self.rate_limited = 0
+        # share of requests a provider refuses for its own reasons (GMICloud's "Arrearage" at the pilot)
+        self.provider_errors = {"gmicloud": 0.05} if provider_errors is None else provider_errors
+        # (model id, provider) pairs served by your own key, as configured
+        self.byok = {(m.id, m.provider) for m in cfg.models if m.byok} if byok is None else byok
 
     def transport(self) -> httpx.MockTransport:
         return httpx.MockTransport(self.handle)
 
     # ---- behaviour of each fake model -------------------------------------------------------
     @staticmethod
-    def flags(m: Model) -> dict[str, Any]:
+    def flags(m: Model, provider: str | None = None) -> dict[str, Any]:
+        provider = provider or m.provider
         return {
-            "no_logprobs": m.id.startswith("mistralai/"),
-            "drops_logprobs": "deepseek-v4-pro" in m.id,
-            "some_logprobs": "glm-5.2" in m.id,
+            "no_logprobs": not m.logprobs or m.id.startswith("mistralai/"),
+            "drops_logprobs": "deepseek-v4-pro" in m.id and provider == "novita",
+            "some_logprobs": "glm-5.2" in m.id and provider in ("alibaba", "gmicloud"),
+            "no_temperature": "kimi-k3" in m.id and provider in ("alibaba", "moonshotai"),
             "reasoning_mandatory": "gpt-oss" in m.id or "glm-5.3" in m.id,
             "always_thinks": "minimax-m3" in m.id,
             "hybrid": m.id in ("mistralai/mistral-small-2603", "mistralai/mistral-medium-3-5"),
@@ -124,6 +140,8 @@ class FakeOpenRouter:
             params += ["logprobs", "top_logprobs"]
         if not f["no_reasoning_param"]:
             params += ["reasoning", "include_reasoning"]
+        if f["no_temperature"]:
+            params.remove("temperature")
         quant = (m.quantizations or ("unknown",))[0]
         ep = {
             "name": f"{m.provider.title()} | {m.id}",
@@ -146,8 +164,9 @@ class FakeOpenRouter:
         only = prov.get("only") or []
         if len(only) != 1 or prov.get("allow_fallbacks") is not False:
             return _err(400, "fake: provider must be pinned without fallbacks")
-        f = self.flags(m)
-        if f["rate_limited"] and self.rate_window:
+        f = self.flags(m, only[0])
+        byok = (m.id, only[0]) in self.byok
+        if f["rate_limited"] and self.rate_window and not byok:  # your own key escapes the cap
             now, recent = time.monotonic(), self._recent[m.id]
             while recent and now - recent[0] > self.rate_window:
                 recent.popleft()
@@ -156,6 +175,8 @@ class FakeOpenRouter:
                 return _err(429, f"Rate limit exceeded: new-account-rpm/{m.id}. Rate limit reached: new accounts "
                             f"are limited to {self.rate_limit} requests per minute for this model.")
             recent.append(now)
+        if self.rng.random() < self.provider_errors.get(only[0], 0.0):
+            return _err(400, 'Provider returned error | {"error":{"type":"Arrearage","message":"Access denied"}}')
         if self.rng.random() < self.fail_rate:
             if self.rng.random() < 0.6:
                 return _err(429, "rate limited", {"retry-after": "0"})
@@ -163,6 +184,8 @@ class FakeOpenRouter:
         if f["no_logprobs"] and body.get("logprobs") and prov.get("require_parameters"):
             return _err(404, "No endpoints found that can handle the requested parameters.")
         if f["no_reasoning_param"] and "reasoning" in body and prov.get("require_parameters"):
+            return _err(404, "No endpoints found that can handle the requested parameters.")
+        if f["no_temperature"] and "temperature" in body and prov.get("require_parameters"):
             return _err(404, "No endpoints found that can handle the requested parameters.")
         if body.get("logprobs") and int(body.get("top_logprobs") or 0) > f["max_top_logprobs"]:
             return _err(400, "Provider returned error | Range of top_logprobs should be [0, 5]")
@@ -177,7 +200,8 @@ class FakeOpenRouter:
             thinks = reasoning_model or (f["hybrid"] and effort in (None, "low"))
         if thinks and body.get("max_tokens", 0) < 64:
             # all the budget goes to reasoning: no answer, as with a real thinking model
-            return self._reply(m, body, raw, tokens=[], p=None, reasoning="Let me think about where this is", stop="length")
+            return self._reply(m, body, raw, tokens=[], p=None, reasoning="Let me think about where this is",
+                               stop="length", byok=byok)
 
         text = body.get("prompt") if raw else body["messages"][-1]["content"]
         c = coords(text or "")
@@ -188,10 +212,11 @@ class FakeOpenRouter:
         lead = " " if _h(m.id, "space") % 2 else ""
         tokens = ["**", answer, "**"] if f["markdown"] else [lead + answer]
         reasoning = "Short reasoning about the coordinates." if thinks else None
-        return self._reply(m, body, raw, tokens=tokens, p=p, reasoning=reasoning, stop="stop", lead=lead)
+        return self._reply(m, body, raw, tokens=tokens, p=p, reasoning=reasoning, stop="stop", lead=lead, byok=byok)
 
-    def _reply(self, m: Model, body, raw: bool, tokens: list[str], p: float | None, reasoning, stop, lead=""):
-        f = self.flags(m)
+    def _reply(self, m: Model, body, raw: bool, tokens: list[str], p: float | None, reasoning, stop, lead="",
+               byok=False):
+        f = self.flags(m, body["provider"]["only"][0])
         want_lp = bool(body.get("logprobs")) and not f["drops_logprobs"]
         if f["some_logprobs"] and _h(m.id, json.dumps(body.get("messages") or body.get("prompt"))) % 5 < 2:
             want_lp = False  # this provider forgets the logprobs on about 40 % of the answers
@@ -215,7 +240,7 @@ class FakeOpenRouter:
                 else:
                     top, chosen = [(tok, -0.01)], -0.01
                 positions.append((tok, chosen, top))
-            if raw and self.flags(m)["legacy_raw"]:
+            if raw and f["legacy_raw"]:
                 logprobs = {
                     "tokens": [t for t, _, _ in positions],
                     "token_logprobs": [lp for _, lp, _ in positions],
@@ -248,7 +273,7 @@ class FakeOpenRouter:
             json={
                 "id": f"gen-{_h(body.get('model'), len(self.requests))}",
                 "model": m.id,
-                "provider": {"dekallm": "DekaLLM", "gmicloud": "GMICloud"}.get(
+                "provider": {"dekallm": "DekaLLM", "gmicloud": "GMICloud", "siliconflow": "SiliconFlow"}.get(
                     body["provider"]["only"][0], body["provider"]["only"][0].title()
                 ),
                 "choices": [choice],
@@ -256,7 +281,10 @@ class FakeOpenRouter:
                     "prompt_tokens": in_tok,
                     "completion_tokens": out_tok,
                     "total_tokens": in_tok + out_tok,
-                    "cost": cost,
+                    # with your key the provider bills you; OpenRouter charges nothing under 25 000 $ a month
+                    "cost": 0.0 if byok else cost,
+                    "is_byok": byok,
+                    "cost_details": {"upstream_inference_cost": cost if byok else None},
                     "completion_tokens_details": {"reasoning_tokens": n_reason},
                 },
             },

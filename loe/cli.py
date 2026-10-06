@@ -1,4 +1,4 @@
-"""Command line: loe check | pilot | probe | run | score | pack | status | demo.
+"""Command line: loe check | pilot | preflight | probe | run | score | pack | status | demo.
 
 Every command that can spend credits reads OPENROUTER_API_KEY from the environment; the key is
 never printed or written anywhere. `--fake` swaps OpenRouter for the in-process fake API and
@@ -105,11 +105,41 @@ def _jobs(cfg: Config, args, out: Path):
     return jobs, skipped
 
 
+async def _preflight(args, cfg: Config) -> int:
+    from loe import preflight
+
+    models = cfg.select(args.models)
+    rend = await asyncio.to_thread(_renderers, cfg, models, args.fake)
+    async with _client(cfg, args.fake) as client:
+        credits = None
+        try:
+            credits = ((await client.get("/key")).get("data") or {}).get("limit_remaining")
+        except Exception:
+            pass
+        report = await preflight.run_preflight(
+            cfg, models, client, rend, _out(args) / "pilot", args.budget, credits, args.points or preflight.N_POINTS
+        )
+    print()
+    print(preflight.markdown(report))
+    return 0 if report["ready"] else 1
+
+
 async def _run(args, cfg: Config) -> int:
+    from loe import preflight
     from loe.runner import Runner, write_meta
 
     out = _out(args)
     run_dir = out / args.run
+    if not args.no_preflight:
+        reason = preflight.gate(out / "pilot")
+        if reason:
+            print(f"Run bloqué : {reason}. (--no-preflight pour passer outre)")
+            return 1
+        pf = json.loads((out / "pilot" / "preflight.json").read_text())
+        print(
+            f"Répétition générale au vert : environ {pf['projected_usd']:.2f} $ et {preflight.duration(pf['hours'])} "
+            f"(durée fixée par {', '.join(pf['slowest'])})."
+        )
     jobs, skipped = await asyncio.to_thread(_jobs, cfg, args, out)
     if skipped:
         print("⚠ Modèles ignorés, faute de pilote réussi (make pilot, ou --force pour les lancer quand même) :")
@@ -121,7 +151,7 @@ async def _run(args, cfg: Config) -> int:
     points = grid.load()
     if args.limit:
         points = points.sample(args.limit, random_state=1).sort_values("point_id")
-    print(f"Run « {args.run} » : {len(jobs)} modèles × {len(points)} points, budget {args.budget:.2f} $ de crédits.")
+    print(f"Run « {args.run} » : {len(jobs)} modèles × {len(points)} points, budget {args.budget:.2f} $ (crédits et clés).")
     projected = sum(j.expected_usd or 0.0 for j in jobs) * len(points) / FULL
     if projected > 0.9 * args.budget:
         print(
@@ -148,7 +178,7 @@ async def _run(args, cfg: Config) -> int:
         if n < o.total:
             complete = False
         print(line)
-    print(f"Dépensé dans ce run : {runner.budget.spent:.2f} $ de crédits.")
+    print(f"Dépensé dans ce run : {runner.budget.spent:.2f} $ (crédits OpenRouter et clés fournisseurs).")
     if not complete:
         print("Run incomplet : relance la même commande pour reprendre là où il s'est arrêté.")
         return 1
@@ -193,9 +223,11 @@ async def _probe(args, cfg: Config) -> int:
 
 
 def _pack(args, cfg: Config) -> int:
-    for sub in ("pilot", "pilot/probe", "probe", args.run):
-        d = _out(args) / sub
-        for p in store.pack(d):
+    base = _out(args)
+    for raw in sorted({p.parent for p in base.rglob("raw/*.jsonl")}):
+        if not args.fake and "demo" in raw.relative_to(base).parts:
+            continue
+        for p in store.pack(raw.parent):
             print(f"compressé : {p.relative_to(config.ROOT)}")
     return 0
 
@@ -206,16 +238,23 @@ def _status(args, cfg: Config) -> int:
     if not keys:
         print(f"Aucun résultat dans {run_dir}")
         return 0
-    total_cost = 0.0
-    print(f"{'Modèle':<22}{'Faits':>14}{'Erreurs':>9}{'Coût':>10}")
+    total_cost, by_key = 0.0, 0.0
+    print(f"{'Modèle':<22}{'Faits':>14}{'Erreurs':>9}{'Coût':>10}  Payé par")
     for key in keys:
         recs = store.read(run_dir, key)
         done = len(store.done_ids(store.current(recs)))
         errs = sum(1 for r in recs if not r.get("ok"))
-        cost = sum(r.get("cost") or 0.0 for r in recs)
+        cost = sum(store.charged(r) for r in recs)
+        mine = sum(store.charged(r) for r in recs if store.is_byok(r))
         total_cost += cost
-        print(f"{key:<22}{done:>8}/{FULL:<5}{errs:>9}{cost:>9.3f} $")
-    print(f"Total : {total_cost:.2f} $ de crédits (≈ {total_cost * (1 + CREDIT_FEE) * EUR_PER_USD:.2f} €)")
+        by_key += mine
+        payer = "ta clé" if mine and mine >= 0.5 * cost else "OpenRouter"
+        print(f"{key:<22}{done:>8}/{FULL:<5}{errs:>9}{cost:>9.3f} $  {payer}")
+    credits = total_cost - by_key
+    print(
+        f"Total : {total_cost:.2f} $, dont {credits:.2f} $ de crédits OpenRouter "
+        f"(≈ {credits * (1 + CREDIT_FEE) * EUR_PER_USD:.2f} €) et {by_key:.2f} $ facturés par tes clés fournisseurs"
+    )
     return 0
 
 
@@ -225,6 +264,7 @@ def _demo(args, cfg: Config) -> int:
     steps = [
         ("check", lambda: asyncio.run(_check(args, cfg))),
         ("pilot", lambda: asyncio.run(_pilot(args, cfg))),
+        ("preflight", lambda: asyncio.run(_preflight(argparse.Namespace(**{**vars(args), "points": 40}), cfg))),
         ("run", lambda: asyncio.run(_run(args, cfg))),
         ("score", lambda: _score(args, cfg)),
     ]
@@ -241,7 +281,7 @@ def parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     def common(s, run=True):
-        s.add_argument("--models", help="clés séparées par des virgules (défaut : les 20)")
+        s.add_argument("--models", help="clés séparées par des virgules (défaut : les 24)")
         s.add_argument("--fake", action="store_true", help="fausse API, résultats dans results/demo/")
         if run:
             s.add_argument("--run", default="tweet", help="nom du dossier de run (défaut : tweet)")
@@ -250,7 +290,10 @@ def parser() -> argparse.ArgumentParser:
     common(sub.add_parser("check", help="clé, fournisseurs, précisions, prix : gratuit"), run=False)
     s = common(sub.add_parser("pilot", help="choisit la stratégie de chaque modèle, 200 points"), run=False)
     s.add_argument("--points", type=int, default=200)
-    s.add_argument("--budget", type=float, default=1.0, help="crédits max du pilote, en $ (défaut 1)")
+    s.add_argument("--budget", type=float, default=2.0, help="coût max du pilote, en $ (défaut 2)")
+    s = common(sub.add_parser("preflight", help="répétition générale : 300 nouveaux points par modèle aux réglages du run, feu vert ou rouge"), run=False)
+    s.add_argument("--budget", type=float, default=22.0, help="budget du run à vérifier, en $ (défaut 22)")
+    s.add_argument("--points", type=int, default=None, help="points par modèle (défaut 300)")
     s = sub.add_parser("probe", help="essaie un modèle chez d'autres fournisseurs, 8 points par essai")
     s.add_argument("--model", required=True, help="clé du modèle (configs/models.yaml)")
     s.add_argument("--provider", required=True, help="fournisseurs séparés par des virgules")
@@ -259,10 +302,11 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--fake", action="store_true", help="fausse API, résultats dans results/demo/")
     s.add_argument("--run", default="tweet", help=argparse.SUPPRESS)
     s = common(sub.add_parser("run", help="les 16 200 points sur chaque modèle, reprend après coupure"))
-    s.add_argument("--budget", type=float, default=18.0, help="crédits max du run, en $ (défaut 18)")
+    s.add_argument("--budget", type=float, default=22.0, help="coût max du run, crédits et clés fournisseurs, en $ (défaut 22)")
     s.add_argument("--cap", type=float, default=2.5, help="arrête un modèle dont le coût projeté dépasse cap × estimation")
     s.add_argument("--strategy", help="force une stratégie pour tous les modèles choisis")
     s.add_argument("--force", action="store_true", help="lance aussi les modèles dont le pilote est « à vérifier »")
+    s.add_argument("--no-preflight", action="store_true", help="lance le run sans répétition générale au vert")
     s.add_argument("--concurrency", type=int, help="requêtes simultanées par modèle (défaut : config)")
     s.add_argument("--limit", type=int, help="n'interroger qu'un échantillon de N points (tests)")
     s = common(sub.add_parser("score", help="classement et cartes"))
@@ -271,18 +315,33 @@ def parser() -> argparse.ArgumentParser:
     common(sub.add_parser("status", help="avancement et coût du run"))
     s = common(sub.add_parser("demo", help="tout le pipeline contre la fausse API"))
     s.add_argument("--points", type=int, default=200)
-    s.add_argument("--budget", type=float, default=18.0)
+    s.add_argument("--budget", type=float, default=22.0)
     s.add_argument("--cap", type=float, default=2.5)
     s.add_argument("--strategy", default=None)
     s.add_argument("--force", action="store_true")
+    s.add_argument("--no-preflight", action="store_true")
     s.add_argument("--concurrency", type=int, default=None)
     s.add_argument("--limit", type=int, default=None)
     s.add_argument("--no-maps", action="store_true")
     return p
 
 
+def raise_open_files(target: int = 4096) -> None:
+    """Hundreds of requests run at once, each with its socket: macOS allows only 256 open files by default."""
+    try:
+        import resource
+
+        soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+        want = target if hard == resource.RLIM_INFINITY else min(target, hard)
+        if soft != resource.RLIM_INFINITY and soft < want:
+            resource.setrlimit(resource.RLIMIT_NOFILE, (want, hard))
+    except (ImportError, ValueError, OSError):
+        pass  # Windows, or a system that refuses: the default limit stays
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    raise_open_files()
     cfg = config.load()
     try:
         if args.cmd == "check":
@@ -291,6 +350,8 @@ def main(argv: list[str] | None = None) -> int:
             return asyncio.run(_pilot(args, cfg))
         if args.cmd == "probe":
             return asyncio.run(_probe(args, cfg))
+        if args.cmd == "preflight":
+            return asyncio.run(_preflight(args, cfg))
         if args.cmd == "run":
             return asyncio.run(_run(args, cfg))
         if args.cmd == "score":
