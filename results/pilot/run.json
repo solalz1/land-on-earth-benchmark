@@ -897,6 +897,253 @@
           "last_error": null
         }
       ]
+    },
+    {
+      "finished": "2026-10-06T15:08:12+00:00",
+      "kind": "pilot",
+      "points": 200,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k3",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.3",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.2",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "minimax-m3",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-122b-a10b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.6-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-120b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-3b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-8b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-14b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-small-4",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-medium-3.5",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        }
+      ]
     }
   ],
   "models": {
@@ -1032,9 +1279,9 @@
       "quantizations": [],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null,
-      "concurrency": 8,
-      "byok": false
+      "rpm": 550.0,
+      "concurrency": 12,
+      "byok": true
     },
     "qwen3.8-27b": {
       "id": "qwen/qwen3.8-27b",
@@ -1081,7 +1328,7 @@
       "strategy": "chat_low",
       "reasoning": true,
       "rpm": null,
-      "concurrency": 24,
+      "concurrency": 40,
       "byok": false
     },
     "gpt-oss-20b": {

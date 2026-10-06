@@ -149,7 +149,7 @@
           "ok"
         ]
       ],
-      "estimate_usd": 0.7274,
+      "estimate_usd": 1.4548,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
@@ -169,7 +169,7 @@
       "reasoning_tokens": 6617,
       "median_latency_s": 2.515,
       "byok_share": 1.0,
-      "status": "à vérifier : coût projeté 3.34 $ contre 0.73 $ estimé"
+      "status": "ok"
     },
     {
       "key": "glm-5.2",
@@ -183,7 +183,7 @@
           "ok"
         ]
       ],
-      "estimate_usd": 0.7274,
+      "estimate_usd": 1.4548,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
@@ -854,10 +854,10 @@
       "status": "ok"
     }
   ],
-  "valid": 23,
+  "valid": 24,
   "total": 24,
   "projected_usd": 16.52,
   "projected_eur": 15.52,
-  "credits_left_usd": 39.374465772,
+  "credits_left_usd": 39.275898002,
   "pilot_cost_usd": 0.2087
 }

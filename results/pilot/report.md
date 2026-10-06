@@ -1,6 +1,6 @@
 # Pilote Land on Earth
 
-23 modèles valides sur 24, 200 points chacun. Coût du pilote : 0.209 $. Projection pour le run complet (16 200 points) : 16.52 $, crédits OpenRouter et clés fournisseurs compris.
+24 modèles valides sur 24, 200 points chacun. Coût du pilote : 0.209 $. Projection pour le run complet (16 200 points) : 16.52 $, crédits OpenRouter et clés fournisseurs compris.
 
 Précision estimée : la précision pondérée par la surface que le modèle aurait sur la carte complète, estimée à partir des 200 points (± = intervalle à 90 %). Ce n'est pas encore le score final.
 
@@ -10,7 +10,7 @@ Précision estimée : la précision pondérée par la surface que le modèle aur
 | DeepSeek V4 Pro | text_none | aucune | SiliconFlow | oui | 82.2% ± 4.7 | 100% | 0% | 0.76 $ | ok |
 | Kimi K3 | chat_none | aucune | Alibaba | oui | 89.8% ± 4.7 | 100% | 100% | 4.09 $ | ok |
 | Kimi K2.6 | text_none | aucune | SiliconFlow | oui | 84.0% ± 3.9 | 100% | 0% | 0.48 $ | ok |
-| GLM-5.3 | text_low | minimale | SiliconFlow | oui | 87.3% ± 4.2 | 100% | 0% | 3.34 $ | à vérifier : coût projeté 3.34 $ contre 0.73 $ estimé |
+| GLM-5.3 | text_low | minimale | SiliconFlow | oui | 87.3% ± 4.2 | 100% | 0% | 3.34 $ | ok |
 | GLM-5.2 | text_none | aucune | SiliconFlow | oui | 75.6% ± 5.5 | 100% | 0% | 0.77 $ | ok |
 | MiniMax M3 | chat_low | minimale | Parasail | — | 91.8% ± 3.4 | 100% | 100% | 2.10 $ | ok |
 | Qwen3.5-397B-A17B | chat_none | aucune | Alibaba | oui | 85.7% ± 4.2 | 100% | 100% | 0.27 $ | ok |

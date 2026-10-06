@@ -30,7 +30,7 @@
   "glm-5.3": {
     "strategy": "text_low",
     "reasoning": true,
-    "status": "à vérifier : coût projeté 3.34 $ contre 0.73 $ estimé",
+    "status": "ok",
     "projected_usd": 3.3375,
     "provider": "siliconflow"
   },
