@@ -650,6 +650,253 @@
           "last_error": null
         }
       ]
+    },
+    {
+      "finished": "2026-10-06T14:28:48+00:00",
+      "kind": "pilot",
+      "points": 200,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.00933639599999999,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k3",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.05382000000000016,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.005936400000000025,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.3",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.04120399999999999,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.2",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.00956000000000001,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "minimax-m3",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.0035326200000000006,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-122b-a10b",
+          "total": 200,
+          "done_before": 0,
+          "answered": 200,
+          "errors": 0,
+          "cost": 0.002459080000000002,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.6-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-120b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-3b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-8b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-14b",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-small-4",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-medium-3.5",
+          "total": 200,
+          "done_before": 200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        }
+      ]
     }
   ],
   "models": {
@@ -661,57 +908,67 @@
       ],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
     },
     "deepseek-v4-pro": {
       "id": "deepseek/deepseek-v4-pro",
-      "provider": "novita",
+      "provider": "siliconflow",
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_none",
+      "strategy": "text_none",
       "reasoning": false,
-      "rpm": 19.0
+      "rpm": 480.0,
+      "concurrency": 24,
+      "byok": true
     },
     "kimi-k3": {
       "id": "moonshotai/kimi-k3",
-      "provider": "parasail",
-      "quantizations": [
-        "fp4"
-      ],
+      "provider": "alibaba",
+      "quantizations": [],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": 19.0
+      "rpm": null,
+      "concurrency": 12,
+      "byok": true
     },
     "kimi-k2.6": {
       "id": "moonshotai/kimi-k2.6",
-      "provider": "parasail",
+      "provider": "siliconflow",
       "quantizations": [
-        "int4"
+        "fp8"
       ],
-      "strategy": "chat_none",
+      "strategy": "text_none",
       "reasoning": false,
-      "rpm": 19.0
+      "rpm": 480.0,
+      "concurrency": 12,
+      "byok": true
     },
     "glm-5.3": {
       "id": "z-ai/glm-5.3",
-      "provider": "parasail",
+      "provider": "siliconflow",
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_low",
+      "strategy": "text_low",
       "reasoning": true,
-      "rpm": null
+      "rpm": 480.0,
+      "concurrency": 20,
+      "byok": true
     },
     "glm-5.2": {
       "id": "z-ai/glm-5.2",
-      "provider": "gmicloud",
+      "provider": "siliconflow",
       "quantizations": [
         "fp8"
       ],
-      "strategy": "chat_none",
+      "strategy": "text_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": 480.0,
+      "concurrency": 20,
+      "byok": true
     },
     "minimax-m3": {
       "id": "minimax/minimax-m3",
@@ -721,27 +978,29 @@
       ],
       "strategy": "chat_low",
       "reasoning": true,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
     },
     "qwen3.5-397b-a17b": {
       "id": "qwen/qwen3.5-397b-a17b",
-      "provider": "parasail",
-      "quantizations": [
-        "fp8"
-      ],
+      "provider": "alibaba",
+      "quantizations": [],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": 19.0
+      "rpm": 550.0,
+      "concurrency": 12,
+      "byok": true
     },
     "qwen3.5-122b-a10b": {
       "id": "qwen/qwen3.5-122b-a10b",
-      "provider": "novita",
-      "quantizations": [
-        "bf16"
-      ],
+      "provider": "alibaba",
+      "quantizations": [],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": 550.0,
+      "concurrency": 12,
+      "byok": true
     },
     "qwen3.5-27b": {
       "id": "qwen/qwen3.5-27b",
@@ -751,7 +1010,9 @@
       ],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
     },
     "qwen3.5-9b": {
       "id": "qwen/qwen3.5-9b",
@@ -761,7 +1022,9 @@
       ],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
     },
     "qwen3.6-27b": {
       "id": "qwen/qwen3.6-27b",
@@ -769,7 +1032,9 @@
       "quantizations": [],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 8,
+      "byok": false
     },
     "qwen3.8-27b": {
       "id": "qwen/qwen3.8-27b",
@@ -779,7 +1044,9 @@
       ],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
     },
     "gemma-4-31b": {
       "id": "google/gemma-4-31b-it",
@@ -789,7 +1056,9 @@
       ],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
     },
     "gemma-4-26b-a4b": {
       "id": "google/gemma-4-26b-a4b-it",
@@ -799,7 +1068,9 @@
       ],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
     },
     "gpt-oss-120b": {
       "id": "openai/gpt-oss-120b",
@@ -809,7 +1080,9 @@
       ],
       "strategy": "chat_low",
       "reasoning": true,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
     },
     "gpt-oss-20b": {
       "id": "openai/gpt-oss-20b",
@@ -819,7 +1092,9 @@
       ],
       "strategy": "chat_low",
       "reasoning": true,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
     },
     "llama-4-maverick": {
       "id": "meta-llama/llama-4-maverick",
@@ -829,7 +1104,9 @@
       ],
       "strategy": "chat",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
     },
     "nemotron-3-super": {
       "id": "nvidia/nemotron-3-super-120b-a12b",
@@ -839,15 +1116,9 @@
       ],
       "strategy": "chat_none",
       "reasoning": false,
-      "rpm": null
-    },
-    "mistral-large-3": {
-      "id": "mistralai/mistral-large-2512",
-      "provider": "mistral",
-      "quantizations": [],
-      "strategy": "text",
-      "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
     },
     "ministral-3-3b": {
       "id": "mistralai/ministral-3b-2512",
@@ -855,7 +1126,9 @@
       "quantizations": [],
       "strategy": "text",
       "reasoning": false,
-      "rpm": null
+      "rpm": null,
+      "concurrency": 8,
+      "byok": true
     },
     "ministral-3-8b": {
       "id": "mistralai/ministral-8b-2512",
@@ -863,7 +1136,9 @@
       "quantizations": [],
       "strategy": "text",
       "reasoning": false,
-      "rpm": null
+      "rpm": 1400.0,
+      "concurrency": 8,
+      "byok": true
     },
     "ministral-3-14b": {
       "id": "mistralai/ministral-14b-2512",
@@ -871,7 +1146,9 @@
       "quantizations": [],
       "strategy": "text",
       "reasoning": false,
-      "rpm": null
+      "rpm": 230.0,
+      "concurrency": 8,
+      "byok": true
     },
     "mistral-small-4": {
       "id": "mistralai/mistral-small-2603",
@@ -879,10 +1156,22 @@
       "quantizations": [],
       "strategy": "text",
       "reasoning": false,
-      "rpm": null
+      "rpm": 950.0,
+      "concurrency": 8,
+      "byok": true
     },
     "mistral-medium-3.5": {
       "id": "mistralai/mistral-medium-3-5",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 8,
+      "byok": true
+    },
+    "mistral-large-3": {
+      "id": "mistralai/mistral-large-2512",
       "provider": "mistral",
       "quantizations": [],
       "strategy": "text",

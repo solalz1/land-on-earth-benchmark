@@ -2,8 +2,8 @@
   "key": {
     "label": "sk-or-v1-1c3...605",
     "limit": 40,
-    "usage": 0.603967824,
-    "limit_remaining": 39.396032176
+    "usage": 0.625534228,
+    "limit_remaining": 39.374465772
   },
   "models": [
     {
@@ -15,88 +15,81 @@
       "quantization": "fp8",
       "reasoning_param": true,
       "logprobs": true,
-      "price_in": 0.24,
-      "price_out": 0.96,
-      "cost_usd": 0.2527,
+      "price_in": 0.195,
+      "price_out": 0.78,
+      "cost_usd": 0.2053,
       "problems": [],
       "raw_template": true
     },
     {
       "key": "deepseek-v4-pro",
       "name": "DeepSeek V4 Pro",
-      "provider": "novita",
-      "endpoint": "Novita | deepseek/deepseek-v4-pro-20260423",
-      "tag": "novita/fp8",
+      "provider": "siliconflow",
+      "endpoint": "SiliconFlow | deepseek/deepseek-v4-pro-20260423",
+      "tag": "siliconflow/fp8",
       "quantization": "fp8",
       "reasoning_param": true,
-      "logprobs": true,
-      "price_in": 1.6,
-      "price_out": 3.2,
-      "cost_usd": 1.633,
-      "problems": [],
-      "raw_template": false
+      "logprobs": false,
+      "price_in": 1.5016,
+      "price_out": 3.135,
+      "cost_usd": 1.5347,
+      "problems": []
     },
     {
       "key": "kimi-k3",
       "name": "Kimi K3",
-      "provider": "parasail",
-      "endpoint": "Parasail | moonshotai/kimi-k3-20260715",
-      "tag": "parasail/fp4",
-      "quantization": "fp4",
+      "provider": "alibaba",
+      "endpoint": "Alibaba | moonshotai/kimi-k3-20260715",
+      "tag": "alibaba",
+      "quantization": "unknown",
       "reasoning_param": true,
       "logprobs": true,
-      "price_in": 3.0,
-      "price_out": 15.0,
-      "cost_usd": 3.2076,
-      "problems": [
-        "statut -2"
-      ],
-      "raw_template": false
+      "price_in": 3.45,
+      "price_out": 17.25,
+      "cost_usd": 3.6887,
+      "problems": []
     },
     {
       "key": "kimi-k2.6",
       "name": "Kimi K2.6",
-      "provider": "parasail",
-      "endpoint": "Parasail | moonshotai/kimi-k2.6-20260420",
-      "tag": "parasail/int4",
-      "quantization": "int4",
+      "provider": "siliconflow",
+      "endpoint": "SiliconFlow | moonshotai/kimi-k2.6-20260420",
+      "tag": "siliconflow/fp8",
+      "quantization": "fp8",
       "reasoning_param": true,
-      "logprobs": true,
-      "price_in": 0.75,
-      "price_out": 3.5,
-      "cost_usd": 0.7978,
-      "problems": [],
-      "raw_template": true
+      "logprobs": false,
+      "price_in": 0.77,
+      "price_out": 3.4,
+      "cost_usd": 0.816,
+      "problems": []
     },
     {
       "key": "glm-5.3",
       "name": "GLM-5.3",
-      "provider": "parasail",
-      "endpoint": "Parasail | z-ai/glm-5.3-20260816",
-      "tag": "parasail/fp8",
+      "provider": "siliconflow",
+      "endpoint": "SiliconFlow | z-ai/glm-5.3-20260816",
+      "tag": "siliconflow/fp8",
       "quantization": "fp8",
       "reasoning_param": true,
-      "logprobs": true,
-      "price_in": 1.4,
-      "price_out": 4.4,
-      "cost_usd": 1.4548,
-      "problems": [],
-      "raw_template": true
+      "logprobs": false,
+      "price_in": 0.7,
+      "price_out": 2.2,
+      "cost_usd": 0.7274,
+      "problems": []
     },
     {
       "key": "glm-5.2",
       "name": "GLM-5.2",
-      "provider": "gmicloud",
-      "endpoint": "GMICloud | z-ai/glm-5.2-20260616",
-      "tag": "gmicloud/fp8",
+      "provider": "siliconflow",
+      "endpoint": "SiliconFlow | z-ai/glm-5.2-20260616",
+      "tag": "siliconflow/fp8",
       "quantization": "fp8",
       "reasoning_param": true,
-      "logprobs": true,
-      "price_in": 1.4,
-      "price_out": 4.4,
-      "cost_usd": 1.4548,
-      "problems": [],
-      "raw_template": true
+      "logprobs": false,
+      "price_in": 0.7,
+      "price_out": 2.2,
+      "cost_usd": 0.7274,
+      "problems": []
     },
     {
       "key": "minimax-m3",
@@ -116,32 +109,30 @@
     {
       "key": "qwen3.5-397b-a17b",
       "name": "Qwen3.5-397B-A17B",
-      "provider": "parasail",
-      "endpoint": "Parasail | qwen/qwen3.5-397b-a17b-20260216",
-      "tag": "parasail/fp8",
-      "quantization": "fp8",
+      "provider": "alibaba",
+      "endpoint": "Alibaba | qwen/qwen3.5-397b-a17b-20260216",
+      "tag": "alibaba",
+      "quantization": "unknown",
       "reasoning_param": true,
       "logprobs": true,
-      "price_in": 0.5,
-      "price_out": 3.6,
-      "cost_usd": 0.5524,
-      "problems": [],
-      "raw_template": true
+      "price_in": 0.39,
+      "price_out": 2.34,
+      "cost_usd": 0.4233,
+      "problems": []
     },
     {
       "key": "qwen3.5-122b-a10b",
       "name": "Qwen3.5-122B-A10B",
-      "provider": "novita",
-      "endpoint": "Novita | qwen/qwen3.5-122b-a10b-20260224",
-      "tag": "novita/bf16",
-      "quantization": "bf16",
+      "provider": "alibaba",
+      "endpoint": "Alibaba | qwen/qwen3.5-122b-a10b-20260224",
+      "tag": "alibaba",
+      "quantization": "unknown",
       "reasoning_param": true,
       "logprobs": true,
-      "price_in": 0.4,
-      "price_out": 3.2,
-      "cost_usd": 0.4471,
-      "problems": [],
-      "raw_template": true
+      "price_in": 0.26,
+      "price_out": 2.08,
+      "cost_usd": 0.2906,
+      "problems": []
     },
     {
       "key": "qwen3.5-27b",
@@ -216,7 +207,7 @@
       "price_out": 0.4,
       "cost_usd": 0.1448,
       "problems": [
-        "statut -2"
+        "statut -5"
       ],
       "raw_template": true
     },
@@ -296,20 +287,6 @@
       "raw_template": true
     },
     {
-      "key": "mistral-large-3",
-      "name": "Mistral Large 3",
-      "provider": "mistral",
-      "endpoint": "Mistral | mistralai/mistral-large-2512",
-      "tag": "mistral/zdr",
-      "quantization": "unknown",
-      "reasoning_param": false,
-      "logprobs": false,
-      "price_in": 0.5,
-      "price_out": 1.5,
-      "cost_usd": 0.5184,
-      "problems": []
-    },
-    {
       "key": "ministral-3-3b",
       "name": "Ministral 3 3B",
       "provider": "mistral",
@@ -380,7 +357,7 @@
       "problems": []
     }
   ],
-  "total_usd": 14.87,
-  "total_eur_with_fee": 13.96,
+  "total_usd": 12.97,
+  "total_eur_with_fee": 12.18,
   "ok": false
 }

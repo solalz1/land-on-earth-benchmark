@@ -32,45 +32,47 @@
       "projected_usd": 0.1283,
       "reasoning_tokens": 0,
       "median_latency_s": 2.015,
+      "byok_share": null,
       "status": "ok"
     },
     {
       "key": "deepseek-v4-pro",
       "name": "DeepSeek V4 Pro",
-      "provider": "novita",
-      "strategy": "chat_none",
+      "provider": "siliconflow",
+      "strategy": "text_none",
       "reasoning": false,
       "tried": [
         [
-          "chat_none",
+          "text_none",
           "ok"
         ]
       ],
-      "estimate_usd": 1.633,
+      "estimate_usd": 1.5347,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
-      "accuracy_sample": 0.555,
-      "accuracy_area": 0.7655,
-      "accuracy_area_halfwidth": 0.0468,
-      "logprobs_share": 0.035,
-      "median_mass": 1.0,
+      "accuracy_sample": 0.645,
+      "accuracy_area": 0.822,
+      "accuracy_area_halfwidth": 0.0474,
+      "logprobs_share": 0.0,
+      "median_mass": null,
       "providers": [
-        "Novita"
+        "SiliconFlow"
       ],
       "errors": 0,
       "requests": 200,
-      "cost_usd": 0.00992,
-      "cost_per_request_usd": 4.96e-05,
-      "projected_usd": 0.8035,
+      "cost_usd": 0.009336,
+      "cost_per_request_usd": 4.668198e-05,
+      "projected_usd": 0.7562,
       "reasoning_tokens": 0,
-      "median_latency_s": 25.225,
+      "median_latency_s": 2.859,
+      "byok_share": 1.0,
       "status": "ok"
     },
     {
       "key": "kimi-k3",
       "name": "Kimi K3",
-      "provider": "parasail",
+      "provider": "alibaba",
       "strategy": "chat_none",
       "reasoning": false,
       "tried": [
@@ -79,144 +81,128 @@
           "ok"
         ]
       ],
-      "estimate_usd": 3.2076,
+      "estimate_usd": 3.6887,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
-      "accuracy_sample": 0.785,
-      "accuracy_area": 0.8483,
-      "accuracy_area_halfwidth": 0.0519,
+      "accuracy_sample": 0.825,
+      "accuracy_area": 0.8981,
+      "accuracy_area_halfwidth": 0.0472,
       "logprobs_share": 1.0,
-      "median_mass": 0.9812,
+      "median_mass": 0.981,
       "providers": [
-        "Parasail"
+        "Alibaba"
       ],
       "errors": 0,
       "requests": 213,
-      "cost_usd": 0.0516,
-      "cost_per_request_usd": 0.00024225352112676053,
-      "projected_usd": 3.9245,
+      "cost_usd": 0.05382,
+      "cost_per_request_usd": 0.0002526760563380281,
+      "projected_usd": 4.0934,
       "reasoning_tokens": 0,
-      "median_latency_s": 1.521,
+      "median_latency_s": 0.883,
+      "byok_share": 1.0,
       "status": "ok"
     },
     {
       "key": "kimi-k2.6",
       "name": "Kimi K2.6",
-      "provider": "parasail",
-      "strategy": "chat_none",
+      "provider": "siliconflow",
+      "strategy": "text_none",
       "reasoning": false,
       "tried": [
         [
-          "chat_none",
+          "text_none",
           "ok"
         ]
       ],
-      "estimate_usd": 0.7978,
+      "estimate_usd": 0.816,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
-      "accuracy_sample": 0.69,
-      "accuracy_area": 0.874,
-      "accuracy_area_halfwidth": 0.0343,
-      "logprobs_share": 1.0,
-      "median_mass": 0.9996,
+      "accuracy_sample": 0.65,
+      "accuracy_area": 0.8403,
+      "accuracy_area_halfwidth": 0.0394,
+      "logprobs_share": 0.0,
+      "median_mass": null,
       "providers": [
-        "Parasail"
+        "SiliconFlow"
       ],
       "errors": 0,
-      "requests": 216,
-      "cost_usd": 0.006443,
-      "cost_per_request_usd": 2.9830370370370367e-05,
-      "projected_usd": 0.4833,
+      "requests": 200,
+      "cost_usd": 0.005936,
+      "cost_per_request_usd": 2.9682e-05,
+      "projected_usd": 0.4808,
       "reasoning_tokens": 0,
-      "median_latency_s": 0.757,
+      "median_latency_s": 1.451,
+      "byok_share": 1.0,
       "status": "ok"
     },
     {
       "key": "glm-5.3",
       "name": "GLM-5.3",
-      "provider": "parasail",
-      "strategy": "chat_low",
+      "provider": "siliconflow",
+      "strategy": "text_low",
       "reasoning": true,
       "tried": [
         [
-          "chat_none",
-          "8/8 erreurs — HTTP 400: Reasoning is mandatory for this endpoint and cannot be disabled."
-        ],
-        [
-          "chat",
-          "réponse illisible (fin : length) : ''"
-        ],
-        [
-          "raw",
-          "réponse illisible (fin : length) : ''"
-        ],
-        [
-          "text_none",
-          "8/8 erreurs — HTTP 400: Reasoning is mandatory for this endpoint and cannot be disabled."
-        ],
-        [
-          "text",
-          "réponse illisible (fin : length) : ''"
-        ],
-        [
-          "chat_low",
+          "text_low",
           "ok"
         ]
       ],
-      "estimate_usd": 1.4548,
+      "estimate_usd": 0.7274,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
-      "accuracy_sample": 0.815,
-      "accuracy_area": 0.8487,
-      "accuracy_area_halfwidth": 0.0468,
-      "logprobs_share": 0.15,
-      "median_mass": 0.8933,
+      "accuracy_sample": 0.835,
+      "accuracy_area": 0.8728,
+      "accuracy_area_halfwidth": 0.0417,
+      "logprobs_share": 0.0,
+      "median_mass": null,
       "providers": [
-        "Parasail"
+        "SiliconFlow"
       ],
       "errors": 0,
-      "requests": 220,
-      "cost_usd": 0.046163,
-      "cost_per_request_usd": 0.00020983090909090907,
-      "projected_usd": 3.3993,
-      "reasoning_tokens": 6227,
-      "median_latency_s": 2.243,
-      "status": "ok"
+      "requests": 200,
+      "cost_usd": 0.041204,
+      "cost_per_request_usd": 0.00020601999999999998,
+      "projected_usd": 3.3375,
+      "reasoning_tokens": 6617,
+      "median_latency_s": 2.515,
+      "byok_share": 1.0,
+      "status": "à vérifier : coût projeté 3.34 $ contre 0.73 $ estimé"
     },
     {
       "key": "glm-5.2",
       "name": "GLM-5.2",
-      "provider": "gmicloud",
-      "strategy": "chat_none",
+      "provider": "siliconflow",
+      "strategy": "text_none",
       "reasoning": false,
       "tried": [
         [
-          "chat_none",
+          "text_none",
           "ok"
         ]
       ],
-      "estimate_usd": 1.4548,
+      "estimate_usd": 0.7274,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
-      "accuracy_sample": 0.715,
-      "accuracy_area": 0.7158,
-      "accuracy_area_halfwidth": 0.0631,
-      "logprobs_share": 0.295,
-      "median_mass": 0.9992,
+      "accuracy_sample": 0.725,
+      "accuracy_area": 0.7561,
+      "accuracy_area_halfwidth": 0.0552,
+      "logprobs_share": 0.0,
+      "median_mass": null,
       "providers": [
-        "GMICloud"
+        "SiliconFlow"
       ],
       "errors": 0,
-      "requests": 215,
+      "requests": 200,
       "cost_usd": 0.00956,
-      "cost_per_request_usd": 4.446511627906977e-05,
-      "projected_usd": 0.7203,
+      "cost_per_request_usd": 4.78e-05,
+      "projected_usd": 0.7744,
       "reasoning_tokens": 0,
-      "median_latency_s": 2.231,
+      "median_latency_s": 2.405,
+      "byok_share": 1.0,
       "status": "ok"
     },
     {
@@ -270,12 +256,13 @@
       "projected_usd": 2.1027,
       "reasoning_tokens": 10390,
       "median_latency_s": 0.989,
+      "byok_share": null,
       "status": "ok"
     },
     {
       "key": "qwen3.5-397b-a17b",
       "name": "Qwen3.5-397B-A17B",
-      "provider": "parasail",
+      "provider": "alibaba",
       "strategy": "chat_none",
       "reasoning": false,
       "tried": [
@@ -284,31 +271,32 @@
           "ok"
         ]
       ],
-      "estimate_usd": 0.5524,
+      "estimate_usd": 0.4233,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
-      "accuracy_sample": 0.72,
-      "accuracy_area": 0.8594,
-      "accuracy_area_halfwidth": 0.0478,
+      "accuracy_sample": 0.735,
+      "accuracy_area": 0.8569,
+      "accuracy_area_halfwidth": 0.0425,
       "logprobs_share": 1.0,
-      "median_mass": 0.9993,
+      "median_mass": 0.9991,
       "providers": [
-        "Parasail"
+        "Alibaba"
       ],
       "errors": 0,
       "requests": 215,
-      "cost_usd": 0.005369,
-      "cost_per_request_usd": 2.4972093023255813e-05,
-      "projected_usd": 0.4045,
+      "cost_usd": 0.003533,
+      "cost_per_request_usd": 1.643079069767442e-05,
+      "projected_usd": 0.2662,
       "reasoning_tokens": 0,
-      "median_latency_s": 1.031,
+      "median_latency_s": 1.298,
+      "byok_share": 0.99,
       "status": "ok"
     },
     {
       "key": "qwen3.5-122b-a10b",
       "name": "Qwen3.5-122B-A10B",
-      "provider": "novita",
+      "provider": "alibaba",
       "strategy": "chat_none",
       "reasoning": false,
       "tried": [
@@ -317,7 +305,7 @@
           "ok"
         ]
       ],
-      "estimate_usd": 0.4471,
+      "estimate_usd": 0.2906,
       "points": 200,
       "answered": 200,
       "coverage": 1.0,
@@ -327,15 +315,16 @@
       "logprobs_share": 1.0,
       "median_mass": 0.999,
       "providers": [
-        "Novita"
+        "Alibaba"
       ],
       "errors": 0,
       "requests": 214,
-      "cost_usd": 0.003783,
-      "cost_per_request_usd": 1.7678504672897198e-05,
-      "projected_usd": 0.2864,
+      "cost_usd": 0.002459,
+      "cost_per_request_usd": 1.1491028037383178e-05,
+      "projected_usd": 0.1862,
       "reasoning_tokens": 0,
-      "median_latency_s": 1.162,
+      "median_latency_s": 1.291,
+      "byok_share": 1.0,
       "status": "ok"
     },
     {
@@ -369,6 +358,7 @@
       "projected_usd": 0.2687,
       "reasoning_tokens": 0,
       "median_latency_s": 1.067,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -402,6 +392,7 @@
       "projected_usd": 0.0717,
       "reasoning_tokens": 0,
       "median_latency_s": 0.79,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -435,6 +426,7 @@
       "projected_usd": 0.3302,
       "reasoning_tokens": 0,
       "median_latency_s": 0.548,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -468,6 +460,7 @@
       "projected_usd": 0.224,
       "reasoning_tokens": 0,
       "median_latency_s": 0.69,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -501,6 +494,7 @@
       "projected_usd": 0.1043,
       "reasoning_tokens": 0,
       "median_latency_s": 1.583,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -534,6 +528,7 @@
       "projected_usd": 0.0978,
       "reasoning_tokens": 0,
       "median_latency_s": 0.788,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -575,6 +570,7 @@
       "projected_usd": 1.234,
       "reasoning_tokens": 45996,
       "median_latency_s": 2.42,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -616,6 +612,7 @@
       "projected_usd": 0.2868,
       "reasoning_tokens": 14481,
       "median_latency_s": 1.744,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -649,6 +646,7 @@
       "projected_usd": 0.2688,
       "reasoning_tokens": 0,
       "median_latency_s": 0.929,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -682,39 +680,7 @@
       "projected_usd": 0.0707,
       "reasoning_tokens": 0,
       "median_latency_s": 1.825,
-      "status": "ok"
-    },
-    {
-      "key": "mistral-large-3",
-      "name": "Mistral Large 3",
-      "provider": "mistral",
-      "strategy": "text",
-      "reasoning": false,
-      "tried": [
-        [
-          "text",
-          "ok"
-        ]
-      ],
-      "estimate_usd": 0.5184,
-      "points": 200,
-      "answered": 200,
-      "coverage": 1.0,
-      "accuracy_sample": 0.575,
-      "accuracy_area": 0.7792,
-      "accuracy_area_halfwidth": 0.0446,
-      "logprobs_share": 0.0,
-      "median_mass": null,
-      "providers": [
-        "Mistral"
-      ],
-      "errors": 0,
-      "requests": 242,
-      "cost_usd": 0.003085,
-      "cost_per_request_usd": 1.274586776859504e-05,
-      "projected_usd": 0.2065,
-      "reasoning_tokens": 0,
-      "median_latency_s": 0.607,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -748,6 +714,7 @@
       "projected_usd": 0.0523,
       "reasoning_tokens": 0,
       "median_latency_s": 0.303,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -781,6 +748,7 @@
       "projected_usd": 0.0785,
       "reasoning_tokens": 0,
       "median_latency_s": 0.284,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -814,6 +782,7 @@
       "projected_usd": 0.1046,
       "reasoning_tokens": 0,
       "median_latency_s": 0.297,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -847,6 +816,7 @@
       "projected_usd": 0.1222,
       "reasoning_tokens": 0,
       "median_latency_s": 0.406,
+      "byok_share": null,
       "status": "ok"
     },
     {
@@ -880,13 +850,14 @@
       "projected_usd": 1.0821,
       "reasoning_tokens": 0,
       "median_latency_s": 0.436,
+      "byok_share": null,
       "status": "ok"
     }
   ],
-  "valid": 25,
-  "total": 25,
-  "projected_usd": 16.86,
-  "projected_eur": 15.83,
-  "credits_left_usd": 39.396032176,
-  "pilot_cost_usd": 0.2188
+  "valid": 23,
+  "total": 24,
+  "projected_usd": 16.52,
+  "projected_eur": 15.52,
+  "credits_left_usd": 39.374465772,
+  "pilot_cost_usd": 0.2087
 }

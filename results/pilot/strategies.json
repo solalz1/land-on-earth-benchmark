@@ -3,115 +3,134 @@
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.1283
+    "projected_usd": 0.1283,
+    "provider": "novita"
   },
   "deepseek-v4-pro": {
-    "strategy": "chat_none",
+    "strategy": "text_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.8035
+    "projected_usd": 0.7562,
+    "provider": "siliconflow"
   },
   "kimi-k3": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 3.9245
+    "projected_usd": 4.0934,
+    "provider": "alibaba"
   },
   "kimi-k2.6": {
-    "strategy": "chat_none",
+    "strategy": "text_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.4833
+    "projected_usd": 0.4808,
+    "provider": "siliconflow"
   },
   "glm-5.3": {
-    "strategy": "chat_low",
+    "strategy": "text_low",
     "reasoning": true,
-    "status": "ok",
-    "projected_usd": 3.3993
+    "status": "à vérifier : coût projeté 3.34 $ contre 0.73 $ estimé",
+    "projected_usd": 3.3375,
+    "provider": "siliconflow"
   },
   "glm-5.2": {
-    "strategy": "chat_none",
+    "strategy": "text_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.7203
+    "projected_usd": 0.7744,
+    "provider": "siliconflow"
   },
   "minimax-m3": {
     "strategy": "chat_low",
     "reasoning": true,
     "status": "ok",
-    "projected_usd": 2.1027
+    "projected_usd": 2.1027,
+    "provider": "parasail"
   },
   "qwen3.5-397b-a17b": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.4045
+    "projected_usd": 0.2662,
+    "provider": "alibaba"
   },
   "qwen3.5-122b-a10b": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.2864
+    "projected_usd": 0.1862,
+    "provider": "alibaba"
   },
   "qwen3.5-27b": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.2687
+    "projected_usd": 0.2687,
+    "provider": "novita"
   },
   "qwen3.5-9b": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.0717
+    "projected_usd": 0.0717,
+    "provider": "parasail"
   },
   "qwen3.6-27b": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.3302
+    "projected_usd": 0.3302,
+    "provider": "alibaba"
   },
   "qwen3.8-27b": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.224
+    "projected_usd": 0.224,
+    "provider": "parasail"
   },
   "gemma-4-31b": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.1043
+    "projected_usd": 0.1043,
+    "provider": "novita"
   },
   "gemma-4-26b-a4b": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.0978
+    "projected_usd": 0.0978,
+    "provider": "novita"
   },
   "gpt-oss-120b": {
     "strategy": "chat_low",
     "reasoning": true,
     "status": "ok",
-    "projected_usd": 1.234
+    "projected_usd": 1.234,
+    "provider": "novita"
   },
   "gpt-oss-20b": {
     "strategy": "chat_low",
     "reasoning": true,
     "status": "ok",
-    "projected_usd": 0.2868
+    "projected_usd": 0.2868,
+    "provider": "novita"
   },
   "llama-4-maverick": {
     "strategy": "chat",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.2688
+    "projected_usd": 0.2688,
+    "provider": "parasail"
   },
   "nemotron-3-super": {
     "strategy": "chat_none",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.0707
+    "projected_usd": 0.0707,
+    "provider": "dekallm"
   },
   "mistral-large-3": {
     "strategy": "text",
@@ -123,30 +142,35 @@
     "strategy": "text",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.0523
+    "projected_usd": 0.0523,
+    "provider": "mistral"
   },
   "ministral-3-8b": {
     "strategy": "text",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.0785
+    "projected_usd": 0.0785,
+    "provider": "mistral"
   },
   "ministral-3-14b": {
     "strategy": "text",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.1046
+    "projected_usd": 0.1046,
+    "provider": "mistral"
   },
   "mistral-small-4": {
     "strategy": "text",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 0.1222
+    "projected_usd": 0.1222,
+    "provider": "mistral"
   },
   "mistral-medium-3.5": {
     "strategy": "text",
     "reasoning": false,
     "status": "ok",
-    "projected_usd": 1.0821
+    "projected_usd": 1.0821,
+    "provider": "mistral"
   }
 }
