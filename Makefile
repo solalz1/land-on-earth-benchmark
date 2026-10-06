@@ -6,7 +6,7 @@
 UV := uv run --quiet
 LOE := $(UV) python -m loe
 GPT_OSS_PROVIDERS := coreweave,parasail,deepinfra,dekallm,akashml,cerebras
-.PHONY: setup check pilot probe-gpt-oss run score figure status pack demo test truth clean-demo
+.PHONY: setup check pilot probe-gpt-oss run score figure hf status pack demo test truth clean-demo
 
 setup:            ## installe Python et les dépendances
 	uv sync
@@ -38,6 +38,9 @@ score:            ## recalcule classement et cartes à partir des réponses enre
 
 figure:           ## figures et chiffres de RESULTS.md (results/tweet/figures/), à partir du classement
 	$(LOE) figure
+
+hf:               ## dossier hf/ du dataset Hugging Face (après score et figure), puis : hf upload solalzana/land-on-earth hf --repo-type=dataset
+	$(LOE) hf
 
 status:           ## avancement et coût du run en cours (dans un autre terminal)
 	$(LOE) status

@@ -16,6 +16,7 @@ CACHE = ROOT / ".cache"
 
 OPENROUTER = "https://openrouter.ai/api/v1"
 REPO_URL = "https://github.com/solalz1/land-on-earth-benchmark"
+HF_DATASET = "solalzana/land-on-earth"  # huggingface.co/datasets/solalzana/land-on-earth
 TOP_LOGPROBS = 20
 EUR_PER_USD = 1 / 1.1235  # rate used in the spec, 3 October 2026
 CREDIT_FEE = 0.055  # OpenRouter fee on credit purchases

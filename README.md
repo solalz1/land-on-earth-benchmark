@@ -8,7 +8,7 @@ Coût prévu : environ 17 $ (≈ 15,5 €) pour 389 000 requêtes : environ 5 $ 
 
 ## Résultats
 
-MiniMax M3 (88,8 %) et DeepSeek V4.1 Flash (88,5 %) sont à égalité en tête ; 8 modèles sur 24 ne font pas mieux que répondre toujours « Water » (71,0 %). L'analyse complète, en anglais, avec les figures et comment les lire : **[RESULTS.md](RESULTS.md)**.
+MiniMax M3 (88,8 %) et DeepSeek V4.1 Flash (88,5 %) sont à égalité en tête ; 8 modèles sur 24 ne font pas mieux que répondre toujours « Water » (71,0 %). L'analyse complète, en anglais, avec les figures et comment les lire : **[RESULTS.md](RESULTS.md)**. Les données sont aussi sur Hugging Face : [solalzana/land-on-earth](https://huggingface.co/datasets/solalzana/land-on-earth).
 
 ![Classement](results/tweet/figures/ranking.png)
 
@@ -73,6 +73,22 @@ S'il s'arrête (coupure réseau, Mac en veille, Ctrl-C) ou affiche « Run incomp
 git add results && git commit -m "Run complet" && git push
 ```
 
+**7. Publier le dataset sur Hugging Face** (facultatif). La première fois, installe l'outil et connecte-toi avec un jeton « Write » créé sur huggingface.co/settings/tokens, collé seulement quand le terminal le demande :
+
+```sh
+uv tool install "huggingface_hub[cli]"
+hf auth login
+```
+
+Puis, après `make score figure` :
+
+```sh
+make hf
+hf upload solalzana/land-on-earth hf --repo-type=dataset
+```
+
+`make hf` reconstruit `hf/` à partir de `results/tweet/` : la page du dataset (tirée de RESULTS.md), les réponses de chaque modèle en chaque point, le classement, la grille, les figures et les réponses brutes. Ce dossier n'est pas commité. Relancer les deux commandes met le dataset à jour.
+
 ## Commandes
 
 | Commande | Coût | Ce qu'elle fait |
@@ -85,6 +101,7 @@ git add results && git commit -m "Run complet" && git push
 | `make status` | gratuit | avancement et coût du run |
 | `make score` | gratuit | recalcule classement et cartes depuis les réponses enregistrées |
 | `make figure` | gratuit | figures et chiffres de [RESULTS.md](RESULTS.md) (`results/tweet/figures/`), depuis le classement |
+| `make hf` | gratuit | dossier `hf/` du dataset Hugging Face, à envoyer avec `hf upload` (étape 7) |
 | `make test` | gratuit | tests automatiques, contre la fausse API |
 
 Options utiles : `uv run python -m loe run --models qwen3.5-9b,gemma-4-31b` pour quelques modèles, `--budget 10` pour plafonner le coût du run, crédits et clés fournisseurs compris (22 $ par défaut). `uv run python -m loe preflight` relance la répétition générale seule. `uv run python -m loe probe --model gpt-oss-20b --provider deepinfra,parasail --strategy raw` essaie un modèle chez d'autres fournisseurs que celui de la config, 8 points par essai.
@@ -161,4 +178,5 @@ results/pilot/          rapport du pilote, stratégies retenues, répétition g�
 results/probe/          essais chez d'autres fournisseurs (make probe-gpt-oss)
 results/tweet/          run complet : réponses (raw/*.jsonl.gz), prédictions, classement, cartes, figures (figures/)
 RESULTS.md              les résultats et comment les lire, en anglais
+hf/                     dataset Hugging Face construit par make hf (non commité)
 ```

@@ -15,3 +15,6 @@ results/**/raw/*.jsonl
 
 # démo contre la fausse API
 results/demo/
+
+# dataset Hugging Face, reconstruit par `make hf` à partir de results/
+hf/

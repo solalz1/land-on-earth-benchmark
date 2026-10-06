@@ -159,3 +159,4 @@ To run everything again from scratch, see the [README](README.md) (in French).
 | [`results/tweet/maps/`](results/tweet/maps/) | each model's map: answers, P(Land), errors, and `montage.png` |
 | [`results/tweet/predictions/`](results/tweet/predictions/) | each model's answer at each point |
 | [`results/tweet/raw/`](results/tweet/raw/) | every request and answer, compressed JSON lines |
+| [Hugging Face dataset](https://huggingface.co/datasets/solalzana/land-on-earth) | the same data, ready to load with `datasets`: predictions, leaderboard, grid, figures, raw answers |

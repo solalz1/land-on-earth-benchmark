@@ -1,4 +1,4 @@
-"""Command line: loe check | pilot | preflight | probe | run | score | figure | pack | status | demo.
+"""Command line: loe check | pilot | preflight | probe | run | score | figure | hf | pack | status | demo.
 
 Every command that can spend credits reads OPENROUTER_API_KEY from the environment; the key is
 never printed or written anywhere. `--fake` swaps OpenRouter for the in-process fake API and
@@ -215,6 +215,21 @@ def _figure(args, cfg: Config) -> int:
     return 0
 
 
+def _hf(args, cfg: Config) -> int:
+    from loe import hf
+
+    out = config.ROOT / "hf"
+    try:
+        paths = hf.build(_out(args) / args.run, out)
+    except (FileNotFoundError, ValueError) as e:
+        print(e)
+        return 1
+    size = sum(p.stat().st_size for p in paths) / 1e6
+    print(f"{len(paths)} fichiers dans hf/ ({size:.0f} Mo). Pour les publier sur Hugging Face :\n")
+    print(f"  hf upload {config.HF_DATASET} hf --repo-type=dataset\n")
+    return 0
+
+
 async def _probe(args, cfg: Config) -> int:
     from loe import probe, templates
 
@@ -327,6 +342,7 @@ def parser() -> argparse.ArgumentParser:
     s = common(sub.add_parser("score", help="classement et cartes"))
     s.add_argument("--no-maps", action="store_true")
     common(sub.add_parser("figure", help="figures et chiffres de RESULTS.md, à partir du classement"))
+    common(sub.add_parser("hf", help="dossier hf/ du dataset Hugging Face, à partir du classement et des figures"))
     common(sub.add_parser("pack", help="compresse les réponses brutes pour le repo"))
     common(sub.add_parser("status", help="avancement et coût du run"))
     s = common(sub.add_parser("demo", help="tout le pipeline contre la fausse API"))
@@ -374,6 +390,8 @@ def main(argv: list[str] | None = None) -> int:
             return _score(args, cfg)
         if args.cmd == "figure":
             return _figure(args, cfg)
+        if args.cmd == "hf":
+            return _hf(args, cfg)
         if args.cmd == "pack":
             return _pack(args, cfg)
         if args.cmd == "status":

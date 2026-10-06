@@ -5,7 +5,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from loe import config, figure, grid
+from loe import config, figure, grid, hf
 from loe.client import Client
 from loe.fake import FakeOpenRouter
 from loe.parse import answers_first
@@ -53,19 +53,20 @@ def test_leaderboard_notes_indirect_answers():
     assert "15.6 %" in md and md.count("¹") == 2
 
 
-async def test_figures_from_a_fake_run(tmp_path):
+async def test_figures_and_dataset_from_a_fake_run(tmp_path):
+    run = tmp_path / "tweet"
     models = [CFG.model("qwen3.5-9b"), CFG.model("ministral-3-14b")]
     jobs = [Job(models[0], CFG.strategies["chat_none"]), Job(models[1], CFG.strategies["text"])]
     fake = FakeOpenRouter(CFG, fail_rate=0)
     async with Client("k", transport=fake.transport(), sleep=nosleep, rate_limits=False) as c:
-        await Runner(c, tmp_path, budget=5, progress=False).run(jobs, grid.load())
-    board = score_run(CFG, tmp_path)
-    paths = figure.make(tmp_path)
+        await Runner(c, run, budget=5, progress=False).run(jobs, grid.load())
+    board = score_run(CFG, run)
+    paths = figure.make(run)
     names = {p.name for p in paths}
     assert names == {"stats.json", "land_on_earth.png", "ranking.png", "difficulty.png", "error_sources.png",
                      "knowledge_vs_bias.png"}
     assert all(p.stat().st_size > 5_000 for p in paths if p.suffix == ".png")
-    stats = json.loads((tmp_path / "figures" / "stats.json").read_text())
+    stats = json.loads((run / "figures" / "stats.json").read_text())
     assert stats["models"] == 2 and 70.5 < stats["always_water"] < 71.5
     assert abs(stats["always_water"] + stats["always_land"] - 100) < 1e-6
     assert 19 < stats["coast_area"] < 22 and 2 < stats["ice_area"] < 4
@@ -82,3 +83,16 @@ async def test_figures_from_a_fake_run(tmp_path):
     m = by_key["qwen3.5-9b"]
     assert abs(m["accuracy_at_true_land_share"] - m["accuracy"]) < 15
     assert set(stats["cost_by_payer_usd"]) <= {"openrouter", "mistral", "alibaba", "siliconflow"}
+
+    # the Hugging Face dataset, built from the same run
+    files = hf.build(run, tmp_path / "hf", results_md=config.ROOT / "RESULTS.md")
+    names = {str(p.relative_to(tmp_path / "hf")) for p in files}
+    assert {"README.md", "data/predictions.csv", "data/leaderboard.csv", "data/grid.csv", "figures/stats.json",
+            "figures/ranking.png", "raw/qwen3.5-9b.jsonl.gz", "raw/ministral-3-14b.jsonl.gz"} <= names
+    pred = pd.read_csv(tmp_path / "hf" / "data" / "predictions.csv")
+    assert len(pred) == 2 * 16_200 and list(pred.columns) == hf.PREDICTION_COLUMNS
+    assert set(pred["model"]) == {"qwen3.5-9b", "ministral-3-14b"} and pred["pred"].isin([0, 1]).all()
+    text = (tmp_path / "hf" / "README.md").read_text()
+    assert text.startswith("---\nlicense: cc-by-4.0\n") and "data_files: data/predictions.csv" in text
+    assert "](figures/ranking.png)" in text and "](results/" not in text
+    assert "32,400 rows" in text
