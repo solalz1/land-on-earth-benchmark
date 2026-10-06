@@ -19,7 +19,7 @@ pilot: setup      ## quelques dizaines de centimes : stratégie de chaque modèl
 	-$(LOE) pilot
 	-$(LOE) preflight
 	$(LOE) pack
-	@printf "\nPousse maintenant results/ sur le repo (voir README, étape 4).\n"
+	@printf "\nRapports : results/pilot/report.md (pilote) et results/pilot/preflight.md (répétition générale).\n"
 
 probe-gpt-oss: setup ## < 1 centime : cherche un fournisseur qui fait tourner gpt-oss sans réflexion
 	-$(LOE) probe --model gpt-oss-120b --provider $(GPT_OSS_PROVIDERS) --strategy raw
@@ -31,7 +31,7 @@ run: setup        ## ≈ 17 $, ~1 h 15 : 16 200 points × 24 modèles, seulement
 	$(LOE) score
 	$(LOE) figure
 	$(LOE) pack
-	@printf "\nPousse maintenant results/ sur le repo (voir README, étape 6).\n"
+	@printf "\nRésultats : results/tweet/leaderboard.md et results/tweet/figures/.\n"
 
 score:            ## recalcule classement et cartes à partir des réponses enregistrées
 	$(LOE) score

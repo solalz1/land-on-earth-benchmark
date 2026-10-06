@@ -148,7 +148,7 @@ make score    # leaderboard and maps from the stored answers (results/tweet/raw/
 make figure   # these figures, and every number on this page in results/tweet/figures/stats.json
 ```
 
-To run everything again from scratch, see the [README](README.md) (in French).
+To run everything again from scratch, see the [README](README.md).
 
 ## Files
 
