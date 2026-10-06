@@ -1,6 +1,7 @@
 """Ask every point to every model, concurrently, with resume and cost guards.
 
-- Resume: points already answered (in raw/<model>.jsonl) are skipped; failed ones are asked again.
+- Resume: points already answered (in raw/<model>.jsonl) are skipped; failed ones, and answers that
+  came back empty or unreadable, are asked again.
 - Budget: the run stops once what this run directory cost you reaches the budget: OpenRouter
   credits plus what your own provider keys were billed (store.charged).
 - Per-model guard: after 100 answers, a model whose projected cost exceeds `cap_factor` times

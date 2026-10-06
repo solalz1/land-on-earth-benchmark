@@ -59,7 +59,7 @@ Le rapport est dans `results/pilot/report.md`. Claude le relit et corrige la con
 caffeinate -i make run
 ```
 
-S'il s'arrête (coupure réseau, Mac en veille, Ctrl-C), relance la même commande : il reprend là où il s'est arrêté, sans reposer les questions déjà répondues. Dans un autre terminal, `make status` affiche l'avancement et le coût.
+S'il s'arrête (coupure réseau, Mac en veille, Ctrl-C) ou affiche « Run incomplet », relance la même commande : il reprend là où il s'est arrêté, sans reposer les questions déjà répondues, et redemande les points en erreur et les réponses vides (un fournisseur saturé ou qui renvoie une réponse vide). Dans un autre terminal, `make status` affiche l'avancement et le coût.
 
 **6. Pousser les résultats** :
 

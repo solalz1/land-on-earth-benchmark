@@ -1,0 +1,1268 @@
+{
+  "sessions": [
+    {
+      "finished": "2026-10-06T18:28:20+00:00",
+      "kind": "run",
+      "points": 16200,
+      "budget": 22.0,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.10425245999998826,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.7562480760001798,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k3",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 4.359420000000301,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.4812801999998144,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.3",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 3.4164500000000104,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.2",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.7693888000001313,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "minimax-m3",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16193,
+          "errors": 7,
+          "cost": 2.051621099999982,
+          "stopped": null,
+          "last_error": "HTTP 429: Provider returned error | minimax/minimax-m3 is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.2860649999999632,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-122b-a10b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.199134000000033,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-27b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16141,
+          "errors": 59,
+          "cost": 0.2676708000000141,
+          "stopped": null,
+          "last_error": "HTTP 429: Provider returned error | qwen/qwen3.5-27b is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.071730000000008,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.6-27b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.3300749999999779,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.22399199999996788,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.10430999999999933,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.09778499999999596,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-120b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16099,
+          "errors": 101,
+          "cost": 1.0095966999999955,
+          "stopped": null,
+          "last_error": "HTTP 429: Provider returned error | openai/gpt-oss-120b is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16129,
+          "errors": 71,
+          "cost": 0.3441895900000042,
+          "stopped": null,
+          "last_error": "HTTP 429: Provider returned error | openai/gpt-oss-20b is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.26485499999994055,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16107,
+          "errors": 93,
+          "cost": 0.07026349999999781,
+          "stopped": null,
+          "last_error": "HTTP 429: Provider returned error | nvidia/nemotron-3-super-120b-a12b is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
+        },
+        {
+          "key": "ministral-3-3b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.05228999999999548,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-8b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.07843499999999393,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-14b",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.10457999999999097,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-small-4",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 0.12217067999997318,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-medium-3.5",
+          "total": 16200,
+          "done_before": 0,
+          "answered": 16200,
+          "errors": 0,
+          "cost": 1.2703500000002437,
+          "stopped": null,
+          "last_error": null
+        }
+      ]
+    },
+    {
+      "finished": "2026-10-06T19:22:52+00:00",
+      "kind": "run",
+      "points": 16200,
+      "budget": 22.0,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k3",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.3",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.2",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "minimax-m3",
+          "total": 16200,
+          "done_before": 16193,
+          "answered": 7,
+          "errors": 0,
+          "cost": 0.0009945,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-122b-a10b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-27b",
+          "total": 16200,
+          "done_before": 16141,
+          "answered": 59,
+          "errors": 0,
+          "cost": 0.0009791999999999997,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.6-27b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-120b",
+          "total": 16200,
+          "done_before": 16070,
+          "answered": 130,
+          "errors": 0,
+          "cost": 0.007855200000000003,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 16200,
+          "done_before": 16118,
+          "answered": 82,
+          "errors": 0,
+          "cost": 0.0016119699999999992,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 16200,
+          "done_before": 16107,
+          "answered": 70,
+          "errors": 23,
+          "cost": 0.00030419999999999975,
+          "stopped": null,
+          "last_error": "HTTP 429: Provider returned error | nvidia/nemotron-3-super-120b-a12b is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
+        },
+        {
+          "key": "ministral-3-3b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-8b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-14b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-small-4",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-medium-3.5",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        }
+      ]
+    },
+    {
+      "finished": "2026-10-06T19:26:09+00:00",
+      "kind": "run",
+      "points": 16200,
+      "budget": 22.0,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k3",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.3",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.2",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "minimax-m3",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-122b-a10b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-27b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.6-27b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-120b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 16200,
+          "done_before": 16177,
+          "answered": 21,
+          "errors": 2,
+          "cost": 9.162000000000003e-05,
+          "stopped": null,
+          "last_error": "HTTP 429: Provider returned error | nvidia/nemotron-3-super-120b-a12b is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"
+        },
+        {
+          "key": "ministral-3-3b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-8b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-14b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-small-4",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-medium-3.5",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        }
+      ]
+    },
+    {
+      "finished": "2026-10-06T19:26:58+00:00",
+      "kind": "run",
+      "points": 16200,
+      "budget": 22.0,
+      "outcomes": [
+        {
+          "key": "deepseek-v4.1-flash",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "deepseek-v4-pro",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k3",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "kimi-k2.6",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.3",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "glm-5.2",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "minimax-m3",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-397b-a17b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-122b-a10b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-27b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.5-9b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.6-27b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "qwen3.8-27b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-31b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gemma-4-26b-a4b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-120b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "gpt-oss-20b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "llama-4-maverick",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "nemotron-3-super",
+          "total": 16200,
+          "done_before": 16198,
+          "answered": 2,
+          "errors": 0,
+          "cost": 8.68e-06,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-3b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-8b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "ministral-3-14b",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-small-4",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        },
+        {
+          "key": "mistral-medium-3.5",
+          "total": 16200,
+          "done_before": 16200,
+          "answered": 0,
+          "errors": 0,
+          "cost": 0.0,
+          "stopped": null,
+          "last_error": null
+        }
+      ]
+    }
+  ],
+  "models": {
+    "deepseek-v4.1-flash": {
+      "id": "deepseek/deepseek-v4.1-flash",
+      "provider": "novita",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
+    },
+    "deepseek-v4-pro": {
+      "id": "deepseek/deepseek-v4-pro",
+      "provider": "siliconflow",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "text_none",
+      "reasoning": false,
+      "rpm": 480.0,
+      "concurrency": 24,
+      "byok": true
+    },
+    "kimi-k3": {
+      "id": "moonshotai/kimi-k3",
+      "provider": "alibaba",
+      "quantizations": [],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 12,
+      "byok": true
+    },
+    "kimi-k2.6": {
+      "id": "moonshotai/kimi-k2.6",
+      "provider": "siliconflow",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "text_none",
+      "reasoning": false,
+      "rpm": 480.0,
+      "concurrency": 12,
+      "byok": true
+    },
+    "glm-5.3": {
+      "id": "z-ai/glm-5.3",
+      "provider": "siliconflow",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "text_low",
+      "reasoning": true,
+      "rpm": 480.0,
+      "concurrency": 20,
+      "byok": true
+    },
+    "glm-5.2": {
+      "id": "z-ai/glm-5.2",
+      "provider": "siliconflow",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "text_none",
+      "reasoning": false,
+      "rpm": 480.0,
+      "concurrency": 20,
+      "byok": true
+    },
+    "minimax-m3": {
+      "id": "minimax/minimax-m3",
+      "provider": "parasail",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_low",
+      "reasoning": true,
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
+    },
+    "qwen3.5-397b-a17b": {
+      "id": "qwen/qwen3.5-397b-a17b",
+      "provider": "alibaba",
+      "quantizations": [],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": 550.0,
+      "concurrency": 12,
+      "byok": true
+    },
+    "qwen3.5-122b-a10b": {
+      "id": "qwen/qwen3.5-122b-a10b",
+      "provider": "alibaba",
+      "quantizations": [],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": 550.0,
+      "concurrency": 12,
+      "byok": true
+    },
+    "qwen3.5-27b": {
+      "id": "qwen/qwen3.5-27b",
+      "provider": "novita",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
+    },
+    "qwen3.5-9b": {
+      "id": "qwen/qwen3.5-9b",
+      "provider": "parasail",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
+    },
+    "qwen3.6-27b": {
+      "id": "qwen/qwen3.6-27b",
+      "provider": "alibaba",
+      "quantizations": [],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": 550.0,
+      "concurrency": 12,
+      "byok": true
+    },
+    "qwen3.8-27b": {
+      "id": "qwen/qwen3.8-27b",
+      "provider": "parasail",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
+    },
+    "gemma-4-31b": {
+      "id": "google/gemma-4-31b-it",
+      "provider": "novita",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
+    },
+    "gemma-4-26b-a4b": {
+      "id": "google/gemma-4-26b-a4b-it",
+      "provider": "novita",
+      "quantizations": [
+        "bf16"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
+    },
+    "gpt-oss-120b": {
+      "id": "openai/gpt-oss-120b",
+      "provider": "novita",
+      "quantizations": [
+        "fp4"
+      ],
+      "strategy": "chat_low",
+      "reasoning": true,
+      "rpm": null,
+      "concurrency": 40,
+      "byok": false
+    },
+    "gpt-oss-20b": {
+      "id": "openai/gpt-oss-20b",
+      "provider": "novita",
+      "quantizations": [
+        "fp4"
+      ],
+      "strategy": "chat_low",
+      "reasoning": true,
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
+    },
+    "llama-4-maverick": {
+      "id": "meta-llama/llama-4-maverick",
+      "provider": "parasail",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 16,
+      "byok": false
+    },
+    "nemotron-3-super": {
+      "id": "nvidia/nemotron-3-super-120b-a12b",
+      "provider": "dekallm",
+      "quantizations": [
+        "fp8"
+      ],
+      "strategy": "chat_none",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 24,
+      "byok": false
+    },
+    "ministral-3-3b": {
+      "id": "mistralai/ministral-3b-2512",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 8,
+      "byok": true
+    },
+    "ministral-3-8b": {
+      "id": "mistralai/ministral-8b-2512",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": 1400.0,
+      "concurrency": 8,
+      "byok": true
+    },
+    "ministral-3-14b": {
+      "id": "mistralai/ministral-14b-2512",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": 230.0,
+      "concurrency": 8,
+      "byok": true
+    },
+    "mistral-small-4": {
+      "id": "mistralai/mistral-small-2603",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": 950.0,
+      "concurrency": 8,
+      "byok": true
+    },
+    "mistral-medium-3.5": {
+      "id": "mistralai/mistral-medium-3-5",
+      "provider": "mistral",
+      "quantizations": [],
+      "strategy": "text",
+      "reasoning": false,
+      "rpm": null,
+      "concurrency": 8,
+      "byok": true
+    }
+  }
+}

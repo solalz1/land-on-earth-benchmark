@@ -98,9 +98,15 @@ def for_job(records: list[dict[str, Any]], strategy: str, provider: str) -> list
     return [r for r in records if r.get("strategy") == strategy and (not r.get("ok") or served_by(r, provider))]
 
 
+def answered(r: dict[str, Any]) -> bool:
+    """A successful request with a readable answer. An empty or unreadable one (a provider's glitch,
+    a reasoning budget used up) is asked again at the next resume."""
+    return bool(r.get("ok")) and not ("pred" in r and r["pred"] is None)
+
+
 def done_ids(records: list[dict[str, Any]], strategy: str | None = None) -> set[int]:
     """Points answered, by this strategy if given (a new strategy asks every point again)."""
-    return {int(r["point_id"]) for r in records if r.get("ok") and (strategy is None or r.get("strategy") == strategy)}
+    return {int(r["point_id"]) for r in records if answered(r) and (strategy is None or r.get("strategy") == strategy)}
 
 
 def current(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -118,11 +124,11 @@ def current(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def latest(records: list[dict[str, Any]]) -> pd.DataFrame:
-    """One row per point: the last successful answer, else the last error."""
+    """One row per point: the last readable answer, else the last empty one, else the last error."""
     if not records:
         return pd.DataFrame()
     df = pd.DataFrame(records)
-    df["_ok"] = df["ok"].astype(bool)
+    df["_ok"] = [2 if answered(r) else 1 if r.get("ok") else 0 for r in records]
     df["_i"] = range(len(df))
     df = df.sort_values(["point_id", "_ok", "_i"]).groupby("point_id").tail(1)
     return df.drop(columns=["_ok", "_i"]).sort_values("point_id").reset_index(drop=True)

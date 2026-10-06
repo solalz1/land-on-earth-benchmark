@@ -172,6 +172,35 @@ def test_latest_prefers_success_over_later_error():
     assert not bool(df.loc[1, "ok"])
 
 
+def test_latest_prefers_a_readable_answer_over_an_empty_one():
+    recs = [
+        {"point_id": 1, "ok": True, "pred": None},  # empty: the provider returned nothing
+        {"point_id": 1, "ok": True, "pred": 0},  # asked again at the resume
+        {"point_id": 2, "ok": True, "pred": 1},
+        {"point_id": 2, "ok": True, "pred": None},
+    ]
+    df = store.latest(recs)
+    assert list(df["pred"]) == [0, 1]
+    assert store.done_ids(recs[:1]) == set() and store.done_ids(recs) == {1, 2}
+
+
+async def test_resume_asks_empty_answers_again(tmp_path):
+    m = CFG.model("qwen3.5-9b")
+    pts = points(3)
+    ids = list(pts["point_id"])
+    w = store.Appender(tmp_path, m.key)
+    base = {"strategy": "chat_none", "pinned": m.provider, "provider": "Parasail", "ok": True}
+    w.write(base | {"point_id": int(ids[0]), "pred": 1})
+    w.write(base | {"point_id": int(ids[1]), "pred": None, "finish": "error"})  # the run's gpt-oss glitches
+    w.close()
+    client, fake = fake_client(FakeOpenRouter(CFG, fail_rate=0))
+    async with client:
+        out = await Runner(client, tmp_path, budget=5, progress=False).run([Job(m, CFG.strategies["chat_none"])], pts)
+    assert out[0].done_before == 1 and out[0].answered == 2  # the empty one and the missing one
+    assert len(fake.requests) == 2
+    assert store.latest(store.read(tmp_path, m.key))["pred"].notna().all()
+
+
 def test_truncated_last_line_is_ignored(tmp_path):
     p = store.plain(tmp_path, "m")
     p.parent.mkdir(parents=True)
